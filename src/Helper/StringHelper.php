@@ -15,7 +15,6 @@ use function Symfony\Component\String\u;
  */
 final readonly class StringHelper
 {
-
     public function __construct(
         private SluggerInterface $slugger
     ) {
@@ -31,5 +30,4 @@ final readonly class StringHelper
                              ->toString()
         ;
     }
-
 }
