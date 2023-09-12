@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @see https://symfony.com/doc/current/controller/service.html#invokable-controllers
  */
 #[AsController]
-final class SlugifyAcfion extends AbstractController
+final class SlugifyAction extends AbstractController
 {
     /**
      * Simple API endpoint returning JSON.

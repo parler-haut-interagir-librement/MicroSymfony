@@ -13,15 +13,23 @@ use function Symfony\Component\String\u;
  *
  * @see StringHelperTest
  */
-final class StringHelper
+final readonly class StringHelper
 {
+
     public function __construct(
-        private readonly SluggerInterface $slugger
+        private SluggerInterface $slugger
     ) {
     }
 
     public function slugify(?string $string): string
     {
-        return $this->slugger->slug(u($string)->lower()->toString())->toString();
+        return $this->slugger->slug(
+            u($string)
+                ->lower()
+                ->toString()
+        )
+                             ->toString()
+        ;
     }
+
 }

@@ -13,5 +13,6 @@ parameters:
     symfony:
         container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
     # https://phpstan.org/user-guide/ignoring-errors
+    treatPhpDocTypesAsCertain: false
     ignoreErrors:
         #- '#my_ignore_error_regexp_pattern#'

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Helper;
 
 use App\Helper\StringHelper;
+use Iterator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
@@ -14,10 +15,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
  */
 final class StringHelperTest extends TestCase
 {
-    /**
-     * @return iterable<array{0: string|null, 1: string}>
-     */
-    public static function provideSlugify(): iterable
+    public static function provideSlugify(): Iterator
     {
         yield ['', ''];
         yield [null, ''];

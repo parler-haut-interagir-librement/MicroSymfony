@@ -19,7 +19,7 @@ use function Castor\run;
  */
 function title(string $title, Command $command = null): void
 {
-    io()->title($title.($command !== null ? ': '.$command->getDescription() : ''));
+    io()->title($title.(null !== $command ? ': '.$command->getDescription() : ''));
 }
 
 function success(): void
@@ -56,10 +56,11 @@ function test(): void
 function coverage(): void
 {
     title(__FUNCTION__, get_command());
-    run('php -d xdebug.enable=1 -d memory_limit=-1 vendor/bin/simple-phpunit --coverage-html=var/coverage',
+    run(
+        'php -d xdebug.enable=1 -d memory_limit=-1 vendor/bin/simple-phpunit --coverage-html=var/coverage',
         environment: [
-          'XDEBUG_MODE' => 'coverage',
-        ],
+                         'XDEBUG_MODE' => 'coverage',
+                     ],
         quiet: false
     );
     run('php bin/coverage-checker.php var/coverage/clover.xml 100', quiet: false);
@@ -86,12 +87,21 @@ function stan(): void
 function fix_php(): void
 {
     title(__FUNCTION__, get_command());
-    run('vendor/bin/php-cs-fixer fix --allow-risky=yes',
+    run(
+        'vendor/bin/php-cs-fixer fix --allow-risky=yes',
         environment: [
-           'PHP_CS_FIXER_IGNORE_ENV' => 1,
-        ],
+                         'PHP_CS_FIXER_IGNORE_ENV' => 1,
+                     ],
         quiet: false
     );
+    success();
+}
+
+#[AsTask(namespace: 'rector', description: 'Run Rector')]
+function rector(): void
+{
+    title(__FUNCTION__, get_command());
+    run('vendor/bin/rector', quiet: false);
     success();
 }
 
@@ -102,6 +112,7 @@ function cs_all(): void
     fix_php();
     stan();
 }
+
 #[AsTask(name: 'container', namespace: 'lint', description: 'Lint the Symfony DI container')]
 function lint_container(): void
 {
@@ -130,16 +141,11 @@ function lint_yaml(): void
 function lint_all(): void
 {
     title(__FUNCTION__, get_command());
-    lint_container();
-    lint_twig();
-    lint_yaml();
-
-    // if you want to speed up the process, you can run these commands in parallel
-    //    parallel(
-    //        fn() => lint_container(null),
-    //        fn() => lint_twig(),
-    //        fn() => lint_yaml(),
-    //    );
+    parallel(
+        fn () => lint_container(null),
+        fn () => lint_twig(),
+        fn () => lint_yaml(),
+    );
 }
 
 #[AsTask(name: 'all', namespace: 'ci', description: 'Run CI locally')]

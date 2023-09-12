@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Api\Controller;
 
-use App\Controller\SlugifyAcfion;
+use App\Controller\SlugifyAction;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class SlugifyActionTest extends WebTestCase
@@ -13,7 +13,7 @@ final class SlugifyActionTest extends WebTestCase
      * You have advanced JSON assertions in API Platform.
      *
      * @see https://api-platform.com/docs/distribution/testing/#writing-functional-tests
-     * @see SlugifyAcfion
+     * @see SlugifyAction
      */
     public function testSlugifyAction(): void
     {
