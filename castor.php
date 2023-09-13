@@ -10,6 +10,7 @@ use Symfony\Component\Console\Command\Command;
 
 use function Castor\get_command;
 use function Castor\io;
+use function Castor\parallel;
 use function Castor\run;
 
 // use function Castor\parallel;
@@ -97,11 +98,19 @@ function fix_php(): void
     success();
 }
 
-#[AsTask(namespace: 'rector', description: 'Run Rector')]
+#[AsTask(name: 'run', namespace: 'rector',  description: 'Run Rector')]
 function rector(): void
 {
     title(__FUNCTION__, get_command());
     run('vendor/bin/rector', quiet: false);
+    success();
+}
+
+#[AsTask(name: 'dry-run', namespace: 'rector',  description: 'Run Rector')]
+function rector_dry_run(): void
+{
+    title(__FUNCTION__, get_command());
+    run('vendor/bin/rector --dry_run', quiet: false);
     success();
 }
 

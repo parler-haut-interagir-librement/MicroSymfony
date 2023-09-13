@@ -1,21 +1,17 @@
-# MicroSymfony 🎶
+# “**Proclaim** *Honestly*, **Interact** *Liberally*” **Micro***Symfony*
 
-MicroSymfony is a Symfony application skeleton on steroids, ready to use.
+“**Proclaim** *Honestly*, **Interact** *Liberally*” **Micro***Symfony* is a Symfony application skeleton on steroids, ready to use.
 
-This was base on [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony) with adjustment
-we're usually adding on all our projects.
+The purpose of **Micro***Symfony* is to provide a sandbox with some sensible defaults and ready to use. 
+It can be a solution if you want to quickly set up something, create a POC, test things, 
+and even make a small "one-page" application.
 
-
-## Demo 🌈
-
-Because a live demo is always better than all explanations. Here is it:
-
-* Live demo will be available at [https://ph-il.ca/demos/microsymfony](https://ph-il.ca/demos/microsymfony)
-
+It was base on [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony) with adjustment
+we're usually adding on all our projects. We also remove many exemples. 
 
 ## Requirements ⚙
 
-All “Proclaim Honestly, Interact Liberally” project will use the latest version within 1/2 month depending on dependency availability.
+All “**Proclaim** *Honestly*, **Interact** *Liberally*” project will use the latest version within 1/2 month depending on dependency availability.
 
 * [PHP 8.2](https://www.php.net/releases/8.2/en.php)
 * The [Symfony CLI](https://symfony.com/download)
@@ -24,18 +20,16 @@ All “Proclaim Honestly, Interact Liberally” project will use the latest vers
 
 ## Stack 🔗
 
-All “Proclaim Honestly, Interact Liberally” project will use the latest version within 1/2 month depending on dependency availability.
+All “**Proclaim** Honestly, **Interact** Liberally” project will use the latest version within 1/2 month depending on dependency availability.
 
 * [Symfony 6.3](https://symfony.com) 
 * [Twig 3](https://twig.symfony.com)
 * [Stimulus 3.2](https://stimulus.hotwired.dev/)
 * [PHPUnit 9.5](https://phpunit.de)
-* [Tailwind CSS](https://tailwindcss.com/) framework 
-
 
 ## Features 🚀
 
-**MicroSymfony** ships these features, ready to use:
+**Micro***Symfony* ships these features, ready to use:
 
 * One task runner
   * Castor ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/castor.php)) 
@@ -73,7 +67,10 @@ All “Proclaim Honestly, Interact Liberally” project will use the latest vers
 
 ## What it doesn't ship? ❌
 
-* Doctrine ([installation](https://symfony.com/doc/current/doctrine.html#installing-doctrine))
+* Doctrine ([installation](https://symfony.com/doc/current/doctrine.html#installing-doctrine)) or use ([WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony))
+
+## Initializing an application with MicroSymfony 
+
 
 
 ## References 📚
@@ -81,4 +78,26 @@ All “Proclaim Honestly, Interact Liberally” project will use the latest vers
 * https://jolicode.com/blog/castor-a-journey-across-the-sea-of-task-runners
 * https://www.strangebuzz.com/en/blog/introducing-the-microsymfony-application-template (🇬🇧)
 
+## Others “**Proclaim** Honestly, **Interact** Liberally” Skeletons
 
+* [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony)
+  * MicroSource +
+  * Database
+    * StofDoctrineExtensionsBundle
+  * EasyAdmin
+  * Security Layers
+    * SymfonySecurity
+    * NelmioSecurityBundle
+    * NelmioCorsBundle
+  * more.
+
+* [ApiSymfony](https://github.com/parler-haut-interagir-librement/ApiSymfony)
+  * API Platform
+
+* [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
+  * WebSymfony +
+  * “**Proclaim** Honestly, **Interact** Liberally” Bundles
+    * PhilBodyBundle - Add Base Twig Components
+    * PhilDoctrineExtensionPublishBundle - Add Publish functionality to Doctrine Entity
+    * PhilDoctrineExtensionStofBundle - Add missing stuff to StofDoctrineExtensionsBundle
+  * more.

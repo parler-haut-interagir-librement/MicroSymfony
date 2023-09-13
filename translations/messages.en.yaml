@@ -1,0 +1,6 @@
+brand:
+  name: 'Proclaim Honestly, Interact Liberally : MicroSymfony'
+  html: '<b>Proclaim</b> Honestly, <b>Interact</b> Liberally : <b>Micro</b>Symfony'
+  info: MicroSymfony is a Symfony application skeleton on steroids, ready to use.
+  tech: The platform is based on the latest versions of different technologies created for the web.
+        For example Symfony 6.3+, PHP 8.2+, MySQL, Redis, and many more.
