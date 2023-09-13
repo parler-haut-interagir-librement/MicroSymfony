@@ -9,6 +9,12 @@ and even make a small "one-page" application.
 It was base on [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony) with adjustment
 we're usually adding on all our projects. We also remove many exemples. 
 
+## Demo 🌈
+
+Because a live demo is always better than all explanations. Here is it:
+
+* Live demo will be available at [https://ph-il.ca/demos/microsymfony](https://ph-il.ca/demos/microsymfony)
+
 ## Requirements ⛮
 
 All “**Proclaim** *Honestly*, **Interact** *Liberally*” project will use the latest version within 1/2 month depending on dependency availability.

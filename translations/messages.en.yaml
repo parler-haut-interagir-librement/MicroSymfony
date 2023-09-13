@@ -1,9 +1,22 @@
 brand:
   name: 'Proclaim Honestly, Interact Liberally : MicroSymfony'
-  html: '<b>Proclaim</b> Honestly, <b>Interact</b> Liberally : <b>Micro</b>Symfony'
+  copyright: Proclaim Honestly, Interact Liberally
+  html: '<b>Proclaim</b> <i>Honestly</i>, <b>Interact</b> <i>Liberally</i> : <b>Micro</b><i>Symfony</i>'
   info: MicroSymfony is a Symfony application skeleton on steroids, ready to use.
   tech: The platform is based on the latest versions of different technologies created for the web.
         For example Symfony 6.3+, PHP 8.2+, MySQL, Redis, and many more.
 
 footer:
   all_rights: All Rights Reserved
+  symfony: Symfony™ is a trademark of <a target="_blank" href="https://symfony.com/license">Symfony SAS</a>.
+
+menu:
+  home:
+    text: Home
+    title: Goto Home Page
+  stimulus:
+    text: Stimulus
+    title: Goto Stimulus Page
+  error:
+    text: Error 404
+    title: See 404 Page

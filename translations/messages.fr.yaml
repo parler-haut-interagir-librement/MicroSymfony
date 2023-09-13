@@ -1,9 +1,22 @@
 brand:
   name: 'Parler Haut, Interagir Librement : MicroSymfony'
-  html: '<b>Parler</b> Haut, <b>Interagir</b> Librement : <b>Micro</b>Symfony'
+  copyright: 'Parler Haut, Interagir Librement'
+  html: '<b>Parler</b> <i>Haut</i>, <b>Interagir</b> <i>Librement</i> : <b>Micro</b><i>Symfony</i>'
   info: MicroSymfony est un squelette d'application Symfony sous stéroïdes, prêt à l'emploi.
   tech: La plateforme est basé sur les dernières versions de différentes technologies créés pour le web. 
         Par exemple Symfony 6.3+, PHP 8.2+, MySQL, Redis, et beaucoup d'autres.
 
 footer:
   all_rights: Tous les droits réservés
+  symfony: Symfony™ est une marque commerciale de <a target="_blank" href="https://symfony.com/license">Symfony SAS</a>.
+
+menu:
+  home:
+    text: Accueil
+    title: Aller à la page d'accueil
+  stimulus:
+    text: Stimulus
+    title: Aller à la page Stimulus
+  error:
+    text: Erreur 404
+    title: Voir la page 404

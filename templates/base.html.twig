@@ -13,7 +13,7 @@
 
   {% block stylesheets %}
     {{ ux_controller_link_tags() }}
-    <link rel="stylesheet" href="{{ asset('styles/base.css') }}" />
+    <link rel="stylesheet" href="{{ asset('styles/app.css') }}" />
   {% endblock %}
 
   {% block javascripts %}
@@ -25,13 +25,16 @@
 
 <header>
   <p>
-    <img width="42px" height="42px" alt="Phil Logo" href="https://ph-il.ca/img/phil_img_logo.svg"> {{ "brand.html"|trans|raw }}
+    <img width="42px" height="42px" alt="Phil Logo" src="https://ph-il.ca/img/phil_img_logo.svg"> {{ "brand.html"|trans|raw }}
   </p>
 
   <nav>
-  {# Put navigation here #}
+    <ul>
+      <li><a href="{{ url("homepage") }}" title="{{ "menu.home.title"|trans }}">{{ "menu.home.text"|trans }}</a></li>
+      <li><a href="{{ url("app_stimulus") }}" title="{{ "menu.stimulus.title"|trans }}">{{ "menu.stimulus.text"|trans }}</a></li>
+      <li><a href="/404" title="{{ "menu.error.title"|trans }}">{{ "menu.error.text"|trans }}</a></li>
+    </ul>
   </nav>
-
 </header>
 
 <main>
@@ -39,14 +42,14 @@
 </main>
 
 <footer>
-  <h5>{{ "brand.html"|trans|raw }}</h5>
+  <p>{{ "brand.html"|trans|raw }}</p>
 
   <div>
     <div>
-      &copy; 2022-{{ "now"|date("Y") }} <a href="https://ph-il.ca" target="_blank">{{ "brand.info"|trans }}</a>;
+      &copy; 2022-{{ "now"|date("Y") }} <a href="https://ph-il.ca" target="_blank">{{ "brand.copyright"|trans }}</a>;
       {{ "footer.all_rights"|trans }}
       <br />
-      Symfony™ is a trademark of <a target="_blank" href="https://symfony.com/license">Symfony SAS</a>.
+      {{ "footer.symfony"|trans|raw }}
     </div>
 
     <div>
