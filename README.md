@@ -9,7 +9,7 @@ and even make a small "one-page" application.
 It was base on [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony) with adjustment
 we're usually adding on all our projects. We also remove many exemples. 
 
-## Requirements ⚙
+## Requirements ⛮
 
 All “**Proclaim** *Honestly*, **Interact** *Liberally*” project will use the latest version within 1/2 month depending on dependency availability.
 
@@ -48,7 +48,7 @@ All “**Proclaim** Honestly, **Interact** Liberally” project will use the lat
   * E2E test [example](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/tests/E2E/Controller/AppControllerTest.php)
 * Code coverage at 100%
   * [Output on CI](https://github.com/strangebuzz/MicroSymfony/actions/runs/5793881686/job/15702426150)
-  * [Failing output example](https://github.com/strangebuzz/MicroSymfony/actions/runs/5220428064/jobs/9423476258)
+  * [Failing output example](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6176766049/job/16766431026)
 * GitHub CI ([actions](https://github.com/strangebuzz/MicroSymfony/actions))
   * [Tests job output](https://github.com/strangebuzz/MicroSymfony/actions/runs/5793881686/job/15702426150)
   * [Lint job output](https://github.com/strangebuzz/MicroSymfony/actions/runs/5793881686/job/15702425939)
@@ -69,7 +69,37 @@ All “**Proclaim** Honestly, **Interact** Liberally” project will use the lat
 
 * Doctrine ([installation](https://symfony.com/doc/current/doctrine.html#installing-doctrine)) or use ([WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony))
 
-## Initializing an application with MicroSymfony 
+## Initializing an application with MicroSymfony 🪄
+
+As the application template is [registered on Packagist](https://packagist.org/packages/phil/microsymfony), 
+you can use composer to install it with the following command:
+
+```
+$ composer create-project phil/microsymfony
+```
+
+It creates a microsymfony directory with the new project. 
+In this case, you must set up Git and a repository yourself. 
+But that's the fastest way to test it. 
+
+Note that the composer install command downloads all the required dependencies and builds the assets.
+
+Or use the GitHub template:
+
+![Use this template button](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/doc/use-this-template.png "Use this template")
+
+To serve the application with the Symfony binary, run:
+
+```
+$ symfony server:start --daemon
+```
+
+```
+$ castor symfony:start
+```
+
+The application is now available at https://127.0.0.1:8000 (considering your 8000 port is available). 
+
 
 
 
@@ -78,7 +108,7 @@ All “**Proclaim** Honestly, **Interact** Liberally” project will use the lat
 * https://jolicode.com/blog/castor-a-journey-across-the-sea-of-task-runners
 * https://www.strangebuzz.com/en/blog/introducing-the-microsymfony-application-template (🇬🇧)
 
-## Others “**Proclaim** Honestly, **Interact** Liberally” Skeletons
+## Others “**Proclaim** Honestly, **Interact** Liberally” Skeletons 🩻
 
 * [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony)
   * MicroSource +

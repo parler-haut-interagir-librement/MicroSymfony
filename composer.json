@@ -1,5 +1,5 @@
 {
-    "name": "parler-haut-interagir-librement/microsymfony",
+    "name": "phil/microsymfony",
     "description": "A template to initialize an application to use Symfony as a micro-framework",
     "license": "MIT",
     "type": "symfony-application-template",
@@ -13,6 +13,12 @@
         "web-application"
     ],
     "homepage": "https://ph-il.ca",
+    "authors": [
+        {
+            "name": "Philippe Gamache",
+            "email": "philippe@ph-il.ca"
+        }
+    ],
     "require": {
         "php": ">=8.2",
         "ext-ctype": "*",

@@ -98,7 +98,7 @@ function fix_php(): void
     success();
 }
 
-#[AsTask(name: 'run', namespace: 'rector',  description: 'Run Rector')]
+#[AsTask(name: 'run', namespace: 'rector', description: 'Run Rector')]
 function rector(): void
 {
     title(__FUNCTION__, get_command());
@@ -106,11 +106,11 @@ function rector(): void
     success();
 }
 
-#[AsTask(name: 'dry-run', namespace: 'rector',  description: 'Run Rector')]
+#[AsTask(name: 'dry-run', namespace: 'rector', description: 'Run Rector')]
 function rector_dry_run(): void
 {
     title(__FUNCTION__, get_command());
-    run('vendor/bin/rector --dry_run', quiet: false);
+    run('vendor/bin/rector --dry-run', quiet: false);
     success();
 }
 

@@ -23,20 +23,28 @@
 
 <body id="{% block id %}base{% endblock %}">
 
-<nav>
-  {# Put navigation here #}
-</nav>
+<header>
+  <p>
+    <img width="42px" height="42px" alt="Phil Logo" href="https://ph-il.ca/img/phil_img_logo.svg"> {{ "brand.html"|trans|raw }}
+  </p>
 
-<section>
+  <nav>
+  {# Put navigation here #}
+  </nav>
+
+</header>
+
+<main>
   {% block body %}{% endblock %}
-</section>
+</main>
 
 <footer>
   <h5>{{ "brand.html"|trans|raw }}</h5>
 
   <div>
     <div>
-      <a href="https://ph-il.ca" target="_blank">{{ "brand.info"|trans }}</a>
+      &copy; 2022-{{ "now"|date("Y") }} <a href="https://ph-il.ca" target="_blank">{{ "brand.info"|trans }}</a>;
+      {{ "footer.all_rights"|trans }}
       <br />
       Symfony™ is a trademark of <a target="_blank" href="https://symfony.com/license">Symfony SAS</a>.
     </div>

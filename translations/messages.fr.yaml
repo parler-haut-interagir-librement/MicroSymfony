@@ -4,3 +4,6 @@ brand:
   info: MicroSymfony est un squelette d'application Symfony sous stéroïdes, prêt à l'emploi.
   tech: La plateforme est basé sur les dernières versions de différentes technologies créés pour le web. 
         Par exemple Symfony 6.3+, PHP 8.2+, MySQL, Redis, et beaucoup d'autres.
+
+footer:
+  all_rights: Tous les droits réservés

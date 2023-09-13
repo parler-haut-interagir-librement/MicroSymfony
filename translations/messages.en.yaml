@@ -4,3 +4,6 @@ brand:
   info: MicroSymfony is a Symfony application skeleton on steroids, ready to use.
   tech: The platform is based on the latest versions of different technologies created for the web.
         For example Symfony 6.3+, PHP 8.2+, MySQL, Redis, and many more.
+
+footer:
+  all_rights: All Rights Reserved

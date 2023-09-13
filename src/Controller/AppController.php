@@ -25,5 +25,4 @@ final class AppController extends AbstractController
 
         return $this->render('home.html.twig', ['readme' => $readme]);
     }
-
 }
