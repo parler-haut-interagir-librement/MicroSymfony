@@ -7,7 +7,7 @@ It can be a solution if you want to quickly set up something, create a POC, test
 and even make a small "one-page" application.
 
 It was base on [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony) with adjustment
-we're usually adding on all our projects. We also remove many exemples. 
+we're usually adding on all our projects. We also remove many examples. 
 
 ## Demo 🌈
 
@@ -46,25 +46,25 @@ All “**Proclaim** Honestly, **Interact** Liberally” project will use the lat
 * Refactoring with Rector
   * [Configuration](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/restor.php)
 * The debug toolbar ([doc](https://symfony.com/doc/current/profiler.html))
-* Tests ([demo](https://www.strangebuzz.com/en/blog/introducing-the-microsymfony-application-template#h2_7))
+* Tests ([organisation](https://www.strangebuzz.com/en/blog/organizing-your-symfony-project-tests))
   * Unit test [example](https://github.com/parler-haut-interagir-librement/MicroSymfony/tree/main/tests/Unit/Helper) 
   * Integration test [example](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/tests/Integration/Twig/Extension/ResponseExtensionTest.php) 
   * Functional test [example](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/tests/Functional/Controller/AppControllerTest.php) 
   * API test [example](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/tests/Api/Controller/SlugifyActionTest.php) 
   * E2E test [example](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/tests/E2E/Controller/AppControllerTest.php)
 * Code coverage at 100%
-  * [Output on CI](https://github.com/strangebuzz/MicroSymfony/actions/runs/5793881686/job/15702426150)
+  * [Output on CI](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6178372662/job/16771491572)
   * [Failing output example](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6176766049/job/16766431026)
-* GitHub CI ([actions](https://github.com/strangebuzz/MicroSymfony/actions))
-  * [Tests job output](https://github.com/strangebuzz/MicroSymfony/actions/runs/5793881686/job/15702426150)
-  * [Lint job output](https://github.com/strangebuzz/MicroSymfony/actions/runs/5793881686/job/15702425939)
+* GitHub CI ([actions](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions))
+  * [Tests job output](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6178372662/job/16771491572)
+  * [Lint job output](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6178372662/job/16771491353)
 * Asset mapper+Stimulus ([documentation](https://symfony.com/doc/current/frontend/asset_mapper.html))
   * Vanilla Js ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/assets/controllers/hello_controller.js)) ([demo](https://microsymfony.ovh/stimulus))
-  * Fetch on a JSON endpoint of the application ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/assets/controllers/api_controller.js)) ([demo](https://microsymfony.ovh/stimulus)) 
+  * Fetch on a JSON endpoint of the application ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/assets/controllers/api_controller.js)) ([demo](https://ph-il.ca/demos/microsymfony/stimulus)) 
 * Symfony Maker ([documentation](https://symfony.com/bundles/SymfonyMakerBundle/current/index.html))
 * A custom error template
   * [Source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/templates/bundles/TwigBundle/Exception/error.html.twig)
-  * [Demo](https://https://ph-il.ca/demos/microsymfony/404) 
+  * [Demo](https://ph-il.ca/demos/microsymfony/404) 
 
 ## Other good practices 👌
 
@@ -105,8 +105,6 @@ $ castor symfony:start
 ```
 
 The application is now available at https://127.0.0.1:8000 (considering your 8000 port is available). 
-
-
 
 
 ## References 📚
