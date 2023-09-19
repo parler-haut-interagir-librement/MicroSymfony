@@ -59,7 +59,7 @@ All “**Proclaim** Honestly, **Interact** Liberally” project will use the lat
   * [Tests job output](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6178372662/job/16771491572)
   * [Lint job output](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6178372662/job/16771491353)
 * Asset mapper+Stimulus ([documentation](https://symfony.com/doc/current/frontend/asset_mapper.html))
-  * Vanilla Js ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/assets/controllers/hello_controller.js)) ([demo](https://microsymfony.ovh/stimulus))
+  * Vanilla Js ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/assets/controllers/hello_controller.js)) ([demo](https://ph-il.ca/demos/microsymfony/stimulus))
   * Fetch on a JSON endpoint of the application ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/assets/controllers/api_controller.js)) ([demo](https://ph-il.ca/demos/microsymfony/stimulus)) 
 * Symfony Maker ([documentation](https://symfony.com/bundles/SymfonyMakerBundle/current/index.html))
 * A custom error template
@@ -115,7 +115,7 @@ The application is now available at https://127.0.0.1:8000 (considering your 800
 ## Others “**Proclaim** Honestly, **Interact** Liberally” Skeletons 🩻
 
 * [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony)
-  * MicroSource +
+  * MicroSymfony+
   * Database
     * StofDoctrineExtensionsBundle
   * EasyAdmin
@@ -127,6 +127,20 @@ The application is now available at https://127.0.0.1:8000 (considering your 800
 
 * [ApiSymfony](https://github.com/parler-haut-interagir-librement/ApiSymfony)
   * API Platform
+  * Task runner
+    * Castor
+  * Static Analysis
+    * PHPStan
+  * Coding standards
+    * php-cs-fixer
+  * Refactoring
+    * Rector
+  * Tests
+    * Unit test
+    * API test
+    * E2E test
+  * GitHub CI
+  * Symfony Maker
 
 * [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
   * WebSymfony +
