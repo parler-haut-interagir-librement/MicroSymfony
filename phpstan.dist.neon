@@ -12,7 +12,11 @@ parameters:
     # https://github.com/phpstan/phpstan-symfony#configuration
     symfony:
         container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
+    #scanDirectories:
+    #    - var/cache/dev/Symfony/Config
     # https://phpstan.org/user-guide/ignoring-errors
     treatPhpDocTypesAsCertain: false
+    checkGenericClassInNonGenericObjectType: false
+    checkMissingCallableSignature: true
     ignoreErrors:
         #- '#my_ignore_error_regexp_pattern#'
