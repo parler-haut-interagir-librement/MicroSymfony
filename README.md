@@ -22,7 +22,7 @@ All “**Proclaim** *Honestly*, **Interact** *Liberally*” project will use the
 * [PHP 8.2](https://www.php.net/releases/8.2/en.php)
 * The [Symfony CLI](https://symfony.com/download)
 * The [Xdebug](https://xdebug.org/) PHP extension if you want to run the code coverage report (optional but recommended)
-* [Castor 0.8](https://github.com/jolicode/castor) task runner (optional)
+* [Castor 0.9.1](https://github.com/jolicode/castor) task runner (optional)
 
 ## Stack 🔗
 
@@ -30,8 +30,8 @@ All “**Proclaim** Honestly, **Interact** Liberally” project will use the lat
 
 * [Symfony 6.3](https://symfony.com) 
 * [Twig 3](https://twig.symfony.com)
-* [Stimulus 3.2](https://stimulus.hotwired.dev/)
-* [PHPUnit 9.5](https://phpunit.de)
+* [Stimulus 3.3](https://stimulus.hotwired.dev/)
+* [PHPUnit 9.6](https://phpunit.de)
 
 ## Features 🚀
 
@@ -77,6 +77,7 @@ All “**Proclaim** Honestly, **Interact** Liberally” project will use the lat
 
 ## Initializing an application with MicroSymfony 🪄
 
+### Initializing using composer
 As the application template is [registered on Packagist](https://packagist.org/packages/phil/microsymfony), 
 you can use composer to install it with the following command:
 
@@ -90,15 +91,26 @@ But that's the fastest way to test it.
 
 Note that the composer install command downloads all the required dependencies and builds the assets.
 
+### Initializing from Github site
+
 Or use the GitHub template:
 
-![Use this template button](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/doc/use-this-template.png "Use this template")
+![Use this template button](https://raw.githubusercontent.com/parler-haut-interagir-librement/WebSymfony/bc7b206da4c04f48b915d9dc506a75025276b3a8/doc/use-this-template.png "Use this template")
 
+### Initializing from Github CLI
+
+```
+$ gh repo create my-project --clone --private --template parler-haut-interagir-librement/WebSymfony
+```
+
+### Serving the application 
 To serve the application with the Symfony binary, run:
 
 ```
 $ symfony server:start --daemon
 ```
+
+or use the castor command
 
 ```
 $ castor symfony:start

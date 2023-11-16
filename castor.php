@@ -1,7 +1,7 @@
 <?php
 
 // Until the 1.x Castor version the API may be unstable
-// it script was tested with Castor 0.8.0
+// it script was tested with Castor 0.9.1
 
 declare(strict_types=1);
 
@@ -80,7 +80,7 @@ function cov_report(): void
 function stan(): void
 {
     title(__FUNCTION__, get_command());
-    run('vendor/bin/phpstan analyse -c phpstan.neon --memory-limit 1G -vvv --xdebug', quiet: false);
+    run('vendor/bin/phpstan analyse --memory-limit 1G', quiet: false);
     success();
 }
 
@@ -142,7 +142,8 @@ function lint_twig(): void
 function lint_yaml(): void
 {
     title(__FUNCTION__, get_command());
-    run('bin/console lint:yaml --parse-tags config/', quiet: false);
+    run('bin/console lint:yaml config/ --parse-tags', quiet: false);
+    run('bin/console lint:yaml translations/ --parse-tags', quiet: false);
     success();
 }
 

@@ -7,6 +7,9 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+# Managed by Composer
+/bin/*
+!bin/console
 
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.php
@@ -26,6 +29,3 @@
 /public/assets/
 ###< symfony/asset-mapper ###
 
-/node_modules/
-npm-debug.log
-yarn-error.log
