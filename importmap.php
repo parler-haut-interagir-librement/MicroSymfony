@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Returns the importmap for this application.
  *
@@ -15,7 +17,7 @@
  */
 return [
     'app' => [
-        'path' => 'app.js',
+        'path' => './assets/app.js',
         'entrypoint' => true,
     ],
     '@hotwired/stimulus' => [

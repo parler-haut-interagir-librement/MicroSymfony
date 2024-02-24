@@ -19,7 +19,7 @@ Because a live demo is always better than all explanations. Here is it:
 
 All “**Proclaim** *Honestly*, **Interact** *Liberally*” project will use the latest version within 1/2 month depending on dependency availability.
 
-* [PHP 8.2](https://www.php.net/releases/8.2/en.php)
+* [PHP 8.3](https://www.php.net/releases/8.2/en.php)
 * The [Symfony CLI](https://symfony.com/download)
 * The [Xdebug](https://xdebug.org/) PHP extension if you want to run the code coverage report (optional but recommended)
 * [Castor 0.9.1](https://github.com/jolicode/castor) task runner (optional)
@@ -28,7 +28,7 @@ All “**Proclaim** *Honestly*, **Interact** *Liberally*” project will use the
 
 All “**Proclaim** Honestly, **Interact** Liberally” project will use the latest version within 1/2 month depending on dependency availability.
 
-* [Symfony 6.3](https://symfony.com) 
+* [Symfony 7.0](https://symfony.com) 
 * [Twig 3](https://twig.symfony.com)
 * [Stimulus 3.3](https://stimulus.hotwired.dev/)
 * [PHPUnit 9.6](https://phpunit.de)

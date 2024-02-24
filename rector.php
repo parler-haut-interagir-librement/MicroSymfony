@@ -17,7 +17,6 @@ use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
-use Rector\Symfony\Set\SymfonyLevelSetList;
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Transform\Rector\Attribute\AttributeKeyToClassConstFetchRector;
 use Rector\Transform\Rector\MethodCall\ReplaceParentCallByPropertyCallRector;
@@ -36,7 +35,7 @@ return static function (RectorConfig $rectorConfig): void {
 
     // define sets of rules
     $rectorConfig->sets(sets: [
-                                  LevelSetList::UP_TO_PHP_82,
+                                  LevelSetList::UP_TO_PHP_83,
                                   SetList::CODE_QUALITY,
                                   SetList::CODING_STYLE,
                                   SetList::DEAD_CODE,
@@ -44,10 +43,9 @@ return static function (RectorConfig $rectorConfig): void {
                                   SetList::NAMING,
                                   SetList::PRIVATIZATION,
                                   SetList::TYPE_DECLARATION,
-                                  SymfonyLevelSetList::UP_TO_SYMFONY_63,
                                   SymfonySetList::SYMFONY_CODE_QUALITY,
                                   SymfonySetList::ANNOTATIONS_TO_ATTRIBUTES,
-                                  SymfonySetList::SYMFONY_63,
+                                  SymfonySetList::SYMFONY_64,
                                   SymfonySetList::SYMFONY_CODE_QUALITY,
                                   SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
                         ]);
