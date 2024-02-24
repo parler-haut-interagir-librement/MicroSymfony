@@ -22,7 +22,6 @@ use Rector\Php55\Rector\Class_\ClassConstantToSelfClassRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Symfony\Set\SymfonySetList;
-use Rector\Symfony\Symfony64\Rector\Class_\ChangeRouteAttributeFromAnnotationSubnamespaceRector;
 use Rector\Transform\Rector\Attribute\AttributeKeyToClassConstFetchRector;
 use Rector\Transform\Rector\MethodCall\ReplaceParentCallByPropertyCallRector;
 
@@ -41,7 +40,7 @@ return static function (RectorConfig $rectorConfig): void {
     // define sets of rules
     $rectorConfig->sets(sets: [
         // Only use LevelSetList when you update from one version to an others one.
-        //LevelSetList::UP_TO_PHP_83,
+        // LevelSetList::UP_TO_PHP_83,
         // Then only use the SetList
         SetList::PHP_83,
         SetList::CODE_QUALITY,

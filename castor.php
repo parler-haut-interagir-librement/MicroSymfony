@@ -8,10 +8,10 @@ declare(strict_types=1);
 use Castor\Attribute\AsTask;
 use Symfony\Component\Console\Command\Command;
 
-use function Castor\task;
 use function Castor\io;
 use function Castor\parallel;
 use function Castor\run;
+use function Castor\task;
 
 /**
  * Don't display the description when using a parent command context.
