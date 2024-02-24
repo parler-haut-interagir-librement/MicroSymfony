@@ -27,7 +27,7 @@ final readonly class StringHelper
                 ->lower()
                 ->toString()
         )
-                             ->toString()
+            ->toString()
         ;
     }
 }

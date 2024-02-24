@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php-versions: ['8.2']
+        php-versions: ['8.3']
     runs-on: ubuntu-latest
     # Setup
     steps:
@@ -28,6 +28,8 @@ jobs:
         coverage: xdebug
         #tools: castor
     - uses: actions/checkout@v3
+
+    # Composer
     - name: Get Composer Cache Directory
       id: composer-cache
       run: |
@@ -41,15 +43,18 @@ jobs:
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
+    - name: Audit the code for vulnerabilities
+      run: composer audit
+
     # Tests
     - name: Execute tests via PHPUnit
-      run: vendor/bin/simple-phpunit
+      run: vendor/bin/phpunit
       #run: castor test:all
 
     # Code coverage
     - name: Generate the code coverage report and show the current global coverage
       run: |
-        php -d xdebug.enable=1 -d memory_limit=-1 vendor/bin/simple-phpunit --coverage-html=var/coverage
+        php -d xdebug.enable=1 -d memory_limit=-1 vendor/bin/phpunit --coverage-html=var/coverage
         php bin/coverage-checker.php var/coverage/clover.xml 100
 
   # run all lint/CS checks (non critical)
@@ -73,8 +78,10 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-composer-
-    - name: Install Dependencies
+    - name: Install PHP dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+    - name: Install PHPUnit dependencies for PHPStan
+      run: vendor/bin/phpunit --version
 
     # native Symfony lints
     - name: Lint the DI container

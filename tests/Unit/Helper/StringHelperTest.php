@@ -6,6 +6,8 @@ namespace App\Tests\Unit\Helper;
 
 use App\Helper\StringHelper;
 use Iterator;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
@@ -22,11 +24,7 @@ final class StringHelperTest extends TestCase
         yield ['  Symfony IS GreAT ! !!', 'symfony-is-great'];
     }
 
-    /**
-     * @dataProvider provideSlugify
-     *
-     * @covers \App\Helper\StringHelper::slugify
-     */
+    #[DataProvider('provideSlugify')]
     public function testSlugify(string|null $input, string $expected): void
     {
         $stringHelper = new StringHelper(new AsciiSlugger());

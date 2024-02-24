@@ -18,11 +18,11 @@
 
   <p>...without the JS tooling stuff and complexity.</p>
 
-  <p>It uses the new <a target="_blank" href="https://github.com/symfony/asset-mapper">
-      Symfony 6.3 asset mapper component</a> and the
-    <a target="_blank" href="https://symfony.com/bundles/StimulusBundle/current/index.html">
-      Stimulus bundle.</a>
-  </p>
+    <p>It uses the new  <a target="_blank" href="https://symfony.com/doc/current/frontend/asset_mapper.html">
+            Symfony 6.3 asset mapper component</a> and the
+        <a target="_blank" href="https://symfony.com/bundles/StimulusBundle/current/index.html">
+            Stimulus bundle.</a>
+    </p>
 
   <p>Check out the feature instruction on the
     <a target="_blank" href="https://symfony.com/blog/new-in-symfony-6-3-assetmapper-component"> Symfony blog</a>.</p>
@@ -34,23 +34,21 @@
       <div {{ stimulus_controller('hello') }}>
         <form {{ stimulus_target('hello', 'form') }}>
           <label for="name">Enter your name below and click on the
-            <b>Great</b> button
+            <b>Greet</b> button
             <input type="text" name="name" {{ stimulus_target('hello', 'name') }} />
           </label>
 
-          <input type="submit" value="Great" {{ stimulus_action('hello', 'greet:prevent', 'click') }} />
+          <input type="submit" value="Greet" {{ stimulus_action('hello', 'greet:prevent', 'click') }} />
         </form>
 
-        <div {{ stimulus_target('hello', 'dialog') }}>
+        <dialog {{ stimulus_target('hello', 'dialog') }}>
           <div>
-            <h2 {{ stimulus_target('hello', 'greating') }}></h2>
+            <h2 {{ stimulus_target('hello', 'greeting') }}></h2>
             <form method="dialog">
-              <menu>
                 <button {{ stimulus_action('hello', 'reset', 'click') }}>Close</button>
-              </menu>
             </form>
           </div>
-        </div>
+        </dialog>
       </div>
     </div>
 

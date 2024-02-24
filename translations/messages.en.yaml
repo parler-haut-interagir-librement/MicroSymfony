@@ -4,7 +4,7 @@ brand:
   html: '<b>Proclaim</b> <i>Honestly</i>, <b>Interact</b> <i>Liberally</i> : <b>Micro</b><i>Symfony</i>'
   info: MicroSymfony is a Symfony application skeleton on steroids, ready to use.
   tech: The platform is based on the latest versions of different technologies created for the web.
-        For example Symfony 6.3+, PHP 8.2+, MySQL, Redis, and many more.
+        For example Symfony 7.0+, PHP 8.3+, Stimulus, Turbo 8+, and many more.
 
 footer:
   all_rights: All Rights Reserved

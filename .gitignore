@@ -1,3 +1,5 @@
+.DS_Store
+.idea
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -7,6 +9,7 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
 # Managed by Composer
 /bin/*
 !bin/console
@@ -16,16 +19,25 @@
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
 
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###
-
 ###> jolicode/castor ###
 .castor.stub.php
 ###< jolicode/castor ###
 
 ###> symfony/asset-mapper ###
 /public/assets/
+/assets/vendor/
 ###< symfony/asset-mapper ###
 
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
+
+###> bamarni/composer-bin-plugin ###
+/vendor-bin/**/vendor/
+###< bamarni/composer-bin-plugin ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+.phpunit.cache
+###< phpunit/phpunit ###

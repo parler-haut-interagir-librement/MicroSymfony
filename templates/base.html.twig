@@ -6,8 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
   <title>{% block title %}{{ "brand.name"|trans }}{% endblock %}</title>
-  <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🎶️</text></svg>">
+  <link rel="icon" href="{{ asset('img/phil_img_logo.svg') }}" sizes="any" type="image/svg+xml">
 
   {% block preconnect %}{% endblock %}
 
@@ -17,15 +16,16 @@
   {% endblock %}
 
   {% block javascripts %}
-    {{ importmap() }}
   {% endblock %}
+  {% block importmap %}{{ importmap('app') }}{% endblock %}
+
 </head>
 
 <body id="{% block id %}base{% endblock %}">
 
 <header>
   <p>
-    <img width="42px" height="42px" alt="Phil Logo" src="https://ph-il.ca/img/phil_img_logo.svg"> {{ "brand.html"|trans|raw }}
+    <img width="42px" height="42px" alt="Phil Logo" src="{{ asset('img/phil_img_logo.svg') }}"> {{ "brand.html"|trans|raw }}
   </p>
 
   <nav>

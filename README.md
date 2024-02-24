@@ -1,6 +1,6 @@
 # “**Proclaim** *Honestly*, **Interact** *Liberally*” **Micro***Symfony*
 
-“**Proclaim** *Honestly*, **Interact** *Liberally*” **Micro***Symfony* is a Symfony application skeleton on steroids, ready to use.
+“**Proclaim** *Honestly*, **Interact** *Liberally*” **Micro***Symfony* is a Symfony 7.0 application skeleton on steroids, ready to use.
 
 The purpose of **Micro***Symfony* is to provide a sandbox with some sensible defaults and ready to use. 
 It can be a solution if you want to quickly set up something, create a POC, test things, 
@@ -13,25 +13,28 @@ we're usually adding on all our projects. We also remove many examples.
 
 Because a live demo is always better than all explanations. Here is it:
 
-* Live demo will be available at [https://ph-il.ca/demos/microsymfony](https://ph-il.ca/demos/microsymfony)
+* Live demo **will** be available at [https://ph-il.ca/demos/microsymfony](https://ph-il.ca/demos/microsymfony)
 
 ## Requirements ⛮
 
-All “**Proclaim** *Honestly*, **Interact** *Liberally*” project will use the latest version within 1/2 month depending on dependency availability.
+All “**Proclaim** Honestly, **Interact** Liberally” project will use the latest version within 1 or 2 months depending on dependencies availability.
 
-* [PHP 8.2](https://www.php.net/releases/8.2/en.php)
+* [PHP 8.3](https://www.php.net/releases/8.3/en.php)
 * The [Symfony CLI](https://symfony.com/download)
+
+## Optional requirements ⚙
+
 * The [Xdebug](https://xdebug.org/) PHP extension if you want to run the code coverage report (optional but recommended)
-* [Castor 0.9.1](https://github.com/jolicode/castor) task runner (optional)
+* [Castor 0.13](https://github.com/jolicode/castor) task runner
 
 ## Stack 🔗
 
-All “**Proclaim** Honestly, **Interact** Liberally” project will use the latest version within 1/2 month depending on dependency availability.
+All “**Proclaim** Honestly, **Interact** Liberally” project will use the latest version within 1 or 2 months depending on dependencies availability.
 
-* [Symfony 6.3](https://symfony.com) 
-* [Twig 3](https://twig.symfony.com)
-* [Stimulus 3.3](https://stimulus.hotwired.dev/)
-* [PHPUnit 9.6](https://phpunit.de)
+* [Symfony 7.0](https://symfony.com/7) 
+* [Twig 3.8](https://twig.symfony.com)
+* [Stimulus 3.2](https://stimulus.hotwired.dev/)
+* [PHPUnit 11.0](https://phpunit.de)
 
 ## Features 🚀
 
@@ -70,10 +73,15 @@ All “**Proclaim** Honestly, **Interact** Liberally” project will use the lat
 
 * Using strict types in all PHP files ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/src/Controller/AppController.php))
 * Using the ADR pattern in an action controller ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/src/Controller/SlugifyAction.php)) ([doc](https://symfony.com/doc/current/controller/service.html#invokable-controllers))
+* The [composer.json](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/composer.json)
+  file is normalized with [ergebnis/composer-normalize](https://github.com/ergebnis/composer-normalize)
+* Use of the [composer bin plugin](https://github.com/bamarni/composer-bin-plugin)
+  to install and run `php-cs-fixer`.
 
 ## What it doesn't ship? ❌
 
 * Doctrine ([installation](https://symfony.com/doc/current/doctrine.html#installing-doctrine)) or use ([WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony))
+* Any CSS (Installation to come) or use ([WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton))
 
 ## Initializing an application with MicroSymfony 🪄
 
@@ -121,8 +129,13 @@ The application is now available at https://127.0.0.1:8000 (considering your 800
 
 ## References 📚
 
-* https://jolicode.com/blog/castor-a-journey-across-the-sea-of-task-runners
-* https://www.strangebuzz.com/en/blog/introducing-the-microsymfony-application-template (🇬🇧)
+* [Installing and using php-cs-fixer](https://www.strangebuzz.com/en/blog/installing-and-using-php-cs-fixer) (strangebuzz.com)
+* [Castor, a journey across the sea of task runners](https://jolicode.com/blog/castor-a-journey-across-the-sea-of-task-runners) (jolicode.com)
+* [Initializing your Symfony project with solid foundations](https://www.strangebuzz.com/en/blog/initializing-your-symfony-project-with-solid-foundations) (strangebuzz.com)
+* [Organizing your Symfony project tests](https://www.strangebuzz.com/en/blog/organizing-your-symfony-project-tests) (strangebuzz.com)
+* [What are your Symfony best practices?](https://www.strangebuzz.com/en/blog/what-are-your-symfony-best-practices) (strangebuzz.com)
+* [Setting a CI/CD workflow for a Symfony project thanks to the GitHub actions](https://www.strangebuzz.com/en/blog/setting-a-ci-cd-workflow-for-a-symfony-project-thanks-to-the-github-actions) (strangebuzz.com)
+* [The Symfony Framework Best Practices](https://symfony.com/doc/current/best_practices.html) (symfony.com)
 
 ## Others “**Proclaim** Honestly, **Interact** Liberally” Skeletons 🩻
 
@@ -156,8 +169,13 @@ The application is now available at https://127.0.0.1:8000 (considering your 800
 
 * [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
   * WebSymfony +
+  * CSS framework
+    * Tailwind CSS
+    * DaisyUI : Add semantic to Tailwind CSS
   * “**Proclaim** Honestly, **Interact** Liberally” Bundles
-    * PhilBodyBundle - Add Base Twig Components
-    * PhilDoctrineExtensionPublishBundle - Add Publish functionality to Doctrine Entity
+    * phil-ux - Add Base Twig Components
+      * Install Tailwind CSS and DaisyUI
+      * Add Base Twig Components using DaisyUI semantic
     * PhilDoctrineExtensionStofBundle - Add missing stuff to StofDoctrineExtensionsBundle
+    * PhilDoctrineExtensionPublishBundle - Add Publish functionality to Doctrine Entity
   * more.

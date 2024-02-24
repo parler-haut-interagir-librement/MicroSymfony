@@ -7,6 +7,8 @@ namespace App\Tests\Functional\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ */
 final class ErrorHandlerTest extends WebTestCase
 {
     public function test404(): void
