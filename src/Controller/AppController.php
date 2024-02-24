@@ -21,7 +21,7 @@ final class AppController extends AbstractController
     #[Route(path: '/', name: 'homepage')]
     public function home(): Response
     {
-        $readme = file_get_contents(__DIR__.'/../../README.md');
+        $readme = file_get_contents(__DIR__ . '/../../README.md');
 
         return $this->render('home.html.twig', ['readme' => $readme]);
     }

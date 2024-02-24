@@ -20,7 +20,7 @@ use function Castor\run;
  */
 function title(string $title, ?Command $command = null): void
 {
-    io()->title($title.(null !== $command ? ': '.$command->getDescription() : ''));
+    io()->title($title . (null !== $command ? ': ' . $command->getDescription() : ''));
 }
 
 function success(): void
@@ -60,8 +60,8 @@ function coverage(): void
     run(
         'php -d xdebug.enable=1 -d memory_limit=-1 vendor/bin/simple-phpunit --coverage-html=var/coverage',
         environment: [
-                         'XDEBUG_MODE' => 'coverage',
-                     ],
+            'XDEBUG_MODE' => 'coverage',
+        ],
         quiet: false
     );
     run('php bin/coverage-checker.php var/coverage/clover.xml 100', quiet: false);
@@ -91,8 +91,8 @@ function fix_php(): void
     run(
         'vendor/bin/php-cs-fixer fix --allow-risky=yes',
         environment: [
-                         'PHP_CS_FIXER_IGNORE_ENV' => 1,
-                     ],
+            'PHP_CS_FIXER_IGNORE_ENV' => 1,
+        ],
         quiet: false
     );
     success();

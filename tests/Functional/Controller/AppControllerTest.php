@@ -7,6 +7,11 @@ namespace App\Tests\Functional\Controller;
 use Iterator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 final class AppControllerTest extends WebTestCase
 {
     /**

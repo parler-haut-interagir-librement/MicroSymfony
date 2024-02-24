@@ -13,20 +13,20 @@ we're usually adding on all our projects. We also remove many examples.
 
 Because a live demo is always better than all explanations. Here is it:
 
-* Live demo will be available at [https://ph-il.ca/demos/microsymfony](https://ph-il.ca/demos/microsymfony)
+* Live demo **will** be available at [https://ph-il.ca/demos/microsymfony](https://ph-il.ca/demos/microsymfony)
 
 ## Requirements ⛮
 
-All “**Proclaim** *Honestly*, **Interact** *Liberally*” project will use the latest version within 1/2 month depending on dependency availability.
+All “**Proclaim** Honestly, **Interact** Liberally” project will use the latest version within 1 or 2 months depending on dependencies availability.
 
-* [PHP 8.3](https://www.php.net/releases/8.2/en.php)
+* [PHP 8.3](https://www.php.net/releases/8.3/en.php)
 * The [Symfony CLI](https://symfony.com/download)
 * The [Xdebug](https://xdebug.org/) PHP extension if you want to run the code coverage report (optional but recommended)
-* [Castor 0.9.1](https://github.com/jolicode/castor) task runner (optional)
+* [Castor 0.13](https://github.com/jolicode/castor) task runner (optional)
 
 ## Stack 🔗
 
-All “**Proclaim** Honestly, **Interact** Liberally” project will use the latest version within 1/2 month depending on dependency availability.
+All “**Proclaim** Honestly, **Interact** Liberally” project will use the latest version within 1 or 2 months depending on dependencies availability.
 
 * [Symfony 7.0](https://symfony.com) 
 * [Twig 3](https://twig.symfony.com)
@@ -74,6 +74,7 @@ All “**Proclaim** Honestly, **Interact** Liberally” project will use the lat
 ## What it doesn't ship? ❌
 
 * Doctrine ([installation](https://symfony.com/doc/current/doctrine.html#installing-doctrine)) or use ([WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony))
+* Any CSS (Installation to come) or use ()
 
 ## Initializing an application with MicroSymfony 🪄
 
@@ -156,8 +157,13 @@ The application is now available at https://127.0.0.1:8000 (considering your 800
 
 * [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
   * WebSymfony +
+  * CSS framework
+    * Tailwind CSS
+    * DaisyUI : Add semantic to Tailwind CSS
   * “**Proclaim** Honestly, **Interact** Liberally” Bundles
-    * PhilBodyBundle - Add Base Twig Components
-    * PhilDoctrineExtensionPublishBundle - Add Publish functionality to Doctrine Entity
+    * phil-ux - Add Base Twig Components
+      * Install Tailwind CSS and DaisyUI
+      * Add Base Twig Components using DaisyUI semantic
     * PhilDoctrineExtensionStofBundle - Add missing stuff to StofDoctrineExtensionsBundle
+    * PhilDoctrineExtensionPublishBundle - Add Publish functionality to Doctrine Entity
   * more.

@@ -8,6 +8,11 @@ use App\Twig\Extension\ResponseExtension;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 final class ResponseExtensionTest extends KernelTestCase
 {
     public function testResponseExtension(): void
