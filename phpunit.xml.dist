@@ -14,11 +14,7 @@
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
-        <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
-        <server name="APP_DEBUG" value="true" /> <!-- set this to false on your CI to speed up tests by 2x -->
-
-        <!-- @see https://symfony.com/doc/current/components/phpunit_bridge.html -->
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" /> <!-- hide vendor deprecations, same as max[self]=0 -->
+        <server name="SYMFONY_PHPUNIT_VERSION" value="9.6" />
     </php>
 
     <testsuites>
@@ -31,20 +27,12 @@
         <include>
             <directory suffix=".php">src</directory>
         </include>
-
-        <report>
-            <clover outputFile="var/coverage/clover.xml" />
-        </report>
     </coverage>
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
 
-    <!-- Run `composer require symfony/panther` before enabling this extension -->
-    <!--
     <extensions>
-        <extension class="Symfony\Component\Panther\ServerExtension" />
     </extensions>
-    -->
 </phpunit>
