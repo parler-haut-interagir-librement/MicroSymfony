@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Twig\Extension;
 
+use Override;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class ResponseExtension extends AbstractExtension
 {
+    #[Override]
     public function getFilters(): array
     {
         return [
