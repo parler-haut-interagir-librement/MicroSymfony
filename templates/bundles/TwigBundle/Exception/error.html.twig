@@ -1,12 +1,22 @@
 {% extends 'base.html.twig' %}
 
+{% block icon %}⛔️{% endblock %}
+
+{% block title %}Error {{ status_code }}{% endblock %}
 {% block body %}
     <section>
             <h5>Oops! An Error {{ status_code }} occured!</h5>
             <hr>
-            <p>Sorry, but an error <b>{{ status_code|status_text }}</b> ({{ status_code }}) occured.</p>
-            <p>
-                <a href="{{ path('homepage') }}">Homepage</a>
+            <p>Sorry, but an error <b>{{ status_text }}</b> ({{ status_code }}) occured.
+            <br/>
+            &raquo; About this error code: <a att="" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/{{ status_code }}">
+                https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/{{ status_code }}</a>
             </p>
+            <hr>
+            <p txt="c">
+                <a att="" href="/">Homepage</a>
+            </p>
+
+            <hr/>
     </section>
 {% endblock %}

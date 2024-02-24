@@ -19,4 +19,5 @@ parameters:
     checkGenericClassInNonGenericObjectType: false
     checkMissingCallableSignature: true
     ignoreErrors:
+        - "#Call to function method_exists\\(\\) with 'Symfony\\\\\\\\Component\\\\\\\\Dotenv\\\\\\\\Dotenv' and 'bootEnv' will always evaluate to true.#"
         #- '#my_ignore_error_regexp_pattern#'

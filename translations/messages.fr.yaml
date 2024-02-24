@@ -4,7 +4,7 @@ brand:
   html: '<b>Parler</b> <i>Haut</i>, <b>Interagir</b> <i>Librement</i> : <b>Micro</b><i>Symfony</i>'
   info: MicroSymfony est un squelette d'application Symfony sous stéroïdes, prêt à l'emploi.
   tech: La plateforme est basé sur les dernières versions de différentes technologies créés pour le web. 
-        Par exemple Symfony 6.3+, PHP 8.2+, MySQL, Redis, et beaucoup d'autres.
+        Par exemple Symfony 7.0+, PHP 8.3+, Stimulus, Turbo 8, et beaucoup d'autres.
 
 footer:
   all_rights: Tous les droits réservés
