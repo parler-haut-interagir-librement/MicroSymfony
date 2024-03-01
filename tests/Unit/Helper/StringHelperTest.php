@@ -26,7 +26,7 @@ final class StringHelperTest extends TestCase
     }
 
     #[DataProvider('provideSlugify')]
-    public function testSlugify(string|null $input, string $expected): void
+    public function testSlugify(?string $input, string $expected): void
     {
         $stringHelper = new StringHelper(new AsciiSlugger());
         self::assertSame($expected, $stringHelper->slugify($input));
