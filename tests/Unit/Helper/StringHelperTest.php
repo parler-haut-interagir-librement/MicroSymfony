@@ -6,7 +6,6 @@ namespace App\Tests\Unit\Helper;
 
 use App\Helper\StringHelper;
 use Iterator;
-use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -14,6 +13,8 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 /**
  * Delete this test if you want to verify that the coverage checker script works
  * properly.
+ *
+ * @internal
  */
 final class StringHelperTest extends TestCase
 {

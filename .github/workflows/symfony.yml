@@ -46,6 +46,11 @@ jobs:
     - name: Audit the code for vulnerabilities
       run: composer audit
 
+    - name: Deploys
+      run: |
+        php bin/console importmap:install
+        php bin/console asset-map:compile
+
     # Tests
     - name: Execute tests via PHPUnit
       run: vendor/bin/phpunit
@@ -54,7 +59,7 @@ jobs:
     # Code coverage
     - name: Generate the code coverage report and show the current global coverage
       run: |
-        php -d xdebug.enable=1 -d memory_limit=-1 vendor/bin/phpunit --coverage-html=var/coverage
+        php -d xdebug.enable=1 -d memory_limit=-1 vendor/bin/phpunit --coverage-html=var/coverage --coverage-clover=var/coverage/clover.xml
         php bin/coverage-checker.php var/coverage/clover.xml 100
 
   # run all lint/CS checks (non critical)
@@ -64,7 +69,7 @@ jobs:
     # Setup
     - uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.2'
+        php-version: '8.3'
         tools: cs2pr
         #tools: cs2pr, castor
     - uses: actions/checkout@v3
@@ -101,4 +106,4 @@ jobs:
       #castor cs:stan
       run: | 
         bin/console about --env=dev
-        vendor/bin/phpstan analyse -c ./phpstan.dist.neon --memory-limit 1G -vvv
+        vendor/bin/phpstan analyse --memory-limit 1G -vvv

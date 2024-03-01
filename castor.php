@@ -99,7 +99,7 @@ function coverage(): void
 {
     title(__FUNCTION__, task());
     run(
-        'php -d xdebug.enable=1 -d memory_limit=-1 vendor/bin/phpunit --coverage-html=var/coverage',
+        'php -d xdebug.enable=1 -d memory_limit=-1 vendor/bin/phpunit --coverage-html=var/coverage --coverage-clover=var/coverage/clover.xml',
         environment: [
             'XDEBUG_MODE' => 'coverage',
         ],

@@ -7,6 +7,9 @@ namespace App\Tests\Api\Controller;
 use App\Controller\SlugifyAction;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * @internal
+ */
 final class SlugifyActionTest extends WebTestCase
 {
     /**

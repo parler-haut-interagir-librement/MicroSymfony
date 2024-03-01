@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * @internal
  */
 final class ErrorHandlerTest extends WebTestCase
 {
