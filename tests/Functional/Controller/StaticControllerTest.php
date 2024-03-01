@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * This file tests static pages without associated controller.
  *
  * @see config/routes/static_page.yaml
+ *
+ * @internal
  */
 final class StaticControllerTest extends WebTestCase
 {

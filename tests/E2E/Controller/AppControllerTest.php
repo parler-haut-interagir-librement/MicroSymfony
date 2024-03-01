@@ -14,6 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as E2ETestCase;
  * function, uncomment the first line and comment the second one.
  *
  * @see https://github.com/symfony/panther
+ *
+ * @internal
  */
 final class AppControllerTest extends E2ETestCase
 {

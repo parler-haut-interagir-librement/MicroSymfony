@@ -8,6 +8,9 @@ use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * @internal
+ */
 final class AppControllerTest extends WebTestCase
 {
     /**
