@@ -9,4 +9,6 @@ return [
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true],
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
+    Kocal\BiomeJsBundle\KocalBiomeJsBundle::class => ['dev' => true],
+    Symfony\UX\Turbo\TurboBundle::class => ['all' => true],
 ];
