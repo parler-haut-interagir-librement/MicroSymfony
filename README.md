@@ -19,13 +19,16 @@ It can be a solution if you want to quickly set up something, create a POC, test
 and even make a small "one-page" application.
 
 It was base on [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony) with adjustment
-we're usually adding on all our projects. We also remove many examples. 
+we're usually adding on all our projects. We also remove somes examples. 
 
+> **PS**: If you want to use the last Symfony **6.4 LTS** version in your `composer.json`
+file, replace all occurrences of `7.3` with `6.4` and run `composer up`.
 ## Table of Contents 📖
 
 * [Demo](#demo-)
 * [Quick-start](#quick-start-)
   * [With the Symfony binary](#with-the-symfony-binary-)
+  * [With FrankenPHP](#with-frankenphp-)
 * [Requirements](#requirements-)
   * [Optional requirements](#optional-requirements-)
 * [Stack](#stack-)
@@ -34,6 +37,7 @@ we're usually adding on all our projects. We also remove many examples.
   * [Symfony UX](#symfony-ux)
   * [PHP configuration files](#php-configuration-files)
 * [Other good practices](#other-good-practices-)
+* [ADR](#adr-)
 * [What it doesn't ship!](#what-it-doesnt-ship-)
 * [References](#references-)
 * [Others “**Proclaim** Honestly, **Interact** Liberally” Skeletons](#others-proclaim-honestly-interact-liberally-skeletons-)
@@ -49,6 +53,7 @@ we're usually adding on all our projects. We also remove many examples.
 Because a live demo is always better than all explanations :
 
 * Live demo **will** be available at [https://ph-il.ca/demos/microsymfony](https://ph-il.ca/demos/microsymfony)
+* Live demo powered by [FrankenPHP](https://frankenphp.dev/) **will** be available at [https://ph-il.ca/demos/frankenphp/microsymfony](https://ph-il.ca/demos/frankenphp/microsymfonys)
 
 ## Quick-start ⚡
 
@@ -57,7 +62,7 @@ Because a live demo is always better than all explanations :
 You must have the [Symfony binary](https://symfony.com/download#step-1-install-symfony-cli)
 and [composer](https://getcomposer.org/) installed locally.
 
-To create a new project, from the last tag, run:
+To create a new project from the last tag, run:
 
 ```bash
 composer create-project phil/microsymfony && cd microsymfony
@@ -72,24 +77,46 @@ $ symfony server:start --daemon
  or use the castor command
 
 ```bash
-castor symfony:start
+castor start
 ```
 
 Open [https://127.0.0.1:8000](https://127.0.0.1:8000) (considering your 8000 port is free) and enjoy! 🙂
 
 > **PS**: You can also use the green button "[Use this template ⇩](https://github.com/new?template_name=MicroSymfony&template_owner=parler-haut-interagir-librement)"
 at the top right of the GitHub project homepage.
-This creates a new repository from the main branch instead of the last release.
-I guarantee that all commits on the main are stable; you can verify that the associated
-CI jobs are ✅.
+It creates a new repository from the main branch instead of the last release.
+I guarantee that all commits on the main branch are stable; you can verify that
+the associated CI jobs are ✅.  
 
+### With FrankenPHP 🧟‍
+
+We can also use [FrankenPHP](https://frankenphp.dev/) to run MicroSymfony.
+You must have [Docker](https://www.docker.com/) installed locally.
+
+Create a new project from the GitHub template, run:
+
+    docker run --rm -it -v $PWD:/app composer:latest create-project strangebuzz/microsymfony && cd microsymfony
+
+Then run:
+
+    docker run \
+        -e FRANKENPHP_CONFIG="worker ./public/index.php" \
+        -e APP_RUNTIME=Runtime\\FrankenPhpSymfony\\Runtime \
+        -v $PWD:/app \
+        -p 80:80 -p 443:443 \
+        -d \
+        dunglas/frankenphp
+
+Open [https://localhost](https://localhost) and enjoy! 🙂
+
+**PS**: On Windows, replace `$PWD` with `"%cd%"`.
 ## Requirements ⚙
 
 All “**Proclaim** Honestly, **Interact** Liberally” project will use the latest version within 1 or 2 months depending on dependencies availability.
 
 * [PHP 8.4](https://www.php.net/releases/8.4/en.php)
 * The [Symfony CLI](https://symfony.com/download)
-* [Castor 0.22](https://github.com/jolicode/castor) task runner
+* [Castor 0.25](https://github.com/jolicode/castor) task runner
 ### Optional requirements 🚦
 
 * The [Xdebug](https://xdebug.org/) PHP extension if you want to run the code coverage report (optional but recommended)
@@ -155,12 +182,18 @@ In both cases, your controller code has to be [modified accordingly](https://sym
 
 ## Other good practices 👌
 
-* Using strict types in all PHP files ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/src/Controller/AppController.php))
-* Using the ADR pattern in an action controller ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/src/Controller/SlugifyAction.php)) ([doc](https://symfony.com/doc/current/controller/service.html#invokable-controllers))
+* Using strict types in all PHP files ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/src/Controller/SlugifyAction.php))
+* Using the ADR pattern in an action controller ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/src/Controller/HomeAction.php)) ([doc](https://symfony.com/doc/current/controller/service.html#invokable-controllers))
 * The [composer.json](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/composer.json)
   file is normalized with [ergebnis/composer-normalize](https://github.com/ergebnis/composer-normalize)
 * Use of the [composer bin plugin](https://github.com/bamarni/composer-bin-plugin)
   to install and run [php-cs-fixer](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer)
+
+
+## ADR 📝
+
+ADR stands for [Architecture Design Records](https://adr.github.io/):
+
 
 ## What it doesn't ship? ❌
 
@@ -168,6 +201,8 @@ In both cases, your controller code has to be [modified accordingly](https://sym
 
 ## References 📚
 
+* [Running a Symfony app on a VPS with Docker and FrankenPHP](https://les-tilleuls.coop/en/blog/running-a-symfony-app-on-a-vps-with-docker-and-frankenphp) (les-tilleuls.coop)
+* [How to Switch from YAML Configs to PHP Today with Symplify](https://tomasvotruba.com/blog/2020/07/27/how-to-switch-from-yaml-xml-configs-to-php-today-with-migrify/) (tomasvotruba.com)
 * [PHPStan 2.0 Released With Level 10 and Elephpants!](https://phpstan.org/blog/phpstan-2-0-released-level-10-elephpants) (phpstan.org)
 * [A better ADR pattern for your Symfony controllers](https://www.strangebuzz.com/en/blog/a-better-adr-pattern-for-your-symfony-controllers) (strangebuzz.com)
 * [My Taskfile configuration for Symfony](https://jmsche.fr/en/blog/my-taskfile-configuration-for-symfony) (jmsche.fr)

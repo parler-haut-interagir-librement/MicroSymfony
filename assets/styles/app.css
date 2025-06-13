@@ -1,6 +1,60 @@
-label.required:after {
-    content: " *";
+/* Pico ————————————————————————————————————————————————————————————————————— */
+
+/**
+ * Reduce default size.
+ *
+ * @see https://picocss.com/docs/css-variables#all-css-variables
+ */
+:root {
+    --pico-font-size: 100%; /* default size is 131.25% */
 }
+
+/* Layout ——————————————————————————————————————————————————————————————————— */
+
+/**
+ * No text decoration for the header brand link.
+ */
+hgroup > h1 > a {
+    text-decoration: none;
+}
+
+/**
+ * Ligh and dark mode icons.
+ */
+header .theme-icon {
+    text-decoration: none;
+    font-size: 150%;
+}
+
+footer div.github {
+    text-align: right;
+}
+
+/** See h6 */
+footer span.versions {
+    display: block;
+    color: var(--pico-h6-color);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: var(--pico-typography-spacing-vertical);
+}
+
+/* Symfony —————————————————————————————————————————————————————————————————— */
+
+/**
+ * Mark required fields in Symfony forms.
+ *
+ * @see https://symfony.com/doc/current/forms.html#form-type-options
+ */
+label.required:after {
+    content: ' *';
+    font-weight: bold;
+}
+
+/**
+ * Mark form errors in red.
+ */
 form > div > div > ul > li {
     color: red;
 }

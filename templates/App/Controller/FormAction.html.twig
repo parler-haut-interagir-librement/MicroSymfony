@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% set h2 = 'Form example' %}
+
+{% block title %}{{ h2 }} | {{ brand }}{% endblock %}
+
+{% block body %}
+    <h2>{{ h2 }} 📋</h2>
+
+    <article>
+        <p>
+            This is a basic form example using a DTO, there are some constraints.
+            <a href="https://www.strangebuzz.com/en/blog/disable-the-html5-validation-of-all-your-symfony-forms-with-a-feature-flag">
+                The browser validation is deactivated</a>, so you can easily test the
+            server side validation.
+        </p>
+    </article>
+
+    {% if form.vars.submitted and form.vars.valid %}
+        <article>
+            <header>
+                <h3>Submitted and valid values ✨</h3>
+            </header>
+
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ dto.name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Email</th>
+                    <td>{{ dto.email }}</td>
+                </tr>
+
+                <tr>
+                    <th>Country</th>
+                    <td>{{ dto.country }}</td>
+                </tr>
+
+                <tr>
+                    <th>Currency</th>
+                    <td>{{ dto.currency }}</td>
+                </tr>
+
+                <tr>
+                    <th>Birthay</th>
+                    <td>{{ dto.birthday|date('Y-m-d') }}</td>
+                </tr>
+
+                <tr>
+                    <th>Fruit</th>
+                    <td>{{ dto.fruit.name }}</td>
+                </tr>
+            </table>
+
+            <footer>
+                &raquo; <a href="{{ path(ctrl_fqcn('FormAction')) }}">Retry</a>
+            </footer>
+        </article>
+    {% else %}
+        <article>
+            <header>
+                <h2>Create a new account 🔏</h2>
+            </header>
+
+            <p>* = required fields</p>
+
+            <fieldset>
+                <h3>Enter your information 🖋</h3>
+
+                {{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            </fieldset>
+        </article>
+    {% endif %}
+{% endblock %}

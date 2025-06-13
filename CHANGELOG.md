@@ -24,11 +24,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Article reference
 - FrankenPHP runtime
 - Psalm
+- Favicon
 
 ### Changed
 
 - Upgrade Symfony to 7.3.0
-- Upgrade Castor to 
+- Upgrade Castor to 0.25
 - Upgrade league/CommonMark to 2
 - Upgrade PHPStan to 2
 - Upgrade Rector to 2
