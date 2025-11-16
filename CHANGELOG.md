@@ -9,22 +9,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Nothing of notes
+
+### Changed
+
+- Nothing of notes
+
+### Deprecated
+
+- Nothing of notes
+
+### Removed
+
+- Nothing of notes
+
+### Fixed
+
+- N/A
+
+### Security
+
+- N/A
+
+
+## [7.3.0] - 2025-11-16
+
+### Added
+
 - CODE_OF_CONDUCT.md
 - CONTRIBUTING.md
 - LICENSE
-- Maker Bundle
 - Badges in README.md
-- Scrutinizer-ci
-- Scrutinizer coverage report link
 - Security Policy
 - Bug Report Template
 - GitHub templates
 - Darkmode in template
 - Contrib.rocks image
 - Article reference
+- Sentry Bundle
+- Maker Bundle
+- Binome Bundle
+- Scrutinizer-ci
+- Scrutinizer coverage report link
 - FrankenPHP runtime
 - Psalm
-- Sentry
 - Favicon
 
 ### Changed
@@ -35,6 +63,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade PHPStan to 2.0
 - Upgrade Rector to 2.2
 - Upgrade Twig to 3.22
+- Upgrade Stimulus To 2.31
+- Upgrade Turbo To 2.31
 - Test use ADR controller class FQCN as route name
 - Update the Features section in README.md
 - Update PHPStan configuration
