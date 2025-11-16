@@ -1,13 +1,30 @@
 {
+    "formatter": {
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineWidth": 100
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "single",
+            "semicolons": "always",
+            "trailingCommas": "all"
+        }
+    },
+    "css": {
+        "formatter": {
+            "quoteStyle": "single"
+        }
+    },
+    "linter": {
+        "rules": {
+            "complexity": {
+                "useArrowFunction": "off"
+            }
+        }
+    },
     "files": {
-        "ignore": [
-            "assets/vendor/*",
-            "assets/controllers.json",
-            "composer.json",
-            "public/assets/*",
-            "public/bundles/*",
-            "var/cache/*",
-            "vendor/*"
-        ]
+        "include": ["./assets"],
+        "ignore": ["assets/vendor/*"]
     }
 }

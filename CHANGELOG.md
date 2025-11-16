@@ -24,16 +24,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Article reference
 - FrankenPHP runtime
 - Psalm
+- Sentry
 - Favicon
 
 ### Changed
 
-- Upgrade Symfony to 7.3.0
-- Upgrade Castor to 0.25
-- Upgrade league/CommonMark to 2
-- Upgrade PHPStan to 2
-- Upgrade Rector to 2
-- Upgrade Twig to
+- Upgrade Symfony to 7.3.4
+- Upgrade Castor to 1.0
+- Upgrade league/CommonMark to 2.7.1
+- Upgrade PHPStan to 2.0
+- Upgrade Rector to 2.2
+- Upgrade Twig to 3.22
 - Test use ADR controller class FQCN as route name
 - Update the Features section in README.md
 - Update PHPStan configuration
