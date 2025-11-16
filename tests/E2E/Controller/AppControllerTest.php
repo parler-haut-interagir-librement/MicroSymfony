@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\E2E\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as E2ETestCase;
 
 // use Symfony\Component\Panther\PantherTestCase as E2ETestCase;
@@ -26,7 +27,7 @@ final class AppControllerTest extends E2ETestCase
     {
         // $client = self::createPantherClient();
         $client = self::createClient();
-        $client->request('GET', '/');
+        $client->request(Request::METHOD_GET, '/');
         self::assertSelectorTextContains('body', 'MicroSymfony');
     }
 }

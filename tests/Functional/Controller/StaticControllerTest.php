@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -18,7 +19,7 @@ final class StaticControllerTest extends WebTestCase
     public function testStimulus(): void
     {
         $client = self::createClient();
-        $client->request('GET', '/stimulus');
+        $client->request(Request::METHOD_GET, '/stimulus');
         self::assertResponseIsSuccessful();
     }
 }

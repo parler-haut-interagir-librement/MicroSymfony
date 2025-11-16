@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Helper\StringHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,7 @@ final class SlugifyAction extends AbstractController
      * @see https://api-platform.com/
      */
     #[Route(path: '/api/slugify', name: self::class)]
-    public function __invoke(StringHelper $stringHelper, #[MapQueryParameter] string $title): Response
+    public function __invoke(StringHelper $stringHelper, #[MapQueryParameter] string $title): JsonResponse
     {
         return $this->json(['slug' => $stringHelper->slugify($title)]);
     }

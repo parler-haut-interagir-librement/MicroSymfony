@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Nothing of notes
+- Upgrade Symfony to 7.3.7
+- CODE_OF_CONDUCT.md now in version 3.0
 
 ### Deprecated
 
@@ -21,11 +22,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- Nothing of notes
+- roave/security-advisories. Use Composer 2.9
 
 ### Fixed
 
-- N/A
+- Castor.php for Castor v1
+- Fix Rector Configuration for version 2.2
+- Update Code to follow PHP 8.4 and Symfony 7.3
 
 ### Security
 

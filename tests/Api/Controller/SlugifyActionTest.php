@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Api\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Controller\SlugifyAction;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -21,10 +22,10 @@ final class SlugifyActionTest extends WebTestCase
     public function testSlugifyAction(): void
     {
         $client = self::createClient();
-        $client->request('GET', '/api/slugify?title=This IS the _-! Micro SYMFONY  project');
+        $client->request(Request::METHOD_GET, '/api/slugify?title=This IS the _-! Micro SYMFONY  project');
         self::assertResponseIsSuccessful();
         self::isJson();
-        self::assertJsonStringEqualsJsonString('{"slug":"this-is-the-micro-symfony-project"}', (string) $client->getResponse()->getContent());
+        $this->assertJsonStringEqualsJsonString('{"slug":"this-is-the-micro-symfony-project"}', (string) $client->getResponse()->getContent());
 
         // With the ApiTestCase, these tests would look like
         // $this->assertJsonContains([

@@ -18,6 +18,9 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
  */
 final class StringHelperTest extends TestCase
 {
+    /**
+     * @return Iterator<(array<int, null>|array<int, string>)>
+     */
     public static function provideSlugify(): Iterator
     {
         yield ['', ''];
@@ -29,6 +32,6 @@ final class StringHelperTest extends TestCase
     public function testSlugify(?string $input, string $expected): void
     {
         $stringHelper = new StringHelper(new AsciiSlugger());
-        self::assertSame($expected, $stringHelper->slugify($input));
+        $this->assertSame($expected, $stringHelper->slugify($input));
     }
 }

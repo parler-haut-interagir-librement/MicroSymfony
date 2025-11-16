@@ -1,8 +1,4 @@
 <?php
-
-// Until the 1.x Castor version the API may be unstable
-// this script was tested with Castor 0.25.0
-
 declare(strict_types=1);
 
 use Castor\Attribute\AsTask;
@@ -10,13 +6,11 @@ use Castor\Attribute\AsTask;
 use function Castor\context;
 use function Castor\exit_code;
 use function Castor\io;
-use function Castor\parallel;
 use function Castor\run;
 use function Castor\task;
 
-
 // Change your prod domain here
-const DOMAIN = 'microsymfony.ovh';
+const DOMAIN = 'ph-il.ca';
 
 // Modify the coverage threshold here
 const COVERAGE_THRESHOLD = 100;
@@ -307,6 +301,7 @@ function lint_all(): int
 
     // if you want to speed up the process, you can run these commands in parallel
     //    parallel(
+    //        fn() => stan(),
     //        fn() => lint_php(),
     //        fn() => lint_container(),
     //        fn() => lint_twig(),
@@ -356,6 +351,10 @@ function versions(): void
         context: context()->withEnvironment(['PHP_CS_FIXER_IGNORE_ENV' => 1])
     );
 
+    io()->note('Rector');
+    run('vendor/bin/rector --version');
+    io()->newLine();
+
     io()->newLine();
 
     success(0);
@@ -374,7 +373,7 @@ function check_requirements(): int
 function rector(): void
 {
     title('rector:run');
-    run('vendor/bin/rector', quiet: false);
+    run('vendor/bin/rector');
     success(0);
 }
 
@@ -382,7 +381,7 @@ function rector(): void
 function rector_dry_run(): void
 {
     title('rector:dry-run');
-    run('vendor/bin/rector --dry-run', quiet: false);
+    run('vendor/bin/rector --dry-run');
     success(0);
 }
 
