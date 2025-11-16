@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\E2E\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as E2ETestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 // use Symfony\Component\Panther\PantherTestCase as E2ETestCase;
 

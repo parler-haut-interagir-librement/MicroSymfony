@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Kernel;
 
-require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+require_once dirname(__DIR__) . '/vendor/autoload_runtime.php';
 
 return static function (array $context) {
     /** @var array{APP_ENV: string, APP_DEBUG: string, APP_SECRET: string} $context */

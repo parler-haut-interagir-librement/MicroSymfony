@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Twig\Extension;
 
-use Twig\Attribute\AsTwigFilter;
-use DOMDocument;
-use DOMXPath;
-use DOMNodeList;
-use DOMNode;
-use DOMElement;
 use App\Helper\StringHelper;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
+use DOMDocument;
+use DOMElement;
+use DOMNode;
+use DOMNodeList;
+use DOMXPath;
+use Twig\Attribute\AsTwigFilter;
 
 use function Symfony\Component\String\u;
+
+use const LIBXML_HTML_NODEFDTD;
+use const LIBXML_HTML_NOIMPLIED;
 
 final class MarkdownExtension
 {
@@ -33,7 +34,7 @@ final class MarkdownExtension
     public function addHeadersAnchors(string $html): string
     {
         $dom = new DOMDocument();
-        $dom->loadHTML(mb_encode_numericentity($html, [0x80, 0x10FFFF, 0, ~0], 'UTF-8'), \LIBXML_HTML_NOIMPLIED | \LIBXML_HTML_NODEFDTD);
+        $dom->loadHTML(mb_encode_numericentity($html, [0x80, 0x10FFFF, 0, ~0], 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
         // Allow to have the same "buggy" anchors as GitHub
         /** @var DOMNodeList<DOMNode> $tags */
@@ -41,7 +42,7 @@ final class MarkdownExtension
         foreach ($tags as $headerTag) {
             $slug = $this->stringHelper->slugify($headerTag->textContent);
             /** @var DOMElement $headerTag */
-            $headerTag->setAttribute('id', $slug.(u($slug)->length() !== u($headerTag->textContent)->length() ? '-' : '')); // add "-" when we have a final Emoji.
+            $headerTag->setAttribute('id', $slug . (u($slug)->length() !== u($headerTag->textContent)->length() ? '-' : '')); // add "-" when we have a final Emoji.
         }
 
         return (string) $dom->saveHTML();

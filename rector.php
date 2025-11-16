@@ -18,7 +18,6 @@ use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchExprVariableR
 use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchMethodCallReturnTypeRector;
 use Rector\Php55\Rector\Class_\ClassConstantToSelfClassRector;
 use Rector\Transform\Rector\Attribute\AttributeKeyToClassConstFetchRector;
-use Rector\Transform\Rector\MethodCall\ReplaceParentCallByPropertyCallRector;
 
 return RectorConfig::configure()
     ->withPaths([

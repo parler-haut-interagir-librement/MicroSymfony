@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Castor\Attribute\AsTask;
@@ -18,14 +19,14 @@ const COVERAGE_THRESHOLD = 100;
 function title(string $name): void
 {
     $task = task();
-    if ($task !== null && $task->getName() === $name) {
+    if (null !== $task && $task->getName() === $name) {
         io()->title($task->getDescription());
     }
 }
 
 function success(int $exitCode): int
 {
-    if ($exitCode === 0) {
+    if (0 === $exitCode) {
         io()->success('Done!');
     } else {
         io()->error(sprintf('Failure (exit code %d returned).', $exitCode));
@@ -106,7 +107,7 @@ function test_all(): int
 {
     title('test:all');
     [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, implode(',', PHP_UNIT_SUITES), $filter, $options));
+    $ec = exit_code(__DIR__ . sprintf(PHP_UNIT_CMD, implode(',', PHP_UNIT_SUITES), $filter, $options));
     io()->writeln('');
 
     return $ec;
@@ -117,7 +118,7 @@ function test_api(): int
 {
     title('test:api');
     [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'api', $filter, $options));
+    $ec = exit_code(__DIR__ . sprintf(PHP_UNIT_CMD, 'api', $filter, $options));
     io()->writeln('');
 
     return $ec;
@@ -128,7 +129,7 @@ function test_e2e(): int
 {
     title('test:api');
     [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'e2e', $filter, $options));
+    $ec = exit_code(__DIR__ . sprintf(PHP_UNIT_CMD, 'e2e', $filter, $options));
     io()->writeln('');
 
     return $ec;
@@ -139,7 +140,7 @@ function test_functional(): int
 {
     title('test:functional');
     [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'functional', $filter, $options));
+    $ec = exit_code(__DIR__ . sprintf(PHP_UNIT_CMD, 'functional', $filter, $options));
     io()->writeln('');
 
     return $ec;
@@ -150,7 +151,7 @@ function test_integration(): int
 {
     title('test:integration');
     [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'integration', $filter, $options));
+    $ec = exit_code(__DIR__ . sprintf(PHP_UNIT_CMD, 'integration', $filter, $options));
     io()->writeln('');
 
     return $ec;
@@ -161,7 +162,7 @@ function test_unit(
 ): int {
     title('test:unit');
     [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'unit', $filter, $options));
+    $ec = exit_code(__DIR__ . sprintf(PHP_UNIT_CMD, 'unit', $filter, $options));
     io()->writeln('');
 
     return $ec;
@@ -174,7 +175,7 @@ function coverage(): int
     $ec = exit_code('php -d xdebug.enable=1 -d memory_limit=-1 vendor/bin/phpunit --coverage-html=var/coverage --coverage-clover=var/coverage/clover.xml',
         context: context()->withEnvironment(['XDEBUG_MODE' => 'coverage'])
     );
-    if ($ec !== 0) {
+    if (0 !== $ec) {
         return $ec;
     }
 
@@ -252,7 +253,7 @@ function ci_lint_php(): int
     title('ci:lint-php');
 
     $ec = exit_code('command -v cs2pr &> /dev/null');
-    if ($ec !== 0) {
+    if (0 !== $ec) {
         aborted('cs2pr not found. Locally, Please use the "lint:php" task.');
 
         return 1;
@@ -384,4 +385,3 @@ function rector_dry_run(): void
     run('vendor/bin/rector --dry-run');
     success(0);
 }
-

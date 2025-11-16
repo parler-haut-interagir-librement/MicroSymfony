@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Api\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use App\Controller\SlugifyAction;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @internal

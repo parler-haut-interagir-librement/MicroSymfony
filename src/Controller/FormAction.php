@@ -29,7 +29,7 @@ final class FormAction extends AbstractController
             $dto = $form->getData();
         }
 
-        return $this->render(self::class.'.html.twig', [
+        return $this->render(self::class . '.html.twig', [
             'form' => $form,
             'dto' => $dto,
         ]);

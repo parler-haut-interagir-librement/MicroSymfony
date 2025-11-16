@@ -8,6 +8,9 @@ use Symfony\Component\HttpKernel\Kernel;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 
+use const PHP_SAPI;
+use const PHP_VERSION;
+
 /**
  * Env related stuff.
  */
@@ -20,8 +23,8 @@ final class EnvExtension extends AbstractExtension implements GlobalsInterface
     {
         return [
             'sf_version' => Kernel::VERSION,
-            'php_version' => \PHP_VERSION,
-            'php_sapi' => \PHP_SAPI,
+            'php_version' => PHP_VERSION,
+            'php_sapi' => PHP_SAPI,
         ];
     }
 }

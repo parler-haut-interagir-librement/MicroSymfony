@@ -18,7 +18,7 @@ final class HelloWorldAction extends AbstractController
     #[Route(path: '/hello-world', name: self::class)]
     public function __invoke(string $environment, bool $debug): Response
     {
-        return $this->render(self::class.'.html.twig', [
+        return $this->render(self::class . '.html.twig', [
             'environment' => $environment,
             'debug' => $debug,
         ]);

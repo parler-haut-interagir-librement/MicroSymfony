@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Dto;
 
-use DateTimeImmutable;
 use App\Enum\Fruit;
+use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

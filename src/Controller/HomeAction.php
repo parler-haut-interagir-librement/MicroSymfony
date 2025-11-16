@@ -24,8 +24,8 @@ final class HomeAction extends AbstractController
     #[Route(path: '/', name: self::class)]
     public function __invoke(): Response
     {
-        $readme = (string) file_get_contents(__DIR__.'/../../README.md');
+        $readme = (string) file_get_contents(__DIR__ . '/../../README.md');
 
-        return $this->render(self::class.'.html.twig', ['readme' => $readme]);
+        return $this->render(self::class . '.html.twig', ['readme' => $readme]);
     }
 }

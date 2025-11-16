@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Twig\Extension;
 
-use Twig\Attribute\AsTwigFunction;
 use InvalidArgumentException;
 use Symfony\Component\Routing\RouterInterface;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
+use function sprintf;
 use function Symfony\Component\String\u;
 
 /**
@@ -43,7 +42,7 @@ final class RoutingExtension
     #[AsTwigFunction('ctrl_fqcn')]
     public function getControllerFqcn(string $ctrlShortname): string
     {
-        if ($this->controllers === null) {
+        if (null === $this->controllers) {
             $this->controllers = array_unique(array_map(
                 static fn (string $value) => u($value)->trimSuffix('::__invoke')->toString(),
                 array_keys($this->router->getRouteCollection()->getAliases())
@@ -64,7 +63,7 @@ final class RoutingExtension
         //
         // If the route is not found, then Twig raises a "RouteNotFoundException".
 
-        throw new InvalidArgumentException('No controller found for the "'.$ctrlShortname.'" shortname.');
+        throw new InvalidArgumentException('No controller found for the "' . $ctrlShortname . '" shortname.');
     }
 
     /**
@@ -79,7 +78,7 @@ final class RoutingExtension
             return '';
         }
 
-        return \sprintf(' %s="%s"', $attribute, $value);
+        return sprintf(' %s="%s"', $attribute, $value);
     }
 
     #[AsTwigFunction('aria_current_page_if')]
