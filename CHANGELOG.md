@@ -13,12 +13,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Upgrade Symfony to 7.3.7
-- CODE_OF_CONDUCT.md now in version 3.0
+- Nothing of notes
 
 ### Deprecated
 
 - Nothing of notes
+
+### Removed
+
+- Nothing of notes
+
+### Fixed
+
+- Nothing of notes
+
+### Security
+
+- N/A
+
+
+## [7.3.1] - 2025-11-16
+
+### Changed
+
+- Upgrade Symfony to 7.3.7
+- CODE_OF_CONDUCT.md now in version 3.0
 
 ### Removed
 
@@ -31,10 +50,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update Code to follow PHP 8.4 and Symfony 7.3 using Rector
 - Clean Code using cs-fixer
 - Fixed missing tests
-
-### Security
-
-- N/A
 
 
 ## [7.3.0] - 2025-11-16
@@ -78,23 +93,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Better layout
 - Better configs
 
-### Deprecated
-
-- Nothing of notes
-
 ### Removed
 
 - Trademark sign previously shown after the project description in version
   0.3.0
-
-### Fixed
-
-- N/A
-
-### Security
-
-- N/A
-
 
 
 ## [7.0.1] - 2024-02-24
@@ -107,6 +109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix CI Workflow
 - Fix PHPUnit 11 change in php-cs-fixer
+
 
 ## [7.0.0] - 2024-02-24
 
@@ -136,6 +139,7 @@ Now the major and minor version is sync with the symfony major and minor version
 
 - No more Annotations, all in Attributes
 
+
 ## [0.2.0] - 2023-11-16
 
 ### Added
@@ -159,7 +163,6 @@ Now the major and minor version is sync with the symfony major and minor version
 - Fix Demo URLs in README.md
 
 
-
 ## [0.1.2] - 2023-09-19
 
 ### Fixed
@@ -174,6 +177,7 @@ Now the major and minor version is sync with the symfony major and minor version
 
 - Fix texts in README.md
 - Fix URLs in README.md
+
 
 ## [0.1.0] - 2023-09-13
 
