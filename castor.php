@@ -59,7 +59,7 @@ function go_prod(): void
 {
     title('symfony:go_prod');
     if (io()->confirm('Are you sure you want to switch to the production environment? This will modify your .env.local file', false)) {
-        run('sed -e \'s/APP_ENV=dev/APP_ENV=prod\' -e \'s/APP_DEBUG=1/APP_DEBUG=0\' .env.local', quiet: false);
+        run('sed -e \'s/APP_ENV=dev/APP_ENV=prod\' -e \'s/APP_DEBUG=1/APP_DEBUG=0\' .env.local');
         run('bin/console asset-map:compile');
         success(0);
 
@@ -74,7 +74,7 @@ function go_dev(): void
 {
     title('symfony:go_dev');
     if (io()->confirm('Are you sure you want to switch to the development environment? This will modify your .env.local file', false)) {
-        run('sed -e \'s/APP_ENV=prod/APP_ENV=dev\' -e \'s/APP_DEBUG=0/APP_DEBUG=1\' .env.local', quiet: false);
+        run('sed -e \'s/APP_ENV=prod/APP_ENV=dev\' -e \'s/APP_DEBUG=0/APP_DEBUG=1\' .env.local');
         run('rm -rf ./public/assets/*');
         success(0);
 
@@ -201,13 +201,13 @@ function stan(): int
         );
     }
 
-    return exit_code('vendor/bin/phpstan analyse -c phpstan.neon --memory-limit 1G -vv');
+    return exit_code('vendor/bin/phpstan analyse --memory-limit 1G -vv');
 }
 
 #[AsTask(name: 'php', namespace: 'fix', description: 'Fix PHP files with php-cs-fixer (ignore PHP 8.3 warnings)', aliases: ['fix-php'])]
 function fix_php(): int
 {
-    title('fix:fix-php');
+    title('fix:php');
     $ec = exit_code('vendor/bin/php-cs-fixer fix',
         context: context()->withEnvironment(['PHP_CS_FIXER_IGNORE_ENV' => 1])
     );

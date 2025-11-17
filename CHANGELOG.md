@@ -28,7 +28,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Castor.php for Castor v1
 - Fix Rector Configuration for version 2.2
-- Update Code to follow PHP 8.4 and Symfony 7.3
+- Update Code to follow PHP 8.4 and Symfony 7.3 using Rector
+- Clean Code using cs-fixer
+- Fixed missing tests
 
 ### Security
 

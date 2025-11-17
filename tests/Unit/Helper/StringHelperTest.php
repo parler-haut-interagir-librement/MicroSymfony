@@ -22,7 +22,7 @@ final class StringHelperTest extends TestCase
     public function testSlugify(?string $input, string $expected): void
     {
         $stringHelper = new StringHelper(new AsciiSlugger());
-        $this->assertSame($expected, $stringHelper->slugify($input));
+        self::assertSame($expected, $stringHelper->slugify($input));
     }
 
     /**

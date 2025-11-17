@@ -17,10 +17,10 @@ use function Symfony\Component\String\u;
 use const LIBXML_HTML_NODEFDTD;
 use const LIBXML_HTML_NOIMPLIED;
 
-final class MarkdownExtension
+final readonly class MarkdownExtension
 {
     public function __construct(
-        private readonly StringHelper $stringHelper,
+        private StringHelper $stringHelper,
     ) {
     }
 

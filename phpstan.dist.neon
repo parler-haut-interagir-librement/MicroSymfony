@@ -10,7 +10,8 @@ parameters:
     level: max
     # https://phpstan.org/config-reference#multiple-files
     paths:
-        - bin
+        - importmap.php
+#        - bin
         - config
         - public
         - src
@@ -20,12 +21,13 @@ parameters:
     symfony:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
         consoleApplicationLoader: tests/console-application.php
-#    scanDirectories:
-#        - var/cache/dev/Symfony/Config
+    # @see config/packages/framework.php
+    scanDirectories:
+        - var/cache/dev/Symfony/Config
     # https://phpstan.org/user-guide/ignoring-errors
     treatPhpDocTypesAsCertain: false
-    checkGenericClassInNonGenericObjectType: false
     checkMissingCallableSignature: true
     ignoreErrors:
-        - "#Call to function method_exists\\(\\) with 'Symfony\\\\\\\\Component\\\\\\\\Dotenv\\\\\\\\Dotenv' and 'bootEnv' will always evaluate to true.#"
         #- '#my_ignore_error_regexp_pattern#'
+        - '#from outside its root namespace#' # @see https://github.com/symfony/symfony/issues/60299
+        - "#Call to function method_exists\\(\\) with 'Symfony\\\\\\\\Component\\\\\\\\Dotenv\\\\\\\\Dotenv' and 'bootEnv' will always evaluate to true.#"

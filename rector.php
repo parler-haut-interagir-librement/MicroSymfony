@@ -17,6 +17,7 @@ use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
 use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchExprVariableRector;
 use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchMethodCallReturnTypeRector;
 use Rector\Php55\Rector\Class_\ClassConstantToSelfClassRector;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
 use Rector\Transform\Rector\Attribute\AttributeKeyToClassConstFetchRector;
 
 return RectorConfig::configure()
@@ -57,6 +58,7 @@ return RectorConfig::configure()
         CatchExceptionNameMatchingTypeRector::class,
         ClassConstantToSelfClassRector::class,
         EncapsedStringsToSprintfRector::class,
+        PreferPHPUnitThisCallRector::class,
         RemoveUnusedPrivateClassConstantRector::class,
         RemoveUnusedPrivateMethodRector::class,
         RemoveUnusedPromotedPropertyRector::class,

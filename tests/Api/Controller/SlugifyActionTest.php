@@ -25,7 +25,7 @@ final class SlugifyActionTest extends WebTestCase
         $client->request(Request::METHOD_GET, '/api/slugify?title=This IS the _-! Micro SYMFONY  project');
         self::assertResponseIsSuccessful();
         self::isJson();
-        $this->assertJsonStringEqualsJsonString('{"slug":"this-is-the-micro-symfony-project"}', (string) $client->getResponse()->getContent());
+        self::assertJsonStringEqualsJsonString('{"slug":"this-is-the-micro-symfony-project"}', (string) $client->getResponse()->getContent());
 
         // With the ApiTestCase, these tests would look like
         // $this->assertJsonContains([
