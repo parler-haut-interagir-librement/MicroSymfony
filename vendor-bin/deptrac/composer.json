@@ -1,0 +1,12 @@
+{
+    "require-dev": {
+        "php": ">=8.5",
+        "deptrac/deptrac": "^4.7"
+    },
+    "config": {
+        "platform": {
+            "php": "8.5.0"
+        },
+        "sort-packages": true
+    }
+}

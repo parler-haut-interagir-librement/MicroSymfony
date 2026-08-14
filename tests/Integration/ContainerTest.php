@@ -68,6 +68,7 @@ final class ContainerTest extends KernelTestCase
             return true; // kernel, or alias, or abstract
         }
 
+        // @phpstan-ignore function.impossibleType
         if (in_array($class, self::FILTER_LIST, true)) {
             return true;
         }

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
   <title>{% block title %}{{ "brand.name"|trans }}{% endblock %}</title>
-  <meta name="description" content="{% block description %}{{ description }}{% endblock %}" />
+  <meta name="description" content="{% block description %}{{ "brand.info"|trans }}{% endblock %}" />
   <link rel="icon" href="{{ asset('img/phil_img_logo.svg') }}" sizes="any" type="image/svg+xml">
 
     {% block preconnect %}{% endblock %}
@@ -31,9 +31,9 @@
         <div>
             <hgroup>
                 <h1>
-                    <a href="{{ path(ctrl_fqcn('HomeAction')) }}">{{ brand_html|raw }}</a>
+                    <a href="{{ path(ctrl_fqcn('HomeAction')) }}">{{ "brand.html"|trans }}</a>
                 </h1>
-                <p>{{ description|raw }}</p>
+                <p>{{ "brand.info"|trans }}</p>
             </hgroup>
         </div>
 
@@ -50,7 +50,7 @@
                             <ul role="group-menu">
                                 <li><a href="{{ path(ctrl_fqcn('HomeAction')) }}"{{ aria_current_page_if(app.current_route == ctrl_fqcn('HomeAction'))|raw }}>📒 README</a></li>
                                 <li><a href="{{ path(ctrl_fqcn('HelloWorldAction')) }}"{{ aria_current_page_if(app.current_route == ctrl_fqcn('HelloWorldAction'))|raw }}>Hello world! 👻</a></li>
-                                <li><a href="{{ path('App\\Controller\\StimulusAction') }}"{{ aria_current_page_if(app.current_route == 'App\\Controller\\StimulusAction')|raw }}><b>J</b>ava<b>S</b>cript with Stimulus</a></li>
+                                <li><a href="{{ path('app_stimulus') }}"{{ aria_current_page_if(app.current_route == 'app_stimulus')|raw }}><b>J</b>ava<b>S</b>cript with Stimulus</a></li>
                                 <li><a href="{{ path(ctrl_fqcn('ComposerAction')) }}"{{ aria_current_page_if(app.current_route == ctrl_fqcn('ComposerAction'))|raw }}>The <code>composer.json</code> file</a></li>
                                 <li><a href="{{ path(ctrl_fqcn('FormAction')) }}"{{ aria_current_page_if(app.current_route == ctrl_fqcn('FormAction'))|raw }}>📝 Form example</a></li>
                                 <li><a href="{{ app.environment == 'dev' ? '/_error/404.html' : '/404' }}">❌ Custom error page</a></li>
@@ -80,7 +80,7 @@
 
     <div class="grid">
         <div>
-            <span class="versions">{{ brand|raw }} v{{ sf_version }}{# version #} ({{ 'frankenphp' in php_sapi ? php_sapi : 'PHP '~php_sapi }} {{ php_version }})</span>
+            <span class="versions">{{ "brand.name"|trans }} v{{ sf_version }}{# version #} ({{ 'frankenphp' in php_sapi ? php_sapi : 'PHP '~php_sapi }} {{ php_version }})</span>
 
             <div>
                 &copy; 2022-{{ "now"|date("Y") }} <a href="https://ph-il.ca" target="_blank">{{ "brand.copyright"|trans }}</a>;
@@ -88,19 +88,6 @@
                 <br />
                 {{ "footer.symfony"|trans|raw }}
             </div>
-
-            <div>
-                <a href="https://github.com/parler-haut-interagir-librement/MicroSymfony" target="_blank"><img alt="GitHub" height="25px" width="25px"
-                                                                                                               src="{{ asset('img/github.svg') }}"></a>
-
-
-                <small>
-                A Symfony minimalist application template by <a href="https://www.strangebuzz.com" target="_blank">COil/Strangebuzz 🐝</a>
-                and <a href="{{ website }}/graphs/contributors">other contributors</a>.<br/>
-                Symfony ™ is a trademark of <a target="_blank" href="https://symfony.com/license">Symfony SAS</a>
-                &middot;
-            </small>
-        </div>
 
         <div class="github">
             {{ _self.gitHubIcon('top') }}

@@ -16,6 +16,6 @@ final class MarkdownExtensionTest extends KernelTestCase
     {
         self::bootKernel();
         $extension = self::getContainer()->get(MarkdownExtension::class);
-        self::assertNotEmpty($extension->getFilters());
+        self::assertNotEmpty($extension->addHeadersAnchors('<p>hello</p>'));
     }
 }

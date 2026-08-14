@@ -1,0 +1,12 @@
+{
+    "require-dev": {
+        "php": ">=8.5",
+        "symplify/easy-coding-standard": "^13.2"
+    },
+    "config": {
+        "platform": {
+            "php": "8.5.0"
+        },
+        "sort-packages": true
+    }
+}

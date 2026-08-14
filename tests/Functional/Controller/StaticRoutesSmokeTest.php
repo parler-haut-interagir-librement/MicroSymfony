@@ -7,6 +7,7 @@ namespace App\Tests\Functional\Controller;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -45,14 +46,14 @@ final class StaticRoutesSmokeTest extends WebTestCase
     {
         self::bootKernel();
 
-        /** @var RouterInterface $router */
+        /** @var Router $router */
         $router = self::getContainer()->get(RouterInterface::class);
 
         $routes = $router->getRouteCollection();
 
         self::ensureKernelShutdown();
 
-        if (!$routes->count()) {
+        if ($routes->count() <= 0) {
             throw new RuntimeException('No routes found in the application.');
         }
 

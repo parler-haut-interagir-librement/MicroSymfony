@@ -116,7 +116,8 @@ All “**Proclaim** Honestly, **Interact** Liberally” project will use the lat
 
 * [PHP 8.4](https://www.php.net/releases/8.4/en.php)
 * The [Symfony CLI](https://symfony.com/download)
-* [Castor 0.25](https://github.com/jolicode/castor) task runner
+* [Castor 1.0](https://github.com/jolicode/castor) task runner
+
 ### Optional requirements 🚦
 
 * The [Xdebug](https://xdebug.org/) PHP extension if you want to run the code coverage report (optional but recommended)
@@ -153,6 +154,7 @@ All “**Proclaim** Honestly, **Interact** Liberally” project will use the lat
   * E2E test [example](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/tests/E2E/Controller/AppControllerTest.php)
 * Code coverage at 100% (configurable threshold)
   * [Coverage report on Scrutinizer](https://scrutinizer-ci.com/g/parler-haut-interagir-librement/MicroSymfony/code-structure/main/code-coverage/src/)
+  * [Failing output example](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6176766049/job/16766431026)
 * GitHub CI ([actions](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions))
   * [Tests job output](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6178372662/job/16771491572)
   * [Lint job output](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6178372662/job/16771491353)
@@ -250,6 +252,8 @@ ADR stands for [Architecture Design Records](https://adr.github.io/):
 
 * [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
   * WebSymfony +
+  * CSS framework
+    * phil-ux
   * “**Proclaim** Honestly, **Interact** Liberally” Bundles
     * phil-ux - Add Base Twig Components
     * PhilDoctrineExtensionStofBundle - Add missing stuff to StofDoctrineExtensionsBundle

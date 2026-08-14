@@ -1,0 +1,114 @@
+# Direction, à l'intérieur d'un contexte.
+#
+# Deptrac police la *direction* des dépendances ; Arkitect police leur *forme* (`arkitect.php`). Les deux sont
+# nécessaires : l'allow-list de `Domain` a besoin d'un outil qui peut vérifier ce qu'une classe *est*, pas
+# seulement ce vers quoi elle pointe (plan.md §7).
+#
+# L'isolation entre contextes est l'affaire de `deptrac-contextes.yaml`, qui est un second passage parce qu'un
+# fichier deptrac ne porte qu'un seul jeu de règles.
+
+deptrac:
+  paths:
+    - ./src
+
+  layers:
+    # ---------------------------------------------------------------------------------------------------
+    # Les couches de l'application
+    # ---------------------------------------------------------------------------------------------------
+    - name: Domain
+      collectors:
+        - type: classLike
+          value: ^Hub\\[A-Za-z]+\\Domain\\.*
+
+    - name: Application
+      collectors:
+        - type: classLike
+          value: ^Hub\\[A-Za-z]+\\Application\\.*
+
+    - name: Infrastructure
+      collectors:
+        - type: classLike
+          value: ^Hub\\[A-Za-z]+\\Infrastructure\\.*
+
+    - name: Ui
+      collectors:
+        - type: classLike
+          value: ^Hub\\[A-Za-z]+\\Ui\\.*
+
+    - name: Contracts
+      collectors:
+        - type: classLike
+          value: ^Hub\\[A-Za-z]+\\Contracts\\.*
+
+    - name: Kernel
+      collectors:
+        - type: classLike
+          value: ^Hub\\Kernel$
+
+    # ---------------------------------------------------------------------------------------------------
+    # L'allow-list de `Domain` — plan.md §7
+    #
+    # « `Domain` peut référencer `symfony/uid`, `symfony/intl`, `symfony/string`, `symfony/clock` et
+    # `symfony/polyfill-*`, et rien d'autre de Symfony. L'admission est décidée par un test étroit : aucun
+    # conteneur, aucune configuration, aucune E/S, aucun autowiring — tables de données et types valeurs
+    # seulement. Une constante relue, pas un endroit où mettre les choses qui sont malcommodes ailleurs. »
+    #
+    # `Psr\Clock` s'y ajoute pour une raison écrite dans src/Shared/README.md : le domaine dépend de la PSR-20
+    # directement plutôt que d'une interface `Clock` à nous, qui ne serait que le wrapper que le §7 nomme
+    # comme mode de défaillance de cette liste.
+    # ---------------------------------------------------------------------------------------------------
+    - name: AllowListDomaine
+      collectors:
+        - type: classLike
+          value: ^Symfony\\Component\\(Uid|Intl|String|Clock)\\.*
+        - type: classLike
+          value: ^Symfony\\Polyfill\\.*
+        - type: classLike
+          value: ^Psr\\Clock\\.*
+
+    # Tout le reste du monde. La lookahead négative est ce qui rend la liste ci-dessus *fermée* plutôt
+    # qu'indicative : un paquet ajouté demain tombe ici sans que personne n'ait à penser à l'y mettre.
+    # `[^\\]+\\.+` exige au moins un séparateur de namespace, ce qui laisse dehors les classes internes de
+    # PHP (`\DateTimeImmutable`, `\Throwable`) — elles ne sont pas des dépendances de paquet.
+    - name: Interdit
+      collectors:
+        - type: classLike
+          value: ^(?!Hub\\)(?!Symfony\\Component\\(Uid|Intl|String|Clock)\\)(?!Symfony\\Polyfill\\)(?!Psr\\Clock\\)[^\\]+\\.+
+
+  ruleset:
+    # Le domaine ne dépend de rien d'autre que de lui-même et de l'allow-list. Pas d'`Application`, pas
+    # d'`Infrastructure`, pas de Doctrine, pas de conteneur, pas de `symfony/validator`.
+    Domain:
+      - AllowListDomaine
+
+    # L'application orchestre le domaine et parle à l'infrastructure par des interfaces qu'elle possède.
+    Application:
+      - Domain
+      - Contracts
+      - AllowListDomaine
+      - Interdit
+
+    # L'infrastructure implémente. C'est le seul endroit où Doctrine, Messenger et les clients HTTP vivent.
+    Infrastructure:
+      - Domain
+      - Application
+      - Contracts
+      - AllowListDomaine
+      - Interdit
+
+    Ui:
+      - Domain
+      - Application
+      - Contracts
+      - AllowListDomaine
+      - Interdit
+
+    # Un `Contracts` est ce que les autres contextes importent. Il ne porte que des types : pas de dépendance
+    # vers l'`Application` ni l'`Infrastructure` du contexte qui le publie, sinon l'importer traîne le
+    # contexte entier avec lui — ce qui est la façon dont un monolithe modulaire cesse de l'être.
+    Contracts:
+      - Domain
+      - AllowListDomaine
+
+    Kernel:
+      - Interdit

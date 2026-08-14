@@ -1,0 +1,74 @@
+{
+    // ------------------------------------------------------------------------------------------------
+    // Ce que la mutation mesure, et ce qu'elle ne mesure pas.
+    //
+    // La couverture de lignes dit qu'une ligne a été exécutée. Elle ne dit pas qu'un test aurait échoué
+    // si la ligne avait été fausse. Un test qui appelle `EmailAddress::fromString()` sans rien affirmer
+    // couvre chaque ligne du constructeur et n'en protège aucune. La mutation est la seule mesure du
+    // corpus qui répond à la deuxième question, et c'est pour ça qu'elle est une porte de la Phase 0
+    // plutôt qu'un tableau de bord.
+    //
+    // Elle ne tourne que sur la suite `Unit` : voir la note des suites dans `phpunit.dist.xml`.
+    // ------------------------------------------------------------------------------------------------
+    $schema: "vendor-bin/infection/vendor/infection/infection/resources/schema.json",
+
+    source: {
+        directories: [
+            "src"
+        ],
+
+        // « Mutation : Infection, `Domain` seulement » — plan.md. Les exclusions sont écrites en négatif
+        // plutôt qu'en listant les neuf répertoires `Domain` un par un : un neuvième contexte ajouté plus
+        // tard entre alors dans la portée sans que personne ait à y penser, ce qui est le sens dans lequel
+        // on veut que l'oubli se fasse.
+        excludes: [
+            "Kernel.php",
+            "*/Application/*",
+            "*/Infrastructure/*",
+            "*/Ui/*",
+            "*/Contracts/*"
+        ]
+    },
+
+    // Cent, et non quatre-vingt-dix.
+    //
+    // `Domain` est du PHP pur : aucune E/S, aucune horloge, aucun conteneur. Tout mutant y est donc
+    // tuable par un test, et un mutant survivant y signifie l'une de deux choses — un test manquant, ou du
+    // code que rien ne peut atteindre. Les deux méritent d'arrêter la construction. C'est arrivé dès la
+    // première exécution : trois des huit mutants échappés de `EmailAddress` étaient du code mort, dont
+    // une limite de 255 octets qu'une limite de 254 rendait inatteignable.
+    //
+    // Un faux positif se traite en nommant le mutant dans `mutators` ci-dessous, jamais en abaissant ce
+    // nombre : une exception nommée reste lisible, un seuil abaissé efface la liste de ce qui est excusé.
+    minMsi: 100,
+    minCoveredMsi: 100,
+
+    testFrameworkOptions: "--testsuite=Unit",
+
+    logs: {
+        text: "var/infection/infection.log",
+        summary: "var/infection/summary.log",
+        html: "var/infection/infection.html"
+    },
+
+    tmpDir: "var/infection/tmp",
+
+    mutators: {
+        "@default": true,
+
+        // Les limites RFC (64 et 254) sont des constantes de transport, pas des choix : muter leur
+        // *déclaration* produit un mutant qu'aucun test raisonnable ne tue, parce que le tuer voudrait dire
+        // vérifier que 254 vaut 254, ce que la RFC dit déjà. Les comparaisons qui les *utilisent*, elles,
+        // restent mutées — c'est là qu'un `>` mis pour un `>=` fait du tort.
+        IncrementInteger: {
+            ignoreSourceCodeByRegex: [
+                "private const int MAX_.*"
+            ]
+        },
+        DecrementInteger: {
+            ignoreSourceCodeByRegex: [
+                "private const int MAX_.*"
+            ]
+        }
+    }
+}

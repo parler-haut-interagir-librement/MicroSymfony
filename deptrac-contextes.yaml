@@ -1,0 +1,157 @@
+# Isolation entre contextes.
+#
+# « Un contexte ne peut référencer que `Shared` et les `Contracts` d'autres contextes » (plan.md §7), et
+# « aucun contexte n'interroge les dépôts d'un autre contexte » (§4). Les appels de dépôt inter-contextes
+# sont la seule chose qui retransforme un monolithe modulaire en boule de boue.
+#
+# Ce fichier va plus loin que la règle générale : il encode **le tableau de dépendances du §4**, ligne par
+# ligne. Access peut voir les `Contracts` d'Identity ; Identity ne peut pas voir ceux d'Access. Une arête
+# nouvelle exige donc une modification consciente de ce fichier, ce qui est le but.
+#
+# C'est un second passage parce qu'un fichier deptrac ne porte qu'un seul jeu de règles ; la direction entre
+# couches est dans `deptrac-couches.yaml`.
+
+deptrac:
+  paths:
+    - ./src
+
+  layers:
+    # Le noyau partagé : visible de partout, et délibérément minuscule pour que ce soit soutenable.
+    - name: Shared
+      collectors:
+        - type: classLike
+          value: ^Hub\\Shared\\.*
+
+    - name: Kernel
+      collectors:
+        - type: classLike
+          value: ^Hub\\Kernel$
+
+    # Chaque contexte, *sans* ses propres `Contracts` — ceux-ci sont une couche à part, puisque c'est
+    # précisément ce que les autres ont le droit d'importer.
+    - name: Identity
+      collectors: [{ type: classLike, value: '^Hub\\Identity\\(?!Contracts\\).*' }]
+    - name: Access
+      collectors: [{ type: classLike, value: '^Hub\\Access\\(?!Contracts\\).*' }]
+    - name: Oidc
+      collectors: [{ type: classLike, value: '^Hub\\Oidc\\(?!Contracts\\).*' }]
+    - name: Audit
+      collectors: [{ type: classLike, value: '^Hub\\Audit\\(?!Contracts\\).*' }]
+    - name: Notification
+      collectors: [{ type: classLike, value: '^Hub\\Notification\\(?!Contracts\\).*' }]
+    - name: Audience
+      collectors: [{ type: classLike, value: '^Hub\\Audience\\(?!Contracts\\).*' }]
+    - name: Campaign
+      collectors: [{ type: classLike, value: '^Hub\\Campaign\\(?!Contracts\\).*' }]
+    - name: Template
+      collectors: [{ type: classLike, value: '^Hub\\Template\\(?!Contracts\\).*' }]
+
+    - name: IdentityContracts
+      collectors: [{ type: classLike, value: '^Hub\\Identity\\Contracts\\.*' }]
+    - name: AccessContracts
+      collectors: [{ type: classLike, value: '^Hub\\Access\\Contracts\\.*' }]
+    - name: OidcContracts
+      collectors: [{ type: classLike, value: '^Hub\\Oidc\\Contracts\\.*' }]
+    - name: AuditContracts
+      collectors: [{ type: classLike, value: '^Hub\\Audit\\Contracts\\.*' }]
+    - name: NotificationContracts
+      collectors: [{ type: classLike, value: '^Hub\\Notification\\Contracts\\.*' }]
+    - name: AudienceContracts
+      collectors: [{ type: classLike, value: '^Hub\\Audience\\Contracts\\.*' }]
+    - name: CampaignContracts
+      collectors: [{ type: classLike, value: '^Hub\\Campaign\\Contracts\\.*' }]
+    - name: TemplateContracts
+      collectors: [{ type: classLike, value: '^Hub\\Template\\Contracts\\.*' }]
+
+    # Hors du Hub. Les dépendances de paquets sont l'affaire de `deptrac-couches.yaml` ; ici elles sont
+    # permises partout pour que le rapport ne compte que des frontières de contexte.
+    - name: Externe
+      collectors:
+        - type: classLike
+          value: ^(?!Hub\\)[^\\]+\\.+
+
+  # deptrac n'a pas de règle globale : `Shared` et `Externe` sont donc répétés sur chaque ligne. La
+  # répétition est le prix d'une liste que l'on peut lire sans tenir un défaut en tête.
+  ruleset:
+    # Identity | dépend de : Shared
+    Identity:
+      - IdentityContracts
+      - Shared
+      - Externe
+
+    # Access | dépend de : Identity (par id seulement — Access référence un `AccountId` et ne charge
+    # jamais un `Account`)
+    Access:
+      - AccessContracts
+      - IdentityContracts
+      - Shared
+      - Externe
+
+    # Oidc | dépend de : Identity, Access
+    Oidc:
+      - OidcContracts
+      - IdentityContracts
+      - AccessContracts
+      - Shared
+      - Externe
+
+    # Audit | dépend de : consomme des événements. Les publieurs sont ceux du §6.
+    Audit:
+      - AuditContracts
+      - IdentityContracts
+      - AccessContracts
+      - NotificationContracts
+      - AudienceContracts
+      - CampaignContracts
+      - Shared
+      - Externe
+
+    # Notification | dépend de : Template + projections. Les projections sont locales et alimentées par des
+    # événements d'intégration, derrière une couche anti-corruption — jamais par une requête à travers la
+    # frontière.
+    Notification:
+      - NotificationContracts
+      - TemplateContracts
+      - IdentityContracts
+      - AccessContracts
+      - Shared
+      - Externe
+
+    # Audience | dépend de : Template + projection
+    Audience:
+      - AudienceContracts
+      - TemplateContracts
+      - IdentityContracts
+      - Shared
+      - Externe
+
+    # Campaign | dépend de : Audience, Template
+    Campaign:
+      - CampaignContracts
+      - AudienceContracts
+      - TemplateContracts
+      - Shared
+      - Externe
+
+    # Template | dépend de : Shared
+    Template:
+      - TemplateContracts
+      - Shared
+      - Externe
+
+    # Un `Contracts` ne dépend que de `Shared`. Aucune ligne vers un autre contexte : importer les contrats
+    # d'un contexte ne doit rien traîner d'autre avec eux.
+    IdentityContracts: [Shared, Externe]
+    AccessContracts: [Shared, Externe]
+    OidcContracts: [Shared, Externe]
+    AuditContracts: [Shared, Externe]
+    NotificationContracts: [Shared, Externe]
+    AudienceContracts: [Shared, Externe]
+    CampaignContracts: [Shared, Externe]
+    TemplateContracts: [Shared, Externe]
+
+    # Le noyau partagé ne connaît aucun contexte — c'est ce qui le garde partagé.
+    Shared: [Externe]
+
+    Kernel: [Externe]
+    Externe: [Externe]

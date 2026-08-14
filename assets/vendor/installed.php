@@ -9,9 +9,19 @@
     array (
     ),
   ),
+  '@picocss/pico/css/pico.min.css' => 
+  array (
+    'version' => '2.1.1',
+    'dependencies' => 
+    array (
+    ),
+    'extraFiles' => 
+    array (
+    ),
+  ),
   '@hotwired/turbo' => 
   array (
-    'version' => '7.3.0',
+    'version' => '8.0.23',
     'dependencies' => 
     array (
     ),

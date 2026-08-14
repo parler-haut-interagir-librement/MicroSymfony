@@ -1,5 +1,8 @@
 <?php
 
+// This script was tested with Castor 1.1.0
+// https://castor.jolicode.com/changelog/#110-2025-11-26
+
 declare(strict_types=1);
 
 use Castor\Attribute\AsTask;
@@ -10,11 +13,14 @@ use function Castor\io;
 use function Castor\run;
 use function Castor\task;
 
+// use function Castor\parallel;
+
 // Change your prod domain here
 const DOMAIN = 'ph-il.ca';
 
-// Modify the coverage threshold here
+// Modify the code coverage threshold here
 const COVERAGE_THRESHOLD = 100;
+const COVERAGE_TEXT_REPORT = 'var/coverage/coverage-text.txt';
 
 function title(string $name): void
 {
@@ -44,6 +50,7 @@ function aborted(string $message = 'Aborted'): void
 function start(): void
 {
     title('symfony:start');
+    loadFixtures();
     run('symfony serve --daemon');
 }
 
@@ -58,8 +65,8 @@ function stop(): void
 function go_prod(): void
 {
     title('symfony:go_prod');
-    if (io()->confirm('Are you sure you want to switch to the production environment? This will modify your .env.local file', false)) {
-        run('sed -e \'s/APP_ENV=dev/APP_ENV=prod\' -e \'s/APP_DEBUG=1/APP_DEBUG=0\' .env.local');
+    if (io()->confirm('Are you sure you want to switch to the production environment? This will overwrite your .env.local file.', false)) {
+        run('cp .env.local.dist .env.local');
         run('bin/console asset-map:compile');
         success(0);
 
@@ -73,8 +80,8 @@ function go_prod(): void
 function go_dev(): void
 {
     title('symfony:go_dev');
-    if (io()->confirm('Are you sure you want to switch to the development environment? This will modify your .env.local file', false)) {
-        run('sed -e \'s/APP_ENV=prod/APP_ENV=dev\' -e \'s/APP_DEBUG=0/APP_DEBUG=1\' .env.local');
+    if (io()->confirm('Are you sure you want to switch to the development environment? This will delete your .env.local file.', false)) {
+        run('rm -f .env.local');
         run('rm -rf ./public/assets/*');
         success(0);
 
@@ -102,7 +109,7 @@ function getParameters(): array
     return [$filter, $options];
 }
 
-#[AsTask(name: 'all', namespace: 'test', description: 'Run tests with optional filter and options, eg: "filter=slug options=--testdox castor test")', aliases: ['test'])]
+#[AsTask(name: 'all', namespace: 'test', description: 'Run tests with optional filter and options, eg: "filter=slug options=--testdox castor test"', aliases: ['test'])]
 function test_all(): int
 {
     title('test:all');
@@ -179,14 +186,19 @@ function coverage(): int
         return $ec;
     }
 
-    return success(exit_code(sprintf('php bin/coverage-checker.php var/coverage/clover.xml %d', COVERAGE_THRESHOLD)));
+    return success(exit_code(sprintf('php bin/coverage-checker.php %s %d', COVERAGE_TEXT_REPORT, COVERAGE_THRESHOLD)));
 }
 
 #[AsTask(namespace: 'test', description: 'Open the PHPUnit code coverage report (var/coverage/index.html)', aliases: ['cov-report'])]
-function cov_report(): void
+function cov_report(): int
 {
     title('test:cov-report');
-    success(exit_code('open var/coverage/index.html'));
+    $coverageFile = 'var/coverage/index.html';
+    if (!file_exists($coverageFile)) {
+        coverage();
+    }
+
+    return success(exit_code(sprintf('open %s', $coverageFile)));
 }
 
 #[AsTask(namespace: 'lint', description: 'Run PHPStan', aliases: ['stan'])]
@@ -201,16 +213,35 @@ function stan(): int
         );
     }
 
-    return exit_code('vendor/bin/phpstan analyse --memory-limit 1G -vv');
+    return exit_code('vendor/bin/phpstan analyse -c phpstan.neon --memory-limit 1G -vv');
 }
 
-#[AsTask(name: 'php', namespace: 'fix', description: 'Fix PHP files with php-cs-fixer (ignore PHP 8.3 warnings)', aliases: ['fix-php'])]
+#[AsTask(name: 'php', namespace: 'fix', description: 'Fix PHP files with php-cs-fixer (ignore PHP 8.4 warnings)', aliases: ['fix-php'])]
 function fix_php(): int
 {
     title('fix:php');
     $ec = exit_code('vendor/bin/php-cs-fixer fix',
         context: context()->withEnvironment(['PHP_CS_FIXER_IGNORE_ENV' => 1])
     );
+
+    return success($ec);
+}
+
+function checkBiome(): void
+{
+    if (!file_exists('bin/biome')) {
+        io()->note('Biome executable not found, donwloading it...');
+        run('bin/console biomejs:download');
+    }
+}
+
+#[AsTask(name: 'js-css', namespace: 'fix', description: 'Format JS/CSS files with Biome', aliases: ['fix-js-css'])]
+function fix_js_css(): int
+{
+    checkBiome();
+    title('fix:js-css');
+    $ec = exit_code('bin/biome check . --write');
+    io()->newLine();
 
     return success($ec);
 }
@@ -230,8 +261,9 @@ function lint_php(): int
 #[AsTask(name: 'js-css', namespace: 'lint', description: 'Lint JS/CSS files with Biome', aliases: ['lint-js-css'])]
 function lint_js_css(): int
 {
+    checkBiome();
     title('lint:js-css');
-    $ec = exit_code('bin/console biomejs:check .');
+    $ec = exit_code('bin/biome check .');
     io()->newLine();
 
     return success($ec);
@@ -241,7 +273,8 @@ function lint_js_css(): int
 function ci_lint_js_css(): int
 {
     title('ci:lint-js-css');
-    $ec = exit_code('php bin/console biomejs:ci . &> /dev/null');
+    checkBiome();
+    $ec = exit_code('bin/biome ci . &> /dev/null');
     io()->newLine();
 
     return success($ec);
@@ -253,7 +286,7 @@ function ci_lint_php(): int
     title('ci:lint-php');
 
     $ec = exit_code('command -v cs2pr &> /dev/null');
-    if (0 !== $ec) {
+    if ($ec !== 0) {
         aborted('cs2pr not found. Locally, Please use the "lint:php" task.');
 
         return 1;
@@ -264,14 +297,15 @@ function ci_lint_php(): int
     );
 }
 
-#[AsTask(name: 'all', namespace: 'fix', description: 'Run all CS checks', aliases: ['fix'])]
+#[AsTask(name: 'all', namespace: 'fix', description: 'Run all fixers', aliases: ['fix'])]
 function fix_all(): int
 {
     title('fix:all');
     $ec1 = fix_php();
+    $ec2 = fix_js_css();
     io()->newLine();
 
-    return success($ec1);
+    return success($ec1 + $ec2);
 }
 #[AsTask(name: 'container', namespace: 'lint', description: 'Lint the Symfony DI container', aliases: ['lint-container'])]
 function lint_container(): int
@@ -295,15 +329,18 @@ function lint_all(): int
     title('lint:all');
     $ec1 = stan();
     $ec2 = lint_php();
-    $ec3 = lint_container();
-    $ec4 = lint_twig();
+    $ec3 = lint_doctrine();
+    $ec4 = lint_js_css();
+    $ec5 = lint_container();
+    $ec6 = lint_twig();
 
-    return success($ec1 + $ec2 + $ec3 + $ec4);
+    return success($ec1 + $ec2 + $ec3 + $ec4 + $ec5 + $ec6);
 
     // if you want to speed up the process, you can run these commands in parallel
     //    parallel(
     //        fn() => stan(),
     //        fn() => lint_php(),
+    //        fn() => lint_doctrine(),
     //        fn() => lint_container(),
     //        fn() => lint_twig(),
     //    );
@@ -385,3 +422,13 @@ function rector_dry_run(): void
     run('vendor/bin/rector --dry-run');
     success(0);
 }
+
+#[AsTask(name: 'le-renew', namespace: 'prod', description: "Renew Let's Encrypt HTTPS certificates", aliases: ['le-renew'])]
+function le_renew(): int
+{
+    $ec = exit_code(sprintf('certbot --apache -d %s -d www.%s', DOMAIN, DOMAIN));
+    io()->newLine();
+
+    return success($ec);
+}
+
