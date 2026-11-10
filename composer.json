@@ -32,7 +32,6 @@
         "ext-xml": "*",
         "league/commonmark": "^2.10",
         "sentry/sentry-symfony": "^5.12",
-
         "symfony/asset": "8.1.*",
         "symfony/asset-mapper": "8.1.*",
         "symfony/console": "8.1.*",
@@ -114,7 +113,7 @@
         "classmap-authoritative": true,
         "audit": {
             "block-insecure": true,
-	    "abandoned": "fail"
+	          "abandoned": "fail"
         },
         "platform": {
             "php": "8.5.0"
@@ -123,7 +122,7 @@
     },
     "extra": {
         "bamarni-bin": {
-            "bin-links": false,
+            "bin-links": true,
             "forward-command": true,
             "target-directory": "vendor-bin"
         },
