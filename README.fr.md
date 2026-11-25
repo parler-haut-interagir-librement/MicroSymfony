@@ -362,4 +362,9 @@ The MIT License, avec l'attribution au dépôt d'origine qu'elle demande. Voir l
 
 * [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony)
 * [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
+* IRL Assemble Online
+* [La Page à Melkor](https://lapageamelkor.org) avec [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
 * [Parler Haut, Interagir Librement](https://ph-il.ca) avec [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
+* RPG Assemble Online
+* [TiltTek](https://tilttek.com) avec [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
+* [TTRPG Maker](https://ttrpgmaker.com) avec [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
