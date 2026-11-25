@@ -1,0 +1,35 @@
+brand:
+  name: 'Parler Haut, Interagir Librement : MicroSymfony'
+  copyright: 'Parler Haut, Interagir Librement'
+  html: '<b>Parler</b> <i>Haut</i>, <b>Interagir</b> <i>Librement</i> : <b>Micro</b><i>Symfony</i> 🎶'
+  info: 'Un gabarit d’application Symfony %symfony% sous stéroïdes, prêt à l’emploi.'
+  tech: >-
+    Le gabarit repose sur les dernières versions des technologies qu’il emploie : Symfony 8.2, PHP 8.5, FrankenPHP en
+    mode worker, Doctrine ORM 3, Stimulus 3, Turbo 8, Pico CSS 2 et bien d’autres.
+
+home:
+  readme: 'Cette page affiche le fichier <a target="_blank" rel="noopener noreferrer" href="%url%">%file%</a> du dépôt GitHub.'
+
+menu:
+  label: Menu
+  readme: 📒 LISEZMOI
+  hello: Bonjour le monde ! 👻
+  stimulus: '<b>J</b>ava<b>S</b>cript avec Stimulus'
+  composer: 'Le fichier <code>composer.json</code>'
+  form: 📝 Exemple de formulaire
+  users: 👥 Liste des utilisateurs
+  error: ❌ Page d’erreur personnalisée
+  pico: ✨ Documentation de Pico CSS ⤴️
+
+header:
+  github: Le dépôt GitHub de MicroSymfony
+  dark_mode: Passer au mode sombre
+  light_mode: Passer au mode clair
+
+footer:
+  all_rights: Tous droits réservés
+  credit: >-
+    Un gabarit d’application Symfony minimaliste de <a href="https://www.strangebuzz.com" target="_blank"
+    rel="noopener noreferrer">COil/Strangebuzz 🐝</a> et d’<a href="%contributors%" target="_blank"
+    rel="noopener noreferrer">autres contributeurs</a>.
+  symfony: 'Symfony™ est une marque commerciale de <a target="_blank" rel="noopener noreferrer" href="https://symfony.com/license">Symfony SAS</a>.'

@@ -1,0 +1,35 @@
+brand:
+  name: 'Proclaim Honestly, Interact Liberally: MicroSymfony'
+  copyright: 'Proclaim Honestly, Interact Liberally'
+  html: '<b>Proclaim</b> <i>Honestly</i>, <b>Interact</b> <i>Liberally</i>: <b>Micro</b><i>Symfony</i> 🎶'
+  info: 'A Symfony %symfony% application template on steroids, ready to use.'
+  tech: >-
+    The template is built on the latest versions of the technologies it uses: Symfony 8.2, PHP 8.5, FrankenPHP in
+    worker mode, Doctrine ORM 3, Stimulus 3, Turbo 8, Pico CSS 2 and many more.
+
+home:
+  readme: 'This page displays the <a target="_blank" rel="noopener noreferrer" href="%url%">%file%</a> file of the GitHub repository.'
+
+menu:
+  label: Menu
+  readme: 📒 README
+  hello: Hello world! 👻
+  stimulus: '<b>J</b>ava<b>S</b>cript with Stimulus'
+  composer: 'The <code>composer.json</code> file'
+  form: 📝 Form example
+  users: 👥 Users list
+  error: ❌ Custom error page
+  pico: ✨ Pico CSS documentation ⤴️
+
+header:
+  github: The MicroSymfony GitHub repository
+  dark_mode: Switch to dark mode
+  light_mode: Switch to light mode
+
+footer:
+  all_rights: All rights reserved
+  credit: >-
+    A Symfony minimalist application template by <a href="https://www.strangebuzz.com" target="_blank"
+    rel="noopener noreferrer">COil/Strangebuzz 🐝</a> and <a href="%contributors%" target="_blank"
+    rel="noopener noreferrer">other contributors</a>.
+  symfony: 'Symfony™ is a trademark of <a target="_blank" rel="noopener noreferrer" href="https://symfony.com/license">Symfony SAS</a>.'

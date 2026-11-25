@@ -11,6 +11,12 @@ return App::config([
         'http_method_override' => false,
         'handle_all_throwables' => true,
 
+        // English by default; a browser that prefers French gets the French pages, on the same addresses.
+        'default_locale' => 'en',
+        'enabled_locales' => ['en', 'fr'],
+        'set_locale_from_accept_language' => true,
+        'set_content_language_from_locale' => true,
+
         // Enables session support. Note that the session will ONLY be started if you read or write from it.
         // Remove or comment this section to explicitly disable session support.
         'session' => [

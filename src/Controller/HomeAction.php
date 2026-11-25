@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Attribute\Route;
@@ -27,17 +28,18 @@ final class HomeAction extends AbstractController
     }
 
     /**
-     * Displays the README.md file.
+     * Displays the README of the locale: README.fr.md in French, README.md otherwise.
      */
     #[Route(path: '/', name: self::class, methods: ['GET'])]
-    public function __invoke(): Response
+    public function __invoke(Request $request): Response
     {
-        $readme = $this->cache->get('readme', function (ItemInterface $item): string {
+        $file = 'fr' === $request->getLocale() ? 'README.fr.md' : 'README.md';
+        $readme = $this->cache->get($file, function (ItemInterface $item) use ($file): string {
             $item->expiresAfter(3600);
 
-            return $this->fs->readFile(__DIR__.'/../../README.md');
+            return $this->fs->readFile(__DIR__.'/../../'.$file);
         });
 
-        return $this->render(self::class.'.html.twig', ['readme' => $readme]);
+        return $this->render(self::class.'.html.twig', ['readme' => $readme, 'file' => $file]);
     }
 }

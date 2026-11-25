@@ -66,16 +66,10 @@ function aggregate(int ...$exitCodes): int
 
 // Servers ————————————————————————————————————————————————————————————————————
 
-#[AsTask(namespace: 'symfony', description: 'Serve the application with the Symfony binary and SQLite', aliases: ['start'])]
+#[AsTask(namespace: 'symfony', description: 'Serve the application with the Symfony binary', aliases: ['start'])]
 function start(): int
 {
     title('symfony:start');
-    $exitCode = loadFixtures();
-    if ($exitCode !== 0) {
-        aborted('The database could not be prepared: the web server has NOT been started.');
-
-        return $exitCode;
-    }
 
     return exit_code('symfony serve --daemon');
 }
@@ -84,25 +78,16 @@ function start(): int
 function stop(): int
 {
     title('symfony:stop');
-    $exitCode = exit_code('symfony server:stop');
-    resetDatabase();
 
-    return $exitCode;
+    return exit_code('symfony server:stop');
 }
 
-#[AsTask(namespace: 'docker', description: 'Start FrankenPHP in worker mode and PostgreSQL with Docker Compose', aliases: ['up'])]
+#[AsTask(namespace: 'docker', description: 'Start FrankenPHP in worker mode with Docker Compose', aliases: ['up'])]
 function up(): int
 {
     title('docker:up');
-    $exitCode = exit_code('docker compose up --detach --wait --build');
-    if ($exitCode !== 0) {
-        return success($exitCode);
-    }
 
-    return success(aggregate(
-        exit_code('docker compose exec php bin/console doctrine:migrations:migrate --no-interaction'),
-        exit_code('docker compose exec php bin/console foundry:load-fixtures --no-interaction'),
-    ));
+    return success(exit_code('docker compose up --detach --wait --build'));
 }
 
 #[AsTask(namespace: 'docker', description: 'Stop the Docker Compose services', aliases: ['down'])]
@@ -145,30 +130,6 @@ function purge(): int
     title('symfony:purge');
 
     return success(exit_code('rm -rf ./var/cache/* ./var/log/* ./var/coverage/*'));
-}
-
-// Database ———————————————————————————————————————————————————————————————————
-
-#[AsTask(namespace: 'app', description: 'Reset the SQLite database, run the migrations and load the fixtures', aliases: ['load-fixtures'])]
-function loadFixtures(): int
-{
-    title('app:load-fixtures');
-    resetDatabase();
-    io()->note('Running the migrations...');
-    $exitCode = exit_code('bin/console doctrine:migrations:migrate --no-interaction');
-    if ($exitCode !== 0) {
-        return success($exitCode);
-    }
-
-    io()->note('Loading the fixtures...');
-
-    return success(exit_code('bin/console foundry:load-fixtures --env=dev --no-interaction'));
-}
-
-function resetDatabase(): void
-{
-    io()->note('Resetting the SQLite database...');
-    exit_code('rm -f ./var/data.db');
 }
 
 // Tests ——————————————————————————————————————————————————————————————————————
@@ -269,6 +230,16 @@ function infection(): int
     return success(exit_code(sprintf('%s infection', PHIL_DEV)));
 }
 
+// Security ———————————————————————————————————————————————————————————————————
+
+#[AsTask(name: 'taint', namespace: 'security', description: 'Follow the untrusted inputs to HTML, SQL, shells and files with the taint analysis of Psalm', aliases: ['taint'])]
+function taint(): int
+{
+    title('security:taint');
+
+    return success(exit_code(sprintf('%s taint', PHIL_DEV)));
+}
+
 // Lints and static analysis ——————————————————————————————————————————————————
 
 #[AsTask(name: 'php', namespace: 'lint', description: 'Check the code style of the PHP files with PHP-CS-Fixer', aliases: ['lint-php'])]
@@ -308,15 +279,7 @@ function lint_yaml(): int
 {
     title('lint:yaml');
 
-    return success(exit_code('bin/console lint:yaml .github compose.yaml compose.override.yaml --parse-tags'));
-}
-
-#[AsTask(name: 'doctrine', namespace: 'lint', description: 'Validate the Doctrine mapping and schema', aliases: ['lint-doctrine'])]
-function lint_doctrine(): int
-{
-    title('lint:doctrine');
-
-    return success(exit_code('bin/console doctrine:schema:validate'));
+    return success(exit_code('bin/console lint:yaml .github compose.yaml translations --parse-tags'));
 }
 
 #[AsTask(name: 'composer', namespace: 'lint', description: 'Check the dependencies: analysis, advisories, unused packages, normalized composer.json', aliases: ['lint-composer'])]
@@ -379,7 +342,6 @@ function lint_all(): int
         lint_js(),
         lint_yaml(),
         lint_container(),
-        lint_doctrine(),
         analyse(),
         lint_rector(),
         lint_architecture(),

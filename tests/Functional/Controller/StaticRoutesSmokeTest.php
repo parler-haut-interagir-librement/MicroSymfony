@@ -8,7 +8,6 @@ use App\Controller\ComposerAction;
 use App\Controller\FormAction;
 use App\Controller\HelloWorldAction;
 use App\Controller\HomeAction;
-use App\Controller\ListUsersAction;
 use App\Controller\SlugifyAction;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -26,7 +25,6 @@ use Symfony\Component\Routing\RouterInterface;
 #[CoversClass(FormAction::class)]
 #[CoversClass(HelloWorldAction::class)]
 #[CoversClass(HomeAction::class)]
-#[CoversClass(ListUsersAction::class)]
 #[CoversClass(SlugifyAction::class)]
 final class StaticRoutesSmokeTest extends WebTestCase
 {

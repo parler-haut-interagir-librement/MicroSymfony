@@ -1,8 +1,5 @@
-# The application served by FrankenPHP in worker mode, with PostgreSQL: run `castor up`, then open https://localhost.
-# The Symfony binary with SQLite stays the lighter choice: `castor start`.
-#
-# For MySQL instead of PostgreSQL, replace the database service with a mysql:8.4 image and DATABASE_URL with
-# mysql://app:app@database:3306/app?serverVersion=8.4&charset=utf8mb4 (see README.md).
+# The application served by FrankenPHP in worker mode: run `castor up`, then open https://localhost.
+# The Symfony binary stays the lighter choice: `castor start`.
 services:
   php:
     build:
@@ -17,7 +14,6 @@ services:
           watch
         }
       APP_ENV: "${APP_ENV:-dev}"
-      DATABASE_URL: "postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-app}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-17}&charset=utf8"
     volumes:
       - ./:/app
       - caddy_data:/data
@@ -26,27 +22,8 @@ services:
       - "127.0.0.1:${HTTP_PORT:-80}:80"
       - "127.0.0.1:${HTTPS_PORT:-443}:443"
       - "127.0.0.1:${HTTPS_PORT:-443}:443/udp"
-    depends_on:
-      database:
-        condition: service_healthy
     tty: true
-
-  database:
-    image: "postgres:${POSTGRES_VERSION:-17}-alpine"
-    environment:
-      POSTGRES_DB: "${POSTGRES_DB:-app}"
-      POSTGRES_USER: "${POSTGRES_USER:-app}"
-      # A password for the workstation only: change it, as every other secret, outside of development.
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-app}"
-    healthcheck:
-      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
-      interval: 2s
-      timeout: 5s
-      retries: 30
-    volumes:
-      - database_data:/var/lib/postgresql/data:rw
 
 volumes:
   caddy_data:
   caddy_config:
-  database_data:

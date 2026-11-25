@@ -1,14 +1,4 @@
-
-   █████████                     █████
-  ███░░░░░███                   ░░███
- ███     ░░░   ██████    █████  ███████    ██████  ████████
-░███          ░░░░░███  ███░░  ░░░███░    ███░░███░░███░░███
-░███           ███████ ░░█████   ░███    ░███ ░███ ░███ ░░░
-░░███     ███ ███░░███  ░░░░███  ░███ ███░███ ░███ ░███
- ░░█████████ ░░████████ ██████   ░░█████ ░░██████  █████
-  ░░░░░░░░░   ░░░░░░░░ ░░░░░░     ░░░░░   ░░░░░░  ░░░░░
-
-castor v1.1.0
+castor v1.9.1
 
 Usage:
   command [options] [arguments]
@@ -29,45 +19,54 @@ Available commands:
   completion                  Dump the shell completion script
   help                        Display help for a command
   list                        List commands
- app
-  app:load-fixtures           [load-fixtures] Load the database fixtures
  castor
   castor:composer             [composer] Interact with built-in Composer for castor
   castor:execute              [execute] Execute a remote task from a packagist directory
+  castor:llm:configure        Configures which LLM CLI Castor uses
+  castor:llm:debug            Shows which LLM CLI Castor uses, and why
+  castor:self-update          [self-update] Updates Castor to the latest version
  ci
-  ci:all                      [ci] Run CI locally
-  ci:lint-js-css              Lint JS/CSS files with Biome (CI)
-  ci:lint-php                 Lint PHP files with php-cs-fixer (for CI)
+  ci:all                      [ci] Run the continuous integration locally: coverage, then every lint
+ docker
+  docker:down                 [down] Stop the Docker Compose services
+  docker:up                   [up] Start FrankenPHP in worker mode with Docker Compose
  fix
-  fix:all                     [fix] Run all fixers
-  fix:js-css                  [fix-js-css] Format JS/CSS files with Biome
-  fix:php                     [fix-php] Fix PHP files with php-cs-fixer (ignore PHP 8.4 warnings)
+  fix:all                     [fix] Run every fixer
+  fix:composer                [fix-composer] Normalize composer.json
+  fix:js                      [fix-js] Fix the Stimulus controllers and the styles with Biome
+  fix:php                     [fix-php] Fix the code style of the PHP files with PHP-CS-Fixer
+  fix:rector                  [fix-rector] Apply the changes of Rector
+  fix:twig                    [fix-twig] Fix the code style of the Twig templates
  helpers
-  helpers:check-requirements  [check-requirements] Checks requirements for running Symfony
-  helpers:versions            [versions] Output current stack versions
+  helpers:check-requirements  [check-requirements] Check the requirements of Symfony
+  helpers:hooks               [hooks] Install the git hooks: the fast checks on the staged files before each commit
+  helpers:versions            [versions] Output the versions of the stack
  lint
-  lint:all                    [lint] Run all lints
-  lint:container              [lint-container] Lint the Symfony DI container
-  lint:doctrine               [lint-doctrine] Validate Doctrine schema
-  lint:js-css                 [lint-js-css] Lint JS/CSS files with Biome
-  lint:php                    [lint-php] Lint PHP files with php-cs-fixer (report only)
-  lint:stan                   [stan] Run PHPStan
-  lint:twig                   [lint-twig] Lint Twig files
- prod
-  prod:deploy                 [deploy] Simple manual deploy on a VPS (this is to update the demo site https://microsymfony.ovh/)
-  prod:le-renew               [le-renew] Renew Let's Encrypt HTTPS certificates
+  lint:all                    [lint] Run every lint and the static analysis
+  lint:analyse                [analyse|stan] Run PHPStan at the maximum level, then check its witnesses
+  lint:architecture           [lint-architecture] Check the shape of the classes with Arkitect and the layers with Deptrac
+  lint:composer               [lint-composer] Check the dependencies: analysis, advisories, unused packages, normalized composer.json
+  lint:container              [lint-container] Lint the Symfony container
+  lint:js                     [lint-js] Check the Stimulus controllers and the styles with Biome
+  lint:php                    [lint-php] Check the code style of the PHP files with PHP-CS-Fixer
+  lint:rector                 [lint-rector] Check that Rector has nothing left to change
+  lint:twig                   [lint-twig] Lint the Twig templates and check their code style
+  lint:yaml                   [lint-yaml] Lint the YAML files
+ security
+  security:taint              [taint] Follow the untrusted inputs to HTML, SQL, shells and files with the taint analysis of Psalm
  symfony
   symfony:go-dev              [go-dev] Switch to the development environment
   symfony:go-prod             [go-prod] Switch to the production environment
   symfony:purge               [purge] Purge all Symfony cache and logs
   symfony:start               [start] Serve the application with the Symfony binary
-  symfony:stop                [stop] Stop the web server
+  symfony:stop                [stop] Stop the web server of the Symfony binary
  test
-  test:all                    [test] Run tests with optional filter and options, eg: "filter=slug options=--testdox castor test")
-  test:api                    [test-api] Run API tests only
-  test:cov-report             [cov-report] Open the PHPUnit code coverage report (var/coverage/index.html)
-  test:coverage               [coverage] Generate the HTML PHPUnit code coverage report (stored in var/coverage)
-  test:e2e                    [test-e2e] Run E2E tests only
-  test:functional             [test-functional] Run functional tests only
-  test:integration            [test-integration] Run integration tests only
-  test:unit                   [test-unit] Run unit tests only
+  test:all                    [test] Run every test suite, eg: "castor test --filter=slug --options=--testdox"
+  test:api                    [test-api] Run the API tests only
+  test:coverage               [coverage] Generate the HTML code coverage report (var/coverage) and check its threshold
+  test:e2e                    [test-e2e] Run the end-to-end tests only
+  test:functional             [test-functional] Run the functional tests only
+  test:infection              [infection] Mutation testing with Infection
+  test:integration            [test-integration] Run the integration tests only
+  test:next                   Run the tests on the next PHP version, in its Docker image
+  test:unit                   [test-unit] Run the unit tests only
