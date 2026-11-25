@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Tests\Api\Controller;
 
 use App\Controller\SlugifyAction;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @internal
- */
+#[CoversClass(SlugifyAction::class)]
 final class SlugifyActionTest extends WebTestCase
 {
     /**
@@ -22,10 +20,10 @@ final class SlugifyActionTest extends WebTestCase
     public function testSlugifyAction(): void
     {
         $client = self::createClient();
-        $client->request(Request::METHOD_GET, '/api/slugify?title=This IS the _-! Micro SYMFONY  project');
+        $client->request('GET', '/api/slugify?title=This IS the _-! Micro SYMFONY  project', server: ['HTTP_ACCEPT_LANGUAGE' => 'en']);
         self::assertResponseIsSuccessful();
         self::isJson();
-        self::assertJsonStringEqualsJsonString('{"slug":"this-is-the-micro-symfony-project"}', (string) $client->getResponse()->getContent());
+        self::assertJsonStringEqualsJsonString('{"slug":"this-is-the-micro-symfony-project","locale":"en"}', (string) $client->getResponse()->getContent());
 
         // With the ApiTestCase, these tests would look like
         // $this->assertJsonContains([

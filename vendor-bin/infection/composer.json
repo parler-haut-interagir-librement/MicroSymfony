@@ -1,14 +1,11 @@
 {
-    "require-dev": {
+    "require": {
         "php": ">=8.5",
         "infection/infection": "^0.34"
     },
     "config": {
         "allow-plugins": {
             "infection/extension-installer": true
-        },
-        "platform": {
-            "php": "8.5.0"
         },
         "sort-packages": true
     }

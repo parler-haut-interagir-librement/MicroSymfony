@@ -1,12 +1,9 @@
 {
-    "require-dev": {
+    "require": {
         "php": ">=8.5",
-        "rector/rector": "^2.6"
+        "rector/rector": "^2.7"
     },
     "config": {
-        "platform": {
-            "php": "8.5.0"
-        },
         "sort-packages": true
     }
 }

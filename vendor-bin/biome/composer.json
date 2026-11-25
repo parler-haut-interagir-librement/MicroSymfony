@@ -1,12 +1,9 @@
 {
-    "require-dev": {
+    "require": {
         "php": ">=8.5",
         "kocal/biome-js-bundle": "^2.1"
     },
     "config": {
-        "platform": {
-            "php": "8.5.0"
-        },
         "sort-packages": true
     }
 }

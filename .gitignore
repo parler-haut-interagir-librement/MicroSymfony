@@ -1,5 +1,8 @@
-.DS_Store
-.idea
+###> bamarni/composer-bin-plugin ###
+/vendor-bin/**/vendor/
+/vendor-bin/**/composer.lock
+###< bamarni/composer-bin-plugin ###
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -8,20 +11,14 @@
 /public/bundles/
 /var/
 /vendor/
+/config/reference.php
+/config/schema.json
 ###< symfony/framework-bundle ###
-
-# Managed by Composer
-/bin/*
-!bin/console
 
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
-
-###> symfony/web-server-bundle ###
-/.web-server-pid
-###< symfony/web-server-bundle ###
 
 ###> jolicode/castor ###
 .castor.stub.php
@@ -29,16 +26,18 @@
 
 ###> symfony/asset-mapper ###
 /public/assets/
-/assets/vendor/
 ###< symfony/asset-mapper ###
-###> bamarni/composer-bin-plugin ###
-/vendor-bin/**/vendor/
-###< bamarni/composer-bin-plugin ###
 
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
-/.phpunit.cache/
+.phpunit.cache
 ###< phpunit/phpunit ###
-/config/reference.php
+
+###> phil/dev-tools ###
 /.deptrac.cache
+###< phil/dev-tools ###
+
+###> misc ###
+.opencode/
+###< misc ###

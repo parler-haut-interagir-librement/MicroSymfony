@@ -1,0 +1,10 @@
+# The shared PHPStan configuration of phil/dev-tools: the maximum level, the strict rules, bleeding edge. The paths and
+# exceptions come from phil-dev.php; what only this application needs goes below.
+includes:
+    - vendor/phil/dev-tools/config/phpstan.neon
+
+parameters:
+    tmpDir: var/phpstan
+    # The container of the dev environment, written by bin/console cache:warmup: castor lint:analyse generates it.
+    symfony:
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml

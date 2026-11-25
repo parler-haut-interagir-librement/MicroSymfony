@@ -1,7 +1,7 @@
 # Taken and adapted from the Symfony project
-# @see https://github.com/symfony/symfony/blob/7.3/.github/ISSUE_TEMPLATE/1_Bug_report.yaml
+# @see https://github.com/symfony/symfony/blob/8.1/.github/ISSUE_TEMPLATE/1_Bug_report.yaml
 name: 🐛 Bug Report
-description: ⚠️ NEVER report security issues, read https://github.com/strangebuzz/MicroSymfony?tab=security-ov-file
+description: ⚠️ NEVER report security issues, read https://github.com/parler-haut-interagir-librement/MicroSymfony?tab=security-ov-file
 labels: Bug
 
 body:
@@ -29,7 +29,7 @@ body:
         Please, take the time to show us some code and/or config that is needed for others to reproduce the problem easily.
         Most of the time, creating a "bug reproducer" as explained in the URL below is the best way to help us
         and increases the chances someone will have a look at it.
-        To create a reproducer you can clone an existing [tag](https://github.com/strangebuzz/MicroSymfony/tags).
+        To create a reproducer you can clone an existing [tag](https://github.com/parler-haut-interagir-librement/MicroSymfony/tags).
     validations:
       required: true
   - type: textarea

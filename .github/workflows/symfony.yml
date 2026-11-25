@@ -9,118 +9,61 @@ on:
 permissions:
   contents: read
 
-env:
-  XDEBUG_MODE: coverage
-
 jobs:
-  # Run security checks ————————————————————————————————————————————————————————
+  # The installed packages against the security advisories ————————————————————
   security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+      - uses: actions/checkout@v4
+      - name: Install the dependencies
+        run: composer install --no-interaction --no-progress --no-scripts --prefer-dist
+      - name: Audit the dependencies
+        run: composer audit
+
+  # The tests and their coverage threshold, on PHP 8.5 and the next PHP ————————
+  tests:
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
-        php-versions: ['8.4']
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-versions }}
-    - uses: actions/checkout@v3
-
-    - name: Get Composer Cache Directory
-      id: composer-cache
-      run: |
-        echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-    - uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-composer-
-    - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-
-    - name: Audit the code for security vulnerabilities
-      run: composer audit
-
-
-  # Run tests ——————————————————————————————————————————————————————————————————
-  symfony-tests:
-    strategy:
-      fail-fast: true
-      matrix:
-        php-versions: ['8.4', '8.5']
-    runs-on: ubuntu-latest
-
-    # Setup
-    steps:
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-versions }}
-        coverage: xdebug
-        tools: castor
-    - uses: actions/checkout@v3
-
-    # Composer
-    - name: Get Composer Cache Directory
-      id: composer-cache
-      run: |
-        echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-    - uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-composer-
-    - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-
-    # Tests
-    - name: Execute tests via PHPUnit
-      run: castor test
-
-    # Code coverage
-    - name: Generate the code coverage report and show the current global coverage
-      run: castor coverage
-
-
-  # Run all lint/CS checks —————————————————————————————————————————————————————
-  symfony-lint:
+        php-versions: ['8.5', '8.6']
     runs-on: ubuntu-latest
     steps:
-    # Setup
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.4'
-        tools: cs2pr, castor
-    - uses: actions/checkout@v3
-    - name: Get Composer Cache Directory
-      id: composer-cache
-      run: |
-        echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-    - uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-composer-
-    - name: Install PHP dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    - name: Install PHPUnit dependencies for PHPStan
-      run: vendor/bin/phpunit --version
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          coverage: xdebug
+          tools: castor
+      - uses: actions/checkout@v4
+      - name: Cache the Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/composer
+          key: ${{ runner.os }}-php${{ matrix.php-versions }}-composer-${{ hashFiles('composer.lock') }}
+      - name: Install the dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+      - name: Prepare the database
+        run: castor load-fixtures
+      - name: Run the tests with their coverage threshold
+        run: castor coverage
 
-    # Native Symfony lints
-    - name: Lint the DI container
-      run: castor lint:container
-    - name: Lint Twig templates
-      run: castor lint:twig
-
-    # Vendors lints
-    - name: Lint PHP with php-cs-fixer
-      run: castor ci:lint-php
-    - name: PHPStan static analysis
-      run: castor stan
-    - name: Lint JS and CSS files
-      run: castor ci:lint-js-css
-
-# The end. 🙃
+  # Every lint and the static analysis —————————————————————————————————————————
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          tools: castor
+      - uses: actions/checkout@v4
+      - name: Cache the Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/composer
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+      - name: Install the dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+      - name: Run every lint and the static analysis
+        run: castor lint

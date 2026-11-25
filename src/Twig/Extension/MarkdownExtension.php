@@ -14,9 +14,6 @@ use Twig\Attribute\AsTwigFilter;
 
 use function Symfony\Component\String\u;
 
-use const LIBXML_HTML_NODEFDTD;
-use const LIBXML_HTML_NOIMPLIED;
-
 final readonly class MarkdownExtension
 {
     public function __construct(
@@ -31,29 +28,29 @@ final readonly class MarkdownExtension
      * need a trailing `|raw`. This is safe ONLY because the input is a trusted source
      * (our own README.md); never apply this filter to user-provided content.
      *
-     * @see https://microsymfony.ovh
-     * @see https://github.com/strangebuzz/MicroSymfony/blob/main/README.md?plain=1
+     * @see https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/README.md?plain=1
      */
     #[AsTwigFilter('add_headers_anchors', isSafe: ['html'])]
     public function addHeadersAnchors(string $html): string
     {
         // DOMDocument::loadHTML() throws a ValueError on an empty string, so bail out early.
-        if (u($html)->trim()->isEmpty()) {
+        $encoded = mb_encode_numericentity($html, [0x80, 0x10FFFF, 0, ~0], 'UTF-8');
+        if ('' === $encoded || u($html)->trim()->isEmpty()) {
             return $html;
         }
 
         // Keep libxml from emitting warnings to the error log on imperfect HTML5 input.
         $previousUseInternalErrors = libxml_use_internal_errors(true);
 
-        $dom = new \DOMDocument();
-        $dom->loadHTML(mb_encode_numericentity($html, [0x80, 0x10FFFF, 0, ~0], 'UTF-8'), \LIBXML_HTML_NOIMPLIED | \LIBXML_HTML_NODEFDTD);
+        $dom = new DOMDocument();
+        $dom->loadHTML($encoded, \LIBXML_HTML_NOIMPLIED | \LIBXML_HTML_NODEFDTD);
 
         // Allow to have the same "buggy" anchors as GitHub
-        /** @var \DOMNodeList<\DOMNode> $tags */
-        $tags = new \DOMXPath($dom)->query('//h2 | //h3');
+        /** @var DOMNodeList<DOMNode> $tags */
+        $tags = new DOMXPath($dom)->query('//h2 | //h3');
         foreach ($tags as $headerTag) {
             $slug = $this->stringHelper->slugify($headerTag->textContent);
-            /** @var \DOMElement $headerTag */
+            /** @var DOMElement $headerTag */
             $headerTag->setAttribute('id', $slug.(u($slug)->length() !== u($headerTag->textContent)->length() ? '-' : '')); // add "-" when we have a final Emoji.
         }
 

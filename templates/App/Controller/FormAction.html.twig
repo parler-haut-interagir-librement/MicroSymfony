@@ -44,7 +44,7 @@
                 </tr>
 
                 <tr>
-                    <th>Birthay</th>
+                    <th>Birthday</th>
                     <td>{{ dto.birthday|date('Y-m-d') }}</td>
                 </tr>
 
@@ -69,7 +69,7 @@
             <fieldset>
                 <h3>Enter your information 🖋</h3>
 
-                {{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form(form, {attr: {novalidate: 'novalidate'}}) }}
             </fieldset>
         </article>
     {% endif %}

@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * This file tests static pages without associated controller.
  *
- * @see config/routes/static_page.yaml
- *
- * @internal
+ * @see config/routes.yaml
  */
+#[CoversNothing]
 final class StaticControllerTest extends WebTestCase
 {
     public function testStimulus(): void
     {
         $client = self::createClient();
-        $client->request(Request::METHOD_GET, '/stimulus');
+        $client->request('GET', '/stimulus');
         self::assertResponseIsSuccessful();
     }
 }
