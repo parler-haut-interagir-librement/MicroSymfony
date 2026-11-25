@@ -5,11 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @internal
- */
 final class ComposerActionTest extends WebTestCase
 {
     /**
@@ -20,7 +16,7 @@ final class ComposerActionTest extends WebTestCase
     public function testComposerPage(): void
     {
         $client = self::createClient();
-        $client->request(Request::METHOD_GET, '/composer');
+        $client->request('GET', '/composer');
         self::assertResponseIsSuccessful();
     }
 }

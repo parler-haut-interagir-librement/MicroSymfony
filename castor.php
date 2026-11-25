@@ -16,7 +16,7 @@ use function Castor\task;
 // use function Castor\parallel;
 
 // Change your prod domain here
-const DOMAIN = 'ph-il.ca';
+const DOMAIN = 'microsymfony.ovh';
 
 // Modify the code coverage threshold here
 const COVERAGE_THRESHOLD = 100;
@@ -25,14 +25,14 @@ const COVERAGE_TEXT_REPORT = 'var/coverage/coverage-text.txt';
 function title(string $name): void
 {
     $task = task();
-    if (null !== $task && $task->getName() === $name) {
+    if ($task !== null && $task->getName() === $name) {
         io()->title($task->getDescription());
     }
 }
 
 function success(int $exitCode): int
 {
-    if (0 === $exitCode) {
+    if ($exitCode === 0) {
         io()->success('Done!');
     } else {
         io()->error(sprintf('Failure (exit code %d returned).', $exitCode));
@@ -59,6 +59,7 @@ function stop(): void
 {
     title('symfony:stop');
     run('symfony server:stop');
+    resetDatabase();
 }
 
 #[AsTask(namespace: 'symfony', description: 'Switch to the production environment', aliases: ['go-prod'])]
@@ -98,6 +99,23 @@ function purge(): void
     success(exit_code('rm -rf ./var/cache/* ./var/log/* ./var/coverage/*'));
 }
 
+#[AsTask(namespace: 'app', description: 'Load the database fixtures', aliases: ['load-fixtures'])]
+function loadFixtures(): void
+{
+    title('app:load-fixtures');
+    resetDatabase();
+    io()->note('Running db migrations...');
+    success(exit_code('bin/console doctrine:migrations:migrate --no-interaction'));
+    io()->note('Load fixtures...');
+    success(exit_code('bin/console foundry:load-fixtures --env=dev --no-interaction'));
+}
+
+function resetDatabase(): void
+{
+    io()->note('Resetting db...');
+    success(exit_code('rm -f ./var/data.db'));
+}
+
 const PHP_UNIT_CMD = '/vendor/bin/phpunit --testsuite=%s --filter=%s %s';
 const PHP_UNIT_SUITES = ['api', 'e2e', 'functional', 'integration', 'unit'];
 
@@ -113,8 +131,9 @@ function getParameters(): array
 function test_all(): int
 {
     title('test:all');
+    loadFixtures();
     [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__ . sprintf(PHP_UNIT_CMD, implode(',', PHP_UNIT_SUITES), $filter, $options));
+    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, implode(',', PHP_UNIT_SUITES), $filter, $options));
     io()->writeln('');
 
     return $ec;
@@ -125,7 +144,7 @@ function test_api(): int
 {
     title('test:api');
     [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__ . sprintf(PHP_UNIT_CMD, 'api', $filter, $options));
+    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'api', $filter, $options));
     io()->writeln('');
 
     return $ec;
@@ -136,7 +155,7 @@ function test_e2e(): int
 {
     title('test:api');
     [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__ . sprintf(PHP_UNIT_CMD, 'e2e', $filter, $options));
+    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'e2e', $filter, $options));
     io()->writeln('');
 
     return $ec;
@@ -147,7 +166,7 @@ function test_functional(): int
 {
     title('test:functional');
     [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__ . sprintf(PHP_UNIT_CMD, 'functional', $filter, $options));
+    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'functional', $filter, $options));
     io()->writeln('');
 
     return $ec;
@@ -158,7 +177,7 @@ function test_integration(): int
 {
     title('test:integration');
     [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__ . sprintf(PHP_UNIT_CMD, 'integration', $filter, $options));
+    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'integration', $filter, $options));
     io()->writeln('');
 
     return $ec;
@@ -169,7 +188,7 @@ function test_unit(
 ): int {
     title('test:unit');
     [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__ . sprintf(PHP_UNIT_CMD, 'unit', $filter, $options));
+    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'unit', $filter, $options));
     io()->writeln('');
 
     return $ec;
@@ -179,10 +198,12 @@ function test_unit(
 function coverage(): int
 {
     title('test:coverage');
-    $ec = exit_code('php -d xdebug.enable=1 -d memory_limit=-1 vendor/bin/phpunit --coverage-html=var/coverage --coverage-clover=var/coverage/clover.xml',
+    purge();
+    loadFixtures();
+    $ec = exit_code(sprintf('php -d xdebug.enable=1 -d memory_limit=-1 vendor/bin/phpunit --coverage-html=var/coverage --coverage-text=%s', COVERAGE_TEXT_REPORT),
         context: context()->withEnvironment(['XDEBUG_MODE' => 'coverage'])
     );
-    if (0 !== $ec) {
+    if ($ec !== 0) {
         return $ec;
     }
 
@@ -219,7 +240,7 @@ function stan(): int
 #[AsTask(name: 'php', namespace: 'fix', description: 'Fix PHP files with php-cs-fixer (ignore PHP 8.4 warnings)', aliases: ['fix-php'])]
 function fix_php(): int
 {
-    title('fix:php');
+    title('fix:fix-php');
     $ec = exit_code('vendor/bin/php-cs-fixer fix',
         context: context()->withEnvironment(['PHP_CS_FIXER_IGNORE_ENV' => 1])
     );
@@ -323,6 +344,14 @@ function lint_twig(): int
     return exit_code('bin/console lint:twig templates/');
 }
 
+#[AsTask(name: 'doctrine', namespace: 'lint', description: 'Validate Doctrine schema', aliases: ['lint-doctrine'])]
+function lint_doctrine(): int
+{
+    title('lint:doctrine');
+
+    return exit_code('bin/console doctrine:schema:validate');
+}
+
 #[AsTask(name: 'all', namespace: 'lint', description: 'Run all lints', aliases: ['lint'])]
 function lint_all(): int
 {
@@ -338,7 +367,6 @@ function lint_all(): int
 
     // if you want to speed up the process, you can run these commands in parallel
     //    parallel(
-    //        fn() => stan(),
     //        fn() => lint_php(),
     //        fn() => lint_doctrine(),
     //        fn() => lint_container(),
@@ -351,6 +379,7 @@ function ci(): void
 {
     title('ci:all');
     purge();
+    loadFixtures();
     io()->section('Coverage');
     coverage();
     io()->section('Lints');
@@ -389,10 +418,6 @@ function versions(): void
         context: context()->withEnvironment(['PHP_CS_FIXER_IGNORE_ENV' => 1])
     );
 
-    io()->note('Rector');
-    run('vendor/bin/rector --version');
-    io()->newLine();
-
     io()->newLine();
 
     success(0);
@@ -407,20 +432,23 @@ function check_requirements(): int
     return success($ec);
 }
 
-#[AsTask(name: 'run', namespace: 'rector', description: 'Run Rector')]
-function rector(): void
+#[AsTask(name: 'deploy', namespace: 'prod', description: 'Simple manual deploy on a VPS (this is to update the demo site https://microsymfony.ovh/)', aliases: ['deploy'])]
+function deploy(): int
 {
-    title('rector:run');
-    run('vendor/bin/rector');
-    success(0);
-}
+    $ec1 = exit_code('git pull');
+    io()->newLine();
+    $ec2 = exit_code('composer install -n');
+    io()->newLine();
+    $ec3 = exit_code('chown -R www-data: ./var/*');
+    io()->newLine();
+    $ec4 = exit_code('cp .env.local.dist .env.local');
+    io()->newLine();
+    $ec5 = exit_code('composer dump-env prod -n');
+    io()->newLine();
+    $ec6 = exit_code('bin/console asset-map:compile');
+    io()->newLine();
 
-#[AsTask(name: 'dry-run', namespace: 'rector', description: 'Run Rector')]
-function rector_dry_run(): void
-{
-    title('rector:dry-run');
-    run('vendor/bin/rector --dry-run');
-    success(0);
+    return success($ec1 + $ec2 + $ec3 + $ec4 + $ec5 + $ec6);
 }
 
 #[AsTask(name: 'le-renew', namespace: 'prod', description: "Renew Let's Encrypt HTTPS certificates", aliases: ['le-renew'])]
@@ -431,4 +459,3 @@ function le_renew(): int
 
     return success($ec);
 }
-

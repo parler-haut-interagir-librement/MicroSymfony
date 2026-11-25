@@ -5,17 +5,97 @@ declare(strict_types=1);
 namespace App\Tests\Integration\Twig\Extension;
 
 use App\Twig\Extension\MarkdownExtension;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/**
- * @internal
- */
+#[CoversClass(MarkdownExtension::class)]
 final class MarkdownExtensionTest extends KernelTestCase
 {
-    public function testRoutingExtensionInvalidArgumentException(): void
+    private MarkdownExtension $extension;
+
+    protected function setUp(): void
     {
         self::bootKernel();
+        /** @var MarkdownExtension $extension */
         $extension = self::getContainer()->get(MarkdownExtension::class);
-        self::assertNotEmpty($extension->addHeadersAnchors('<p>hello</p>'));
+        $this->extension = $extension;
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1: string}>
+     */
+    public static function provideAddHeadersAnchors(): iterable
+    {
+        yield 'h2 gets a slug id' => [
+            '<h2>Getting started</h2>',
+            'id="getting-started"',
+        ];
+
+        yield 'h3 gets a slug id' => [
+            '<h3>Run the tests</h3>',
+            'id="run-the-tests"',
+        ];
+
+        yield 'header with only ascii has no trailing dash' => [
+            '<h2>Symfony is great</h2>',
+            'id="symfony-is-great"',
+        ];
+
+        yield 'trailing emoji adds the GitHub-style dash suffix' => [
+            '<h2>MicroSymfony 🎶</h2>',
+            'id="microsymfony-"',
+        ];
+    }
+
+    #[DataProvider('provideAddHeadersAnchors')]
+    public function testAddHeadersAnchorsAddsIdAttribute(string $html, string $expectedIdAttribute): void
+    {
+        $output = $this->extension->addHeadersAnchors($html);
+        self::assertStringContainsString($expectedIdAttribute, $output);
+    }
+
+    public function testH1AndH4AreNotTouched(): void
+    {
+        $html = '<div><h1>Title ⚡</h1><h4>Sub</h4></div>';
+        $output = $this->extension->addHeadersAnchors($html);
+        self::assertStringNotContainsString('id=', $output);
+    }
+
+    public function testMultipleHeadersAllGetAnchored(): void
+    {
+        $html = '<div><h2>First</h2><p>Some text.</p><h3>Second</h3><h2>Third 🙂</h2></div>';
+        $output = $this->extension->addHeadersAnchors($html);
+        self::assertStringContainsString('id="first"', $output);
+        self::assertStringContainsString('id="second"', $output);
+        self::assertStringContainsString('id="third-"', $output);
+    }
+
+    public function testInlineContentInHeaderIsPreserved(): void
+    {
+        $html = '<h2>Hello <code>world</code></h2>';
+        $output = $this->extension->addHeadersAnchors($html);
+        self::assertStringContainsString('id="hello-world"', $output);
+        self::assertStringContainsString('<code>world</code>', $output);
+    }
+
+    /**
+     * Empty or blank input must be returned as-is: DOMDocument::loadHTML() throws a
+     * ValueError on an empty string.
+     */
+    #[DataProvider('provideBlankInput')]
+    public function testBlankInputIsReturnedUnchanged(string $input): void
+    {
+        self::assertSame($input, $this->extension->addHeadersAnchors($input));
+    }
+
+    /**
+     * @return iterable<string, array{0: string}>
+     */
+    public static function provideBlankInput(): iterable
+    {
+        yield 'empty string' => [''];
+        yield 'spaces only' => ['   '];
+        yield 'newline only' => ["\n"];
     }
 }

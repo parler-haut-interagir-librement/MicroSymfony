@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Dto\RegisterFormDto;
+use App\Dto\Form\Type\RegisterFormDto;
 use App\Form\Type\RegisterForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,17 +19,18 @@ final class FormAction extends AbstractController
     /**
      * A simple form.
      */
-    #[Route(path: '/form', name: self::class)]
+    #[Route(path: '/form', name: self::class, methods: ['GET', 'POST'])]
     public function __invoke(Request $request): Response
     {
         $dto = new RegisterFormDto();
         $form = $this->createForm(RegisterForm::class, $dto)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var RegisterFormDto $dto */
             // just for the example, the DTO has already been updated at this point
             $dto = $form->getData();
         }
 
-        return $this->render(self::class . '.html.twig', [
+        return $this->render(self::class.'.html.twig', [
             'form' => $form,
             'dto' => $dto,
         ]);

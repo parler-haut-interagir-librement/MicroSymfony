@@ -5,17 +5,9 @@ declare(strict_types=1);
 namespace App\Twig\Extension;
 
 use App\Helper\StringHelper;
-use DOMDocument;
-use DOMElement;
-use DOMNode;
-use DOMNodeList;
-use DOMXPath;
 use Twig\Attribute\AsTwigFilter;
 
 use function Symfony\Component\String\u;
-
-use const LIBXML_HTML_NODEFDTD;
-use const LIBXML_HTML_NOIMPLIED;
 
 final readonly class MarkdownExtension
 {

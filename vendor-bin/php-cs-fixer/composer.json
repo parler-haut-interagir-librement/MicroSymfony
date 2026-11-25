@@ -1,12 +1,10 @@
 {
     "require-dev": {
-        "php": ">=8.5",
-        "friendsofphp/php-cs-fixer": "^3.95"
+        "friendsofphp/php-cs-fixer": "^3.46"
     },
     "config": {
         "platform": {
-            "php": "8.5.0"
-        },
-        "sort-packages": true
+            "php": "8.2"
+        }
     }
 }

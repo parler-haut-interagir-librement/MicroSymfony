@@ -1,88 +1,97 @@
-# **Proclaim** *Honestly*, **Interact** *Liberally*” **Micro***Symfony*
+# MicroSymfony 🎶
 
-[![Latest Version](https://img.shields.io/packagist/v/phil/microsymfony.svg?style=flat-square)](https://packagist.org/packages/phil/microsymfony)
-[![PHP Version Require](https://poser.pugx.org/phil/microsymfony/require/php?style=flat-square)](https://packagist.org/packages/phil/microsymfony)
-[![level](https://img.shields.io/badge/level-max-success?style=flat-square&logo=data:image/png;base64,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)](https://packagist.org/packages/phil/microsymfony/actions)
-[![Software License](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=flat-square)](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/LICENSE)
-[![Build Status (GitHub)](https://img.shields.io/github/actions/workflow/status/parler-haut-interagir-librement/microsymfony/symfony.yml?branch=main&style=flat-square)](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions?query=workflow%3ASymfony+branch%3Amain)
-[![Code Coverage](https://scrutinizer-ci.com/g/parler-haut-interagir-librement/MicroSymfony/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/parler-haut-interagir-librement/MicroSymfony/code-structure/main/code-coverage/src/)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/parler-haut-interagir-librement/MicroSymfony/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/parler-haut-interagir-librement/MicroSymfony/?branch=main)
-[![Quality Score](https://img.shields.io/scrutinizer/g/parler-haut-interagir-librement/microsymfony.svg?style=flat-square)](https://scrutinizer-ci.com/g/parler-haut-interagir-librement/microsymfony)
+[![Latest Version](https://img.shields.io/packagist/v/strangebuzz/microsymfony.svg?style=flat-square)](https://packagist.org/packages/strangebuzz/microsymfony)
+[![PHP Version Require](https://poser.pugx.org/strangebuzz/microsymfony/require/php?style=flat-square)](https://packagist.org/packages/strangebuzz/microsymfony)
+[![Symfony Version](https://img.shields.io/badge/Symfony-%3E%3D%208.1-black?logo=symfony)](https://symfony.com/8)
+[![Symfony Style](https://img.shields.io/badge/code%20style-symfony-black?logo=symfony)](https://symfony.com/doc/current/contributing/code/standards.html)
+[![level](https://img.shields.io/badge/level-max-success?style=flat-square&logo=data:image/png;base64,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)](https://github.com/strangebuzz/MicroSymfony/actions)
+[![Software License](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=flat-square)](https://github.com/strangebuzz/MicroSymfony/blob/main/LICENSE)
+[![Build Status (GitHub)](https://img.shields.io/github/actions/workflow/status/strangebuzz/microsymfony/symfony.yml?branch=main&style=flat-square)](https://github.com/strangebuzz/microsymfony/actions?query=workflow%3ASymfony+branch%3Amain)
+[![Code Coverage](https://scrutinizer-ci.com/g/strangebuzz/MicroSymfony/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/strangebuzz/MicroSymfony/code-structure/main/code-coverage/src/)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/strangebuzz/MicroSymfony/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/strangebuzz/MicroSymfony/?branch=main)
+[![Quality Score](https://img.shields.io/scrutinizer/g/strangebuzz/microsymfony.svg?style=flat-square)](https://scrutinizer-ci.com/g/strangebuzz/microsymfony)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributing-)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/strangebuzz/MicroSymfony/pulls)
 
 ## About 🖋 
 
-“**Proclaim** *Honestly*, **Interact** *Liberally*” **Micro***Symfony* is a [Symfony 7.3](https://symfony.com/blog/symfony-7-3-curated-new-features) 
-application skeleton on steroids, ready to use.
+MicroSymfony is a [Symfony 8.1](https://symfony.com/8) application template on steroids, ready to use.
 
-The purpose of **Micro***Symfony* is to provide a sandbox with some sensible defaults and ready to use. 
-It can be a solution if you want to quickly set up something, create a POC, test things, 
-and even make a small "one-page" application.
+I have made a long blog post explaining the philosophy behind it and how to use it:
 
-It was base on [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony) with adjustment
-we're usually adding on all our projects. We also remove somes examples. 
+* [Introducing the MicroSymfony application template](https://www.strangebuzz.com/en/blog/introducing-the-microsymfony-application-template)
 
-> **PS**: If you want to use the last Symfony **6.4 LTS** version in your `composer.json`
-file, replace all occurrences of `7.3` with `6.4` and run `composer up`.
+> [!NOTE]
+> **PS**: If you want to use the last Symfony **7.4 LTS** version, follow the procedure 
+> in [`agents/downgrade-to-symfony-7-4-LTS.md`](agents/downgrade-to-symfony-7-4-LTS.md).
+
+Alternatively, if you have an AI coding assistant tool installed, you can run:
+
+```bash
+opencode --prompt agents/downgrade-to-symfony-7-4-LTS.md
+```
+
+
 ## Table of Contents 📖
 
-* [Demo](#demo-)
+* [Demos](#demos-)
 * [Quick-start](#quick-start-)
   * [With the Symfony binary](#with-the-symfony-binary-)
   * [With FrankenPHP](#with-frankenphp-)
+  * [With Laragon](#with-laragon)
 * [Requirements](#requirements-)
   * [Optional requirements](#optional-requirements-)
 * [Stack](#stack-)
 * [Features](#features-)
+* [Feature branches](#feature-branches-)
+  * [Minimalistic-versions](#minimalistic-versions) 
+  * [Infrastructure](#infrastructure) 
+  * [Database](#database-) 
+  * [Tooling](#tooling-)
 * [Notes](#notes-)
   * [Symfony UX](#symfony-ux)
   * [PHP configuration files](#php-configuration-files)
 * [Other good practices](#other-good-practices-)
 * [ADR](#adr-)
-* [What it doesn't ship!](#what-it-doesnt-ship-)
 * [References](#references-)
-* [Others “**Proclaim** Honestly, **Interact** Liberally” Skeletons](#others-proclaim-honestly-interact-liberally-skeletons-)
 * [Contributing](#contributing-)
-  * [Strangebuzz/MicroSymfony Contributors](#strangebuzzmicrosymfony-contributors) 
 * [Security](#security-)
 * [Credits](#credits-)
 * [License](#license-)
 * [Built with MicroSymfony](#built-with-microsymfony-)
 
-## Demo 🌈
 
-Because a live demo is always better than all explanations :
+## Demos 🌈
 
-* Live demo **will** be available at [https://ph-il.ca/demos/microsymfony](https://ph-il.ca/demos/microsymfony)
-* Live demo powered by [FrankenPHP](https://frankenphp.dev/) **will** be available at [https://ph-il.ca/demos/frankenphp/microsymfony](https://ph-il.ca/demos/frankenphp/microsymfonys)
+Because a live demo is always better than all explanations:
+
+* Live demo powered by Apache2 / PHP-FPM [https://microsymfony.ovh](https://microsymfony.ovh)
+* Live demo powered by [FrankenPHP](https://frankenphp.dev/) at [https://frankenphp.microsymfony.ovh](https://frankenphp.microsymfony.ovh)
+
 
 ## Quick-start ⚡
 
-### With the Symfony binary 🎶
+### With the Symfony binary 🎶 
 
 You must have the [Symfony binary](https://symfony.com/download#step-1-install-symfony-cli)
-and [composer](https://getcomposer.org/) installed locally.
+and [Composer](https://getcomposer.org/) installed locally.
 
 To create a new project from the last tag, run:
 
-```bash
-composer create-project phil/microsymfony && cd microsymfony
-```
+    composer create-project strangebuzz/microsymfony && cd microsymfony
 
-To serve the application with the Symfony binary, run:
+Then start the PHP server with make:
 
-```bash
-$ symfony server:start --daemon
-```
+    make start
 
- or use the castor command
+Or with Castor:
 
-```bash
-castor start
-```
+    castor start
 
 Open [https://127.0.0.1:8000](https://127.0.0.1:8000) (considering your 8000 port is free) and enjoy! 🙂
 
-> **PS**: You can also use the green button "[Use this template ⇩](https://github.com/new?template_name=MicroSymfony&template_owner=parler-haut-interagir-librement)"
+> [!NOTE]
+> **PS**: You can also use the green button "[Use this template ⇩](https://github.com/new?template_name=MicroSymfony&template_owner=strangebuzz)"
 at the top right of the GitHub project homepage.
 It creates a new repository from the main branch instead of the last release.
 I guarantee that all commits on the main branch are stable; you can verify that
@@ -101,7 +110,6 @@ Then run:
 
     docker run \
         -e FRANKENPHP_CONFIG="worker ./public/index.php" \
-        -e APP_RUNTIME=Runtime\\FrankenPhpSymfony\\Runtime \
         -v $PWD:/app \
         -p 80:80 -p 443:443 \
         -d \
@@ -110,83 +118,130 @@ Then run:
 Open [https://localhost](https://localhost) and enjoy! 🙂
 
 **PS**: On Windows, replace `$PWD` with `"%cd%"`.
+
+> **Note**: FrankenPHP already uses PHP **8.5**.
+
+### With Laragon
+
+Have a look at the specific [documentation](https://github.com/strangebuzz/MicroSymfony/blob/main/docs/laragon.md).
+
+
 ## Requirements ⚙
 
-All “**Proclaim** Honestly, **Interact** Liberally” project will use the latest version within 1 or 2 months depending on dependencies availability.
+* At least [PHP 8.4](https://www.php.net/releases/8.4/en.php) and the [Symfony CLI](https://symfony.com/download)
+* Or [Docker](https://www.docker.com)
 
-* [PHP 8.4](https://www.php.net/releases/8.4/en.php)
-* The [Symfony CLI](https://symfony.com/download)
-* [Castor 1.0](https://github.com/jolicode/castor) task runner
 
 ### Optional requirements 🚦
+ 
+* The [Xdebug](https://xdebug.org/) PHP extension if you want to run the code coverage report
+* [Castor](https://github.com/jolicode/castor) task runner, if you would rather not use
+  [Make](https://www.gnu.org/software/make/) and its [Makefile](https://github.com/strangebuzz/MicroSymfony/blob/main/Makefile) 
 
-* The [Xdebug](https://xdebug.org/) PHP extension if you want to run the code coverage report (optional but recommended)
 
 ## Stack 🔗
 
-All “**Proclaim** Honestly, **Interact** Liberally” project will use the latest version within 1 or 2 months depending on dependencies availability.
-
-* [PHP 8.4](https://www.php.net/releases/8.4/en.php)
-* [Symfony 7.3](https://symfony.com/7) 
-* [Twig 3.8](https://twig.symfony.com)
+* [PHP 8.4](https://www.php.net/releases/8.4/en.php) or [PHP 8.5](https://www.php.net/releases/8.5/en.php)
+* [Symfony 8.1](https://symfony.com/8)
+* [Doctrine ORM 3 (DBAL 4)](https://www.doctrine-project.org)
+* [Twig 3](https://twig.symfony.com)
 * [Hotwired](https://hotwired.dev/) [Stimulus 3.2](https://stimulus.hotwired.dev/) and [Turbo 8.0](https://turbo.hotwired.dev/)
-* [PHPUnit 11.5](https://phpunit.de/announcements/phpunit-11.html)
-* [Pico CSS 2.0](https://picocss.com)
+* [PHPUnit 13](https://phpunit.de/announcements/phpunit-13.html)
+* [Pico CSS 2.1](https://picocss.com)
+
 
 ## Features 🚀
 
-**Micro***Symfony* ships these features, ready to use:
+**MicroSymfony** ships these features, ready to use:
 
-* One task runner
-  * Castor ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/castor.php)) 
+* Two task runners
+  * [Make](https://www.gnu.org/software/make/) ([source](https://github.com/strangebuzz/MicroSymfony/blob/main/Makefile)) ([demo](https://www.strangebuzz.com/en/blog/introducing-the-microsymfony-application-template#h3_4_1)) ([output](https://github.com/strangebuzz/MicroSymfony/blob/main/docs/make-output.txt))
+  * [Castor](https://github.com/jolicode/castor) ([source](https://github.com/strangebuzz/MicroSymfony/blob/main/castor.php)) ([demo](https://www.strangebuzz.com/en/blog/introducing-the-microsymfony-application-template#h3_4_2)) ([output](https://github.com/strangebuzz/MicroSymfony/blob/main/docs/castor-output.txt))
 * Static analysis with [PHPStan 2](https://github.com/phpstan/phpstan)
-  * [Configuration](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/phpstan.neon)
+  * [Configuration](https://github.com/strangebuzz/MicroSymfony/blob/main/phpstan.neon)
 * Coding standards with [php-cs-fixer](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer)
-  * [Configuration](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/.php-cs-fixer.dist.php)
-* Refactoring with Rector
-  * [Configuration](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/restor.php)
-* The debug toolbar ([doc](https://symfony.com/doc/current/profiler.html))
+  * [Configuration](https://github.com/strangebuzz/MicroSymfony/blob/main/.php-cs-fixer.dist.php)
 * Tests ([demo](https://www.strangebuzz.com/en/blog/introducing-the-microsymfony-application-template#h2_7))
-  * Unit test [example](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/tests/Unit/Helper/StringHelperTest.php) 
-  * Integration test [example](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/tests/Integration/Twig/Extension/MarkdownExtensionTest.php) 
-  * Functional test [example](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/tests/Functional/Controller/ComposerActionTest.php) 
-  * API test [example](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/tests/Api/Controller/SlugifyActionTest.php) 
-  * E2E test [example](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/tests/E2E/Controller/AppControllerTest.php)
+  * Unit test [example](https://github.com/strangebuzz/MicroSymfony/blob/main/tests/Unit/Helper/StringHelperTest.php) 
+  * Integration test [example](https://github.com/strangebuzz/MicroSymfony/blob/main/tests/Integration/Twig/Extension/RoutingExtensionTest.php) 
+  * Functional test [example](https://github.com/strangebuzz/MicroSymfony/blob/main/tests/Functional/Controller/ComposerActionTest.php) 
+  * API test [example](https://github.com/strangebuzz/MicroSymfony/blob/main/tests/Api/Controller/SlugifyActionTest.php) 
+  * E2E test [example](https://github.com/strangebuzz/MicroSymfony/blob/main/tests/E2E/Controller/AppControllerTest.php)
 * Code coverage at 100% (configurable threshold)
-  * [Coverage report on Scrutinizer](https://scrutinizer-ci.com/g/parler-haut-interagir-librement/MicroSymfony/code-structure/main/code-coverage/src/)
-  * [Failing output example](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6176766049/job/16766431026)
-* GitHub CI ([actions](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions))
-  * [Tests job output](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6178372662/job/16771491572)
-  * [Lint job output](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6178372662/job/16771491353)
-  * [Security job output](https://github.com/parler-haut-interagir-librement/MicroSymfony/actions/runs/6178372662/job/16771491353)
-* Asset mapper+Stimulus ([documentation](https://symfony.com/doc/current/frontend/asset_mapper.html))
-  * Vanilla Js 
-    * ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/assets/controllers/hello_controller.js)) 
-    * ([demo](https://ph-il.ca/demos/microsymfony/stimulus))
-  * Fetch on a JSON endpoint of the application 
-    * ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/assets/controllers/api_controller.js)) 
-    * ([demo](https://ph-il.ca/demos/microsymfony/stimulus)) 
-* Symfony Maker ([documentation](https://symfony.com/bundles/SymfonyMakerBundle/current/index.html))
+  * [Coverage report on Scrutinizer](https://scrutinizer-ci.com/g/strangebuzz/MicroSymfony/code-structure/main/code-coverage/src/)
+* GitHub CI ([actions](https://github.com/strangebuzz/MicroSymfony/actions))
+  * [Tests job output](https://github.com/strangebuzz/MicroSymfony/actions/runs/20644800370/job/59281198393?pr=200)
+  * [Lint job output](https://github.com/strangebuzz/MicroSymfony/actions/runs/20644800370/job/59281198381?pr=200)
+  * [Security job output](https://github.com/strangebuzz/MicroSymfony/actions/runs/20644800370/job/59281198382?pr=200)
+* AssetMapper+Stimulus ([documentation](https://symfony.com/doc/current/frontend/asset_mapper.html))
+  * Vanilla JS ([source](https://github.com/strangebuzz/MicroSymfony/blob/main/assets/controllers/hello_controller.js)) ([demo](https://microsymfony.ovh/stimulus))
+  * Fetches JSON data from an application endpoint ([source](https://github.com/strangebuzz/MicroSymfony/blob/main/assets/controllers/api_controller.js)) ([demo](https://microsymfony.ovh/stimulus)) 
 * A custom error template
-  * [Source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/templates/bundles/TwigBundle/Exception/error.html.twig)
-  * [Demo](https://ph-il.ca/demos/microsymfony/404) 
+  * [Source](https://github.com/strangebuzz/MicroSymfony/blob/main/templates/bundles/TwigBundle/Exception/error.html.twig)
+  * [Demo](https://microsymfony.ovh/404) 
+
+
+## Feature branches 🚅
+
+[Feature branches](https://github.com/strangebuzz/MicroSymfony/pulls?q=is%3Apr+is%3Aopen+label%3A%22feature+branch%22)
+are not merged into the main branch but are used to test the integration of a new
+vendor library or make a [POC](https://en.wikipedia.org/wiki/Proof_of_concept).
+For example, have you ever dreamed of testing [Eloquent](https://laravel.com/docs/11.x/eloquent#introduction),
+the Laravel ORM, on a Symfony project?
+Then clone the `eloquent` branch and run `composer install && make load-fixtures`.
+
+
+### Minimalistic versions
+
+* Doctrine less ([PR](https://github.com/strangebuzz/MicroSymfony/pull/222), [branch](https://github.com/strangebuzz/MicroSymfony/tree/doctrine-less), rebased on 2026-01-17)
+* Symfony 7.4 LTS ([PR](https://github.com/strangebuzz/MicroSymfony/pull/244), [branch](https://github.com/strangebuzz/MicroSymfony/tree/symfony-7-4), rebased on 2026-02-07)
+
+### Infrastructure
+
+* Symfony-docker ([PR](https://github.com/strangebuzz/MicroSymfony/pull/98), [branch](https://github.com/strangebuzz/MicroSymfony/tree/symfony-docker), rebased on 2024-11-17)
+
+### Database 💽
+
+These « database » branches aim to display a list of records from an [SQLite](https://www.sqlite.org/)
+database.
+ 
+* Eloquent ORM ([PR](https://github.com/strangebuzz/MicroSymfony/pull/65), [branch](https://github.com/strangebuzz/MicroSymfony/tree/eloquent), rebased on 2024-11-17)
+
+### Tooling 🔨
+
+* Vite-Bundle ([PR](https://github.com/strangebuzz/MicroSymfony/pull/161), [branch](https://github.com/lhapaipai/MicroSymfony/tree/vite), rebased on 2026-02-11) ([demo](https://vite.microsymfony.ovh))
+* Psalm ([PR](https://github.com/strangebuzz/MicroSymfony/pull/227), [branch](https://github.com/strangebuzz/MicroSymfony/tree/psalm), rebased on 2026-01-18)
+* Taskfile ([PR](https://github.com/strangebuzz/MicroSymfony/pull/86), [branch](https://github.com/jmsche/MicroSymfony/tree/taskfile), rebased on 2024-12-04)
+* TwigStan ([PR](https://github.com/strangebuzz/MicroSymfony/pull/95), [branch](https://github.com/strangebuzz/MicroSymfony/tree/twigstan), rebased on 2024-11-18)
+* Twig-CS-Fixer ([PR](https://github.com/strangebuzz/MicroSymfony/pull/238), [branch](https://github.com/strangebuzz/MicroSymfony/tree/feat/use-twig-cs-fixer), rebased on 2026-12-30)
+
+One will rebase those branches regularly so they are not too outdated.
 
 
 ## Notes 📒
 
 ### Symfony-UX
 
-Turbo forms are disabled in [assets/app.js](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/assets/app.js).
+Turbo forms are disabled in [assets/app.js](https://github.com/strangebuzz/MicroSymfony/blob/main/assets/app.js).
 To enable the feature for a given form, add the `data-turbo="true"` attribute to it. 
 Or change the parameter `Turbo.setFormMode` to `on` to activate the feature globally.
 In both cases, your controller code has to be [modified accordingly](https://symfony.com/bundles/ux-turbo/current/index.html#3-form-response-code-changes).
 
+### PHP configuration files
+
+If you install a new Symfony library, the Flex recipes can add YAML files to your
+project.
+These YAML files are loaded, but you can convert them to PHP like the other configuration
+files.
+Take examples from the other files in `config/packages` to see how to make the conversion.
+
 
 ## Other good practices 👌
 
-* Using strict types in all PHP files ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/src/Controller/SlugifyAction.php))
-* Using the ADR pattern in an action controller ([source](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/src/Controller/HomeAction.php)) ([doc](https://symfony.com/doc/current/controller/service.html#invokable-controllers))
-* The [composer.json](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/composer.json)
+* Using PHP configuration files instead of YAML ([source](https://github.com/strangebuzz/MicroSymfony/blob/main/config/services.php))
+* Using strict types in all PHP files ([source](https://github.com/strangebuzz/MicroSymfony/blob/main/src/Controller/SlugifyAction.php#L3))
+* Using the ADR pattern in an action controller ([source](https://github.com/strangebuzz/MicroSymfony/blob/main/src/Controller/HomeAction.php)) ([doc](https://symfony.com/doc/current/controller/service.html#invokable-controllers))
+* The [composer.json](https://github.com/strangebuzz/MicroSymfony/blob/main/composer.json) 
   file is normalized with [ergebnis/composer-normalize](https://github.com/ergebnis/composer-normalize)
 * Use of the [composer bin plugin](https://github.com/bamarni/composer-bin-plugin)
   to install and run [php-cs-fixer](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer)
@@ -196,10 +251,14 @@ In both cases, your controller code has to be [modified accordingly](https://sym
 
 ADR stands for [Architecture Design Records](https://adr.github.io/):
 
+* [2026-01-17] Use Doctrine ORM as the default database layer ([PR](https://github.com/strangebuzz/MicroSymfony/pull/219))
+* [2025-12-29] Use the new PHP configuration ([PR](https://github.com/strangebuzz/MicroSymfony/pull/197))
+* [2025-01-25] Include the FrankenPHP runtime by default ([PR](https://github.com/strangebuzz/MicroSymfony/pull/54))
+* [2025-01-21] Add PHPUnit test suites ([PR](https://github.com/strangebuzz/MicroSymfony/pull/155))
+* [2024-12-18] Use PicoCSS instead of BareCSS as the CSS framework ([PR](https://github.com/strangebuzz/MicroSymfony/pull/85))
+* [2024-12-05] Convert all configuration files to PHP (fluent interface) ([PR](https://github.com/strangebuzz/MicroSymfony/pull/129))
+* [2024-09-22] Use the ADR pattern for all controllers ([PR](https://github.com/strangebuzz/MicroSymfony/pull/58))
 
-## What it doesn't ship? ❌
-
-* Doctrine ([installation](https://symfony.com/doc/current/doctrine.html#installing-doctrine)) or use ([WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony))
 
 ## References 📚
 
@@ -220,69 +279,19 @@ ADR stands for [Architecture Design Records](https://adr.github.io/):
 * [Setting a CI/CD workflow for a Symfony project thanks to the GitHub actions](https://www.strangebuzz.com/en/blog/setting-a-ci-cd-workflow-for-a-symfony-project-thanks-to-the-github-actions) (strangebuzz.com)
 * [The Symfony Framework Best Practices](https://symfony.com/doc/current/best_practices.html) (symfony.com)
 
-## Others “**Proclaim** Honestly, **Interact** Liberally” Skeletons 🩻
 
-* [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony)
-  * MicroSymfony+
-  * Database
-    * StofDoctrineExtensionsBundle
-  * EasyAdmin
-  * Security Layers
-    * SymfonySecurity
-    * NelmioSecurityBundle
-    * NelmioCorsBundle
-  * more.
+## Contributing 🤝 
 
-* [ApiSymfony](https://github.com/parler-haut-interagir-librement/ApiSymfony)
-  * API Platform
-  * Task runner
-    * Castor
-  * Static Analysis
-    * PHPStan
-  * Coding standards
-    * php-cs-fixer
-  * Refactoring
-    * Rector
-  * Tests
-    * Unit test
-    * API test
-    * E2E test
-  * GitHub CI
-  * Symfony Maker
-
-* [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
-  * WebSymfony +
-  * CSS framework
-    * phil-ux
-  * “**Proclaim** Honestly, **Interact** Liberally” Bundles
-    * phil-ux - Add Base Twig Components
-    * PhilDoctrineExtensionStofBundle - Add missing stuff to StofDoctrineExtensionsBundle
-    * PhilDoctrineExtensionPublishBundle - Add Publish functionality to Doctrine Entity
-  * more.
-
-
-## Contributing 🤝
-
-Please see [CONTRIBUTING](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/CONTRIBUTING.md) and [CODE_OF_CONDUCT](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/CODE_OF_CONDUCT.md) for details.
+Please see [CONTRIBUTING](https://github.com/strangebuzz/MicroSymfony/blob/main/CONTRIBUTING.md) and [CODE_OF_CONDUCT](https://github.com/strangebuzz/MicroSymfony/blob/main/CODE_OF_CONDUCT.md) for details.
 
 
 ## Security 🧯
 
-Please see [SECURITY](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/SECURITY.md) for details.
+Please see [SECURITY](https://github.com/strangebuzz/MicroSymfony/blob/main/SECURITY.md) for details.
 
 
 ## Credits 🙏
 
-* [Philippe Gamache](https://github.com/ph-il) (primary maintainer)
-* [All Contributors](https://github.com/parler-haut-interagir-librement/MicroSymfony/graphs/contributors)
-
-<a href="https://github.com/parler-haut-interagir-librement/MicroSymfony/graphs/contributors">
-  <img alt="parler-haut-interagir-librement/MicroSymfony contributors" src="https://contrib.rocks/image?repo=parler-haut-interagir-librement/MicroSymfony" />
-</a>
-
-Made with [contrib.rocks](https://contrib.rocks).
-
-### Strangebuzz/MicroSymfony Contributors
 * [COil](https://github.com/COil) (primary maintainer)
 * [All Contributors](https://github.com/strangebuzz/MicroSymfony/graphs/contributors)
 
@@ -295,17 +304,11 @@ Made with [contrib.rocks](https://contrib.rocks).
 
 ## License ⚖️
 
-The MIT License (MIT). Please see [License File](https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/LICENSE) for more information.
+The MIT License (MIT). Please refer to the [license file](https://github.com/strangebuzz/MicroSymfony/blob/main/LICENSE) for more information.
 
 
 ## Built with MicroSymfony 🛠️
 
-* [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony)
-* [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
-* IRL Assemble Online
-* [La Page à Melkor](https://lapageamelkor.org) via [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
-* [Parler Haut Interagir Librement](https://ph-il.ca) via [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
-* RPG Assemble Online
-* [TiltTek](https://tilttek.com) via [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
-* [TTRPG Maker](https://ttrpgmaker.com) via [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
-
+* [Placehold.ovh](https://placehold.ovh/) (2024-12-01)
+* [Appartement-tourcoing.com](https://www.appartement-tourcoing.com/) (2024-11-30)
+* [Easyadmin Mercure Demo](https://github.com/coopTilleuls/easyadmin-mercure-demo) (2023-05-24)

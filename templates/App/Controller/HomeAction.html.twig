@@ -2,13 +2,16 @@
 
 {% block body %}
     <p>
-        This page displays the <a target="_blank" href="https://github.com/strangebuzz/MicroSymfony/blob/main/README.md">README.md</a>
+        This page displays the <a target="_blank" rel="noopener noreferrer" href="https://github.com/strangebuzz/MicroSymfony/blob/main/README.md">README.md</a>
         file of the GitHub repository (This text comes from <code>config/services.php</code>).
     </p>
 
     <hr/>
 
-    {{ readme|raw|markdown_to_html|add_headers_anchors|raw }}
+    {# The README is a trusted source: the `add_headers_anchors` filter flags its output as
+       safe HTML, so no `|raw` is needed here. The `[!NOTE]` GFM marker is stripped from the
+       Markdown source (before conversion) so it stays the last filter and keeps the safe flag. #}
+    {{ readme|replace({'[!NOTE]': ''})|markdown_to_html|add_headers_anchors }}
 
     {# Uncomment and adapt to your needs.
 
@@ -23,7 +26,7 @@
     <h2>Quick-start ⚡</h2>
 
     <h2>Stack 🔗</h2>
-🔆
+
     <h2>Features 🚀</h2>
 
     <h2>Notes 📒</h2>
@@ -42,5 +45,4 @@
 
     <h2>Built with MicroSymfony 🛠️️</h2>
     #}
-
 {% endblock %}

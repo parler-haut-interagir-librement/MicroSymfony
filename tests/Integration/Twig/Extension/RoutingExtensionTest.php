@@ -5,12 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Integration\Twig\Extension;
 
 use App\Twig\Extension\RoutingExtension;
-use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/**
- * @internal
- */
 final class RoutingExtensionTest extends KernelTestCase
 {
     /**
@@ -20,8 +16,9 @@ final class RoutingExtensionTest extends KernelTestCase
     public function testRoutingExtensionInvalidArgumentException(): void
     {
         self::bootKernel();
+        /** @var RoutingExtension $extension */
         $extension = self::getContainer()->get(RoutingExtension::class);
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $extension->getControllerFqcn('foo');
     }
 }

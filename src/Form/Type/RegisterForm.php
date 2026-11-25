@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
-use App\Dto\RegisterFormDto;
+use App\Dto\Form\Type\RegisterFormDto;
 use App\Enum\Fruit;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
@@ -23,6 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class RegisterForm extends AbstractType
 {
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -30,7 +31,7 @@ final class RegisterForm extends AbstractType
             ->add('email', EmailType::class)
             ->add('country', CountryType::class)
             ->add('currency', CurrencyType::class)
-            ->add('birthday', DateType::class, [
+            ->add('birthday', BirthdayType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
             ])
@@ -43,11 +44,18 @@ final class RegisterForm extends AbstractType
         ;
     }
 
+    /**
+     * @see https://www.strangebuzz.com/en/blog/disable-the-html5-validation-of-all-your-symfony-forms-with-a-feature-flag
+     * @see templates/App/Controller/FormAction.html.twig
+     */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'attr' => [
-                // 'novalidate' => 'novalidate', // uncomment this line to disable the client-side validation (usefull to test server side validation)
+                // The client-side validation for the form is already disabled in the Twig template, but you can also
+                // disable it by un-commenting the following line (useful to test server-side validation)
+                // 'novalidate' => 'novalidate',
             ],
         ]);
     }

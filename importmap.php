@@ -15,16 +15,20 @@ declare(strict_types=1);
  */
 return [
     'app' => [
-        'path' => './assets/app.js',
+        'path' => 'app.js',
         'entrypoint' => true,
+    ],
+    '@symfony/stimulus-bundle' => [
+        'path' => '@symfony/stimulus-bundle/loader.js',
     ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
     ],
-    '@symfony/stimulus-bundle' => [
-        'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
-    ],
     '@hotwired/turbo' => [
-        'version' => '7.3.0',
+        'version' => '8.0.23',
+    ],
+    '@picocss/pico/css/pico.min.css' => [
+        'version' => '2.1.1',
+        'type' => 'css',
     ],
 ];
