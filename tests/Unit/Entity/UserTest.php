@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Entity;
 
 use App\Entity\User;
+use Doctrine\ORM\Mapping\Column;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 #[CoversClass(User::class)]
 final class UserTest extends TestCase
@@ -70,5 +72,33 @@ final class UserTest extends TestCase
         self::assertSame('serialized', $user->getUsername());
         self::assertSame('password', $user->getPassword());
         self::assertSame('email', $user->getEmail());
+    }
+
+    public function testPersistedUserIsPrintedWithItsId(): void
+    {
+        $user = new User('email', 'password', 'username');
+        (new ReflectionClass(User::class))->getProperty('id')->setValue($user, 7);
+
+        self::assertSame('username (7)', (string) $user);
+    }
+
+    public function testColumnsOfTheConstructorAreMappedAsDeclared(): void
+    {
+        $columns = [];
+        foreach (['email', 'password', 'username'] as $name) {
+            $attributes = (new ReflectionClass(User::class))->getProperty($name)->getAttributes(Column::class);
+            self::assertCount(1, $attributes, $name);
+            $columns[$name] = $attributes[0]->newInstance();
+        }
+
+        self::assertSame(['email', 'password', 'username'], array_keys($columns));
+        foreach ($columns as $name => $column) {
+            self::assertSame(255, $column->length, $name);
+            self::assertFalse($column->nullable, $name);
+        }
+
+        self::assertTrue($columns['email']->unique);
+        self::assertFalse($columns['password']->unique);
+        self::assertTrue($columns['username']->unique);
     }
 }
