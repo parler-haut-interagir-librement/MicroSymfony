@@ -37,5 +37,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `castor taint`: the taint analysis of Psalm from `phil/dev-tools`, in its own `vendor-bin/psalm/`.
 - The security files of `phil/dev-tools` in `.github/`: Dependabot with a cooldown of seven days, the OpenSSF
   Scorecard and zizmor; the actions of every workflow pinned to a commit, the checkout without credentials.
-- In the README and its French mirror: the live demo on ph-il.ca, the PHIL bundles a small application can add and the
-  other PHIL templates.
+- In the README and its French mirror: the live demo on ph-il.ca, the other good practices, what the template does not
+  ship, the PHIL bundles a small application can add, the other PHIL templates (WebSymfony, WebSkeleton, ApiSymfony)
+  and what is built with MicroSymfony.

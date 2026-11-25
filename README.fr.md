@@ -1,4 +1,4 @@
-<!-- phil-dev source-sha256=e32dfd95381b39acfb4cc4ffe282e71c12490e5159c242c3d515fe4e46854916 -->
+<!-- phil-dev source-sha256=8556871b86bf54ffb3d25f34cefa972e56763effa09934cfd5d3cfd35ac57cef -->
 # MicroSymfony 🎶
 
 [![Latest Version](https://img.shields.io/packagist/v/phil/microsymfony.svg?style=flat-square)](https://packagist.org/packages/phil/microsymfony)
@@ -39,14 +39,17 @@ philosophie du gabarit :
 * [Portes de qualité](#portes-de-qualité-)
 * [Différences avec strangebuzz/MicroSymfony](#différences-avec-strangebuzzmicrosymfony-)
 * [Notes](#notes-)
-* [Bundles PHIL](#bundles-phil-)
-* [Autres gabarits PHIL](#autres-gabarits-phil-)
+* [Autres bonnes pratiques](#autres-bonnes-pratiques-)
 * [ADR](#adr-)
+* [Ce qu'il ne contient pas](#ce-quil-ne-contient-pas-)
+* [Bundles PHIL](#bundles-phil-)
 * [Références](#références-)
+* [Autres gabarits « Parler Haut, Interagir Librement »](#autres-gabarits--parler-haut-interagir-librement--)
 * [Contribuer](#contribuer-)
 * [Sécurité](#sécurité-)
 * [Crédits](#crédits-)
 * [Licence](#licence-)
+* [Construit avec MicroSymfony](#construit-avec-microsymfony-)
 
 ## Démo 🌈
 
@@ -226,6 +229,17 @@ MicroSymfony n'en a pas. Pour Doctrine, partez de
 [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony), ou ajoutez-le avec
 `composer require symfony/orm-pack`.
 
+## Autres bonnes pratiques 👌
+
+* Des types stricts dans chaque fichier PHP ([source](src/Controller/SlugifyAction.php))
+* Le patron ADR : un contrôleur d'action invocable par route ([source](src/Controller/HomeAction.php),
+  [documentation](https://symfony.com/doc/current/controller/service.html#invokable-controllers))
+* La configuration en PHP, sous `config/` ([source](config/packages/framework.php))
+* Un [composer.json](composer.json) normalisé par [ergebnis/composer-normalize](https://github.com/ergebnis/composer-normalize)
+* Chaque outil de qualité dans son propre répertoire `vendor-bin/<tool>/`, installé par le
+  [plugin Composer bin](https://github.com/bamarni/composer-bin-plugin)
+* Des tests qui nomment ce qu'ils couvrent, avec `#[CoversClass]` ou `#[CoversNothing]`
+
 ## ADR 📝
 
 [Architecture Decision Records](https://adr.github.io/) de strangebuzz/MicroSymfony ; ce gabarit les conserve tous
@@ -245,6 +259,11 @@ Ceux de ce gabarit :
   FrankenPHP en mode *worker* dans `compose.yaml`
 * [2026-11-25] Aucune base de données : Doctrine passe à WebSymfony ; des pages en anglais et en français ; Sentry en
   production
+
+## Ce qu'il ne contient pas ❌
+
+* Doctrine et une base de données : partez de [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony)
+  (`phil/websymfony`), MicroSymfony avec Doctrine
 
 ## Bundles PHIL 🧩
 
@@ -267,12 +286,6 @@ Les bundles de [PHIL](https://ph-il.ca) ajoutent ce dont une application a besoi
 
 L'[organisation PHIL sur GitHub](https://github.com/parler-haut-interagir-librement) liste tous les paquets.
 
-## Autres gabarits PHIL 🩻
-
-* [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony) : MicroSymfony avec Doctrine, une base
-  de données et plus encore
-* ApiSymfony, une API avec API Platform, et WebSkeleton, WebSymfony avec phil-ux et les bundles PHIL, sont prévus
-
 ## Références 📚
 
 * [Introducing the MicroSymfony application template](https://www.strangebuzz.com/en/blog/introducing-the-microsymfony-application-template) (strangebuzz.com)
@@ -286,6 +299,45 @@ L'[organisation PHIL sur GitHub](https://github.com/parler-haut-interagir-librem
 * [A Good Naming Convention for Routes, Controllers and Templates?](https://jolicode.com/blog/a-good-naming-convention-for-routes-controllers-and-templates) (jolicode.com)
 * [Front-end application development, Symfony-style(s)](https://dunglas.dev/2024/04/front-end-application-development-symfony-styles/) (dunglas.dev)
 * [The Symfony Framework Best Practices](https://symfony.com/doc/current/best_practices.html) (symfony.com)
+
+## Autres gabarits « Parler Haut, Interagir Librement » 🩻
+
+* [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony) (`phil/websymfony`)
+  * MicroSymfony +
+  * Une base de données
+    * Doctrine ORM et ses migrations
+    * StofDoctrineExtensionsBundle
+  * Toujours Pico CSS, avec Stimulus et Turbo
+  * EasyAdmin
+  * KnpMenuBundle
+  * Des couches de sécurité
+    * Symfony Security
+    * NelmioSecurityBundle
+    * NelmioCorsBundle
+  * Sentry
+  * et plus encore.
+
+* [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton) (`phil/webskeleton`)
+  * WebSymfony +
+  * Les outils de PHIL
+    * Le kit PHIL UX ([`phil/ux-kit`](https://packagist.org/packages/phil/ux-kit)) et ses styles
+      ([`phil/ux-css`](https://packagist.org/packages/phil/ux-css))
+    * Des bundles PHIL, comme [`phil/doctrine-behaviours-bundle`](https://packagist.org/packages/phil/doctrine-behaviours-bundle),
+      les comportements des entités Doctrine, et [`phil/publishing`](https://packagist.org/packages/phil/publishing),
+      la publication des contenus
+  * Organisé en DDD
+  * En français et en anglais (`/fr`, `/en`)
+  * et plus encore.
+
+* [ApiSymfony](https://github.com/parler-haut-interagir-librement/ApiSymfony) (`phil/apisymfony`)
+  * API Platform
+  * Les mêmes tâches, exécutées par Castor
+  * L'analyse statique avec PHPStan
+  * Les standards de code avec PHP-CS-Fixer
+  * Le réusinage avec Rector
+  * Des tests : unitaires, d'API et de bout en bout
+  * L'intégration continue de GitHub
+  * Symfony Maker
 
 ## Contribuer 🤝
 
@@ -305,3 +357,9 @@ Voir [SECURITY](SECURITY.md).
 ## Licence ⚖️
 
 The MIT License, avec l'attribution au dépôt d'origine qu'elle demande. Voir le [fichier de licence](LICENSE).
+
+## Construit avec MicroSymfony 🛠️
+
+* [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony)
+* [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
+* [Parler Haut, Interagir Librement](https://ph-il.ca) avec [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)

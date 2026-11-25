@@ -38,14 +38,17 @@ template is explained by its author:
 * [Quality gates](#quality-gates-)
 * [Differences from strangebuzz/MicroSymfony](#differences-from-strangebuzzmicrosymfony-)
 * [Notes](#notes-)
-* [PHIL bundles](#phil-bundles-)
-* [Other PHIL templates](#other-phil-templates-)
+* [Other good practices](#other-good-practices-)
 * [ADR](#adr-)
+* [What it doesn't ship?](#what-it-doesnt-ship-)
+* [PHIL bundles](#phil-bundles-)
 * [References](#references-)
+* [Others “Proclaim Honestly, Interact Liberally” Skeletons](#others-proclaim-honestly-interact-liberally-skeletons-)
 * [Contributing](#contributing-)
 * [Security](#security-)
 * [Credits](#credits-)
 * [License](#license-)
+* [Built with MicroSymfony](#built-with-microsymfony-)
 
 ## Demo 🌈
 
@@ -222,6 +225,17 @@ nothing is sent. The configuration is in `config/packages/sentry.php`.
 MicroSymfony has none. For Doctrine, start from [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony),
 or add it with `composer require symfony/orm-pack`.
 
+## Other good practices 👌
+
+* Strict types in every PHP file ([source](src/Controller/SlugifyAction.php))
+* The ADR pattern: one invokable action controller per route ([source](src/Controller/HomeAction.php),
+  [documentation](https://symfony.com/doc/current/controller/service.html#invokable-controllers))
+* The configuration in PHP, under `config/` ([source](config/packages/framework.php))
+* A [composer.json](composer.json) normalized with [ergebnis/composer-normalize](https://github.com/ergebnis/composer-normalize)
+* Each quality tool in its own `vendor-bin/<tool>/` directory, installed by the
+  [composer bin plugin](https://github.com/bamarni/composer-bin-plugin)
+* Tests that name what they cover, with `#[CoversClass]` or `#[CoversNothing]`
+
 ## ADR 📝
 
 [Architecture Decision Records](https://adr.github.io/) of strangebuzz/MicroSymfony; this template keeps every one but
@@ -240,6 +254,11 @@ Those of this template:
 * [2026-11-25] Symfony 8.2 from its release candidate, PHP 8.5, the gates of `phil/dev-tools`, Castor only,
   FrankenPHP in worker mode in `compose.yaml`
 * [2026-11-25] No database: Doctrine moves to WebSymfony; pages in English and in French; Sentry in production
+
+## What it doesn't ship? ❌
+
+* Doctrine and a database: start from [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony)
+  (`phil/websymfony`), MicroSymfony with Doctrine
 
 ## PHIL bundles 🧩
 
@@ -261,12 +280,6 @@ that suit a small application:
 
 The [PHIL organization on GitHub](https://github.com/parler-haut-interagir-librement) lists every package.
 
-## Other PHIL templates 🩻
-
-* [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony): MicroSymfony with Doctrine, a
-  database and more
-* ApiSymfony, an API with API Platform, and WebSkeleton, WebSymfony with phil-ux and the PHIL bundles, are planned
-
 ## References 📚
 
 * [Introducing the MicroSymfony application template](https://www.strangebuzz.com/en/blog/introducing-the-microsymfony-application-template) (strangebuzz.com)
@@ -280,6 +293,45 @@ The [PHIL organization on GitHub](https://github.com/parler-haut-interagir-libre
 * [A Good Naming Convention for Routes, Controllers and Templates?](https://jolicode.com/blog/a-good-naming-convention-for-routes-controllers-and-templates) (jolicode.com)
 * [Front-end application development, Symfony-style(s)](https://dunglas.dev/2024/04/front-end-application-development-symfony-styles/) (dunglas.dev)
 * [The Symfony Framework Best Practices](https://symfony.com/doc/current/best_practices.html) (symfony.com)
+
+## Others “Proclaim Honestly, Interact Liberally” Skeletons 🩻
+
+* [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony) (`phil/websymfony`)
+  * MicroSymfony +
+  * A database
+    * Doctrine ORM and its migrations
+    * StofDoctrineExtensionsBundle
+  * Still Pico CSS, with Stimulus and Turbo
+  * EasyAdmin
+  * KnpMenuBundle
+  * Security layers
+    * Symfony Security
+    * NelmioSecurityBundle
+    * NelmioCorsBundle
+  * Sentry
+  * and more.
+
+* [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton) (`phil/webskeleton`)
+  * WebSymfony +
+  * The PHIL tools
+    * The PHIL UX kit ([`phil/ux-kit`](https://packagist.org/packages/phil/ux-kit)) and its styles
+      ([`phil/ux-css`](https://packagist.org/packages/phil/ux-css))
+    * PHIL bundles, such as [`phil/doctrine-behaviours-bundle`](https://packagist.org/packages/phil/doctrine-behaviours-bundle),
+      the behaviours of the Doctrine entities, and [`phil/publishing`](https://packagist.org/packages/phil/publishing),
+      the publication of contents
+  * Organised in DDD
+  * In French and in English (`/fr`, `/en`)
+  * and more.
+
+* [ApiSymfony](https://github.com/parler-haut-interagir-librement/ApiSymfony) (`phil/apisymfony`)
+  * API Platform
+  * The same tasks, run by Castor
+  * Static analysis with PHPStan
+  * Coding standards with PHP-CS-Fixer
+  * Refactoring with Rector
+  * Tests: unit, API and end-to-end
+  * GitHub CI
+  * Symfony Maker
 
 ## Contributing 🤝
 
@@ -299,3 +351,9 @@ See [SECURITY](SECURITY.md).
 ## License ⚖️
 
 The MIT License, with the attribution to the original repository it asks for. See the [license file](LICENSE).
+
+## Built with MicroSymfony 🛠️
+
+* [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony)
+* [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
+* [Parler Haut, Interagir Librement](https://ph-il.ca) via [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
