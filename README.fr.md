@@ -1,4 +1,4 @@
-<!-- phil-dev source-sha256=eb1261e2db3c6f1972f9ab25c5ce5b6f16313a40247a8d0413f965d70578c473 -->
+<!-- phil-dev source-sha256=f9fe395d33ecd018517e134f3c44c3f7ea8d6717602e3be438904be8404108f4 -->
 # MicroSymfony 🎶
 
 [![Latest Version](https://img.shields.io/packagist/v/phil/microsymfony.svg?style=flat-square)](https://packagist.org/packages/phil/microsymfony)
@@ -360,11 +360,4 @@ The MIT License, avec l'attribution au dépôt d'origine qu'elle demande. Voir l
 
 ## Construit avec MicroSymfony 🛠️
 
-* [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony)
-* [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
-* IRL Assemble Online
-* [La Page à Melkor](https://lapageamelkor.org) avec [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
-* [Parler Haut, Interagir Librement](https://ph-il.ca) avec [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
-* RPG Assemble Online
-* [TiltTek](https://tilttek.com) avec [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
-* [TTRPG Maker](https://ttrpgmaker.com) avec [WebSkeleton](https://github.com/parler-haut-interagir-librement/WebSkeleton)
+* [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony), qui liste ce qui est construit avec lui, à commencer par WebSkeleton.
