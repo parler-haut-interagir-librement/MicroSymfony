@@ -1,6 +1,6 @@
 {
     "name": "phil/microsymfony",
-    "description": "A Symfony application template with sensible defaults, tests and quality gates, to start a proof of concept or a small application.",
+    "description": "Start a Symfony app without a database, on FrankenPHP, with Castor tasks and every quality gate already passing.",
     "license": "MIT",
     "type": "project",
     "keywords": [
