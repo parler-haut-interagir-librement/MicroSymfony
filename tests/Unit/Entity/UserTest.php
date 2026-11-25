@@ -77,7 +77,7 @@ final class UserTest extends TestCase
     public function testPersistedUserIsPrintedWithItsId(): void
     {
         $user = new User('email', 'password', 'username');
-        (new ReflectionClass(User::class))->getProperty('id')->setValue($user, 7);
+        new ReflectionClass(User::class)->getProperty('id')->setValue($user, 7);
 
         self::assertSame('username (7)', (string) $user);
     }
@@ -86,7 +86,7 @@ final class UserTest extends TestCase
     {
         $columns = [];
         foreach (['email', 'password', 'username'] as $name) {
-            $attributes = (new ReflectionClass(User::class))->getProperty($name)->getAttributes(Column::class);
+            $attributes = new ReflectionClass(User::class)->getProperty($name)->getAttributes(Column::class);
             self::assertCount(1, $attributes, $name);
             $columns[$name] = $attributes[0]->newInstance();
         }
