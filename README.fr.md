@@ -1,4 +1,4 @@
-<!-- phil-dev source-sha256=8556871b86bf54ffb3d25f34cefa972e56763effa09934cfd5d3cfd35ac57cef -->
+<!-- phil-dev source-sha256=eb1261e2db3c6f1972f9ab25c5ce5b6f16313a40247a8d0413f965d70578c473 -->
 # MicroSymfony 🎶
 
 [![Latest Version](https://img.shields.io/packagist/v/phil/microsymfony.svg?style=flat-square)](https://packagist.org/packages/phil/microsymfony)
