@@ -1,184 +1,56 @@
-# AGENTS.md - MicroSymfony Development Guidelines
+# AGENTS.md - MicroSymfony development guidelines
 
-This file contains guidelines for agentic coding assistants working in the MicroSymfony repository.
+Guidelines for coding assistants working on this repository, the MicroSymfony application template of PHIL
+(`phil/micro-symfony`), which follows [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony).
 
-## Project Overview
+## Project overview
 
-MicroSymfony is a Symfony 8.1 micro-framework template demonstrating modern PHP development best practices. 
-It uses PHP 8.4+, Symfony 8.1, Twig 3, Hotwired (Stimulus 3.2, Turbo 8.0), and follows strict code quality standards.
+A Symfony 8.2 application template on PHP 8.5 or later, with Doctrine ORM on SQLite, Twig, AssetMapper, Stimulus,
+Turbo and Pico CSS. It keeps the usual layout of a Symfony application: no layers, no domain directories.
 
-## Build Commands
+## Tasks
 
-### Primary Task Runners
-
-#### Castor (Preferred - Modern PHP Task Runner)
-
-```bash
-castor start                # Start development server
-castor test                 # Run all tests
-castor test:unit           # Run unit tests only
-castor test:functional     # Run functional tests only
-castor test:api            # Run API tests only
-castor test:e2e            # Run E2E tests only
-castor test filter=testName # Run single test
-castor stan                # Run PHPStan static analysis
-castor lint:all            # Run all linters
-castor fix:all             # Run all fixers
-castor ci                  # Run full CI locally
-```
-
-#### Make (Traditional)
+Every task runs through [Castor](https://castor.jolicode.com) (`castor.php`); `composer.json` holds no task script.
 
 ```bash
-make start                 # Start development server
-make test                  # Run all tests
-make test-unit            # Run unit tests only
-make test-functional      # Run functional tests only
-make test-api             # Run API tests only
-make test-e2e             # Run E2E tests only
-make test filter=testName # Run single test
-make stan                 # Run PHPStan static analysis
-make lint                 # Run all linters
-make fix                  # Run all fixers
-make ci                   # Run full CI locally
+castor start                     # SQLite, migrations, fixtures, then the Symfony binary's web server
+castor up                        # FrankenPHP in worker mode and PostgreSQL with Docker Compose
+castor test                      # every PHPUnit suite
+castor test:unit                 # one suite: unit, integration, api, functional, e2e
+castor test --filter=testSlugify # one test
+castor coverage                  # the coverage report and its threshold
+castor lint                      # every lint and the static analysis
+castor stan                      # PHPStan only
+castor fix                       # every fixer
+castor ci                        # coverage, then every lint
 ```
 
-### Running Single Tests
+## Code style
 
-```bash
-# Preferred methods
-castor test filter=testSlugify
-make test filter=testSlugify
+1. `declare(strict_types=1);` in every PHP file.
+2. Classes are `final` unless they are made to be extended; services take `readonly` promoted properties.
+3. Every parameter, return and property is typed natively; a PHPDoc type only refines a native one.
+4. Controllers follow the action pattern: one `*Action` class per route, with `__invoke()`.
+5. Dates are never compared with `==` nor `===`: compare their timestamps or use `<` and `>`.
+6. JavaScript goes in Stimulus controllers, loaded by AssetMapper: no Node.js build, no Webpack Encore.
+7. Configuration files are PHP, under `config/`.
 
-# Direct PHPUnit
-vendor/bin/phpunit --filter=testSlugify
-```
+## Tests
 
-## Code Style Guidelines
+One directory per kind of test under `tests/`, mirroring `src/`: `Unit` (no kernel), `Integration` (the kernel),
+`Api` and `Functional` (requests through the kernel), `E2E` (a browser, once Panther is installed). Every test class
+names what it covers with `#[CoversClass]` or `#[CoversNothing]`; PHPUnit fails on a deprecation, a notice or a
+warning.
 
-### PHP Standards
-1. **Strict Types**: Always use `declare(strict_types=1);` at the top of every PHP file
-2. **Final Classes**: Mark classes as `final` unless inheritance is required
-3. **Readonly Properties**: Use `readonly` property promotion for services
-4. **Type Declarations**: Use full type hints for parameters and return types
-5. **ADR Pattern**: Controllers use Action-Domain-Responder pattern with `__invoke()` method
+## Quality gates
 
-### Import Conventions
+Before a change is complete, `castor ci` passes: the tests at the coverage threshold, PHP-CS-Fixer, Twig-CS-Fixer,
+Biome, PHPStan at the maximum level with the rules of `phil/dev-tools`, Rector, Arkitect, Deptrac, the dependency
+analysis, `composer audit`, composer-unused and composer-normalize. An exception to a gate goes in `phil-dev.php`, with
+its reason.
 
-```php
-// Standard order: framework, Symfony components, third-party, application
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use App\Helper\StringHelper;
-```
+## Security
 
-### Naming Conventions
-- **Controllers**: `*Action` (e.g., `HomeAction`, `SlugifyAction`)
-- **Services**: Descriptive names (e.g., `StringHelper`, `EmailService`)
-- **Tests**: `*Test` with `@covers` annotations
-- **Routes**: Use class constants for route names
-- **DTOs**: Descriptive names ending with `Dto` if applicable
-- **Enums**: Descriptive names with proper backing types
-
-### Error Handling
-- Controllers must return Symfony Response objects
-- Services use dependency injection with proper type hints
-- Use proper HTTP status codes in API responses
-- Implement validation using Symfony forms or constraints
-- Use exceptions for error conditions with appropriate handling
-
-## File Structure
-
-```
-src/
-├── Controller/        # ADR pattern controllers
-├── Data/              # Data services
-├── Helper/            # Services and utilities
-├── Twig/Extension/    # Custom Twig extensions
-├── Form/Type/         # Form types
-├── Dto/               # Data transfer objects
-└── Enum/              # Enumerations
-
-tests/
-├── Unit/              # Isolated class testing
-├── Integration/       # Component interaction
-├── Functional/        # HTTP request/response
-├── Api/               # Endpoint testing
-└── E2E/               # Full application flow
-```
-
-## Configuration
-
-- All Symfony configuration uses PHP format (not YAML)
-- Service container uses full autowiring and autoconfiguration
-- Asset management via importmap.php (no Webpack)
-- PHPStan configured at maximum level with bleeding edge features
-
-## Testing Requirements
-
-1. **Unit Tests**: Test individual classes in isolation
-2. **Integration Tests**: Test component interactions
-3. **Functional Tests**: Test HTTP request/response cycles
-4. **API Tests**: Test API endpoints with proper assertions
-5. **E2E Tests**: Test complete user workflows
-
-Always include `@covers` annotations in unit tests to specify what is being tested.
-
-## Code Quality Standards
-
-- **PHPStan**: Must pass at maximum level (use `castor stan` or `make stan`)
-- **PHP-CS-Fixer**: Must pass with Symfony rules (use `castor fix:all` or `make fix`)
-- **Frontend**: Use Biome for JS/CSS linting and formatting
-- **Container**: Symfony DI container must pass linting
-- **Templates**: Twig templates must pass linting
-
-## Development Workflow
-
-1. Write code following the established patterns
-2. Run `castor test` to ensure all tests pass
-3. Run `castor stan` for static analysis
-4. Run `castor fix:all` for code formatting
-5. Run `castor ci` to simulate full CI pipeline
-
-## Security Considerations
-
-- Never commit secrets or API keys
-- Use proper authentication and authorization
-- Validate all input data
-- Use HTTPS in production
-- Run `composer audit` regularly
-
-## Frontend Guidelines
-
-- Use Stimulus for JavaScript interactions
-- Use Turbo for seamless page updates
-- Follow Pico CSS conventions for styling
-- Use importmap.php for asset management
-- Keep JavaScript modular and reusable
-
-## Performance Guidelines
-
-- Use readonly properties where possible
-- Optimize database queries
-- Implement proper caching strategies
-- Use Symfony's built-in performance tools
-- Monitor memory usage in long-running processes
-
-## Quality Gates
-
-Before considering any code complete:
-1. All tests must pass (`castor test`)
-2. PHPStan must pass (`castor stan`)
-3. Code style must be fixed (`castor fix:all`)
-4. CI pipeline must pass locally (`castor ci`)
-
-## Additional Resources
-
-- Symfony Best Practices: https://symfony.com/doc/current/best_practices.html
-- PHPStan Documentation: https://phpstan.org/
-- PHP-CS-Fixer: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer
-- Castor Task Runner: https://castor.io/
-
-Remember: This project serves as a template for modern Symfony development. 
-Maintain high standards and follow established patterns.
+- Never commit a secret: `.env` holds defaults for development only.
+- Validate every input, with a form or constraints.
+- `castor lint:composer` runs `composer audit`; Composer refuses a version with a known advisory.

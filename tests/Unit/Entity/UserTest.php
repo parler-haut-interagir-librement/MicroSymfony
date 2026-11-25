@@ -30,6 +30,23 @@ final class UserTest extends TestCase
         self::assertSame(['ROLE_USER'], $user->getRoles());
     }
 
+    public function testDatesAreSetByTheConstructorAndTheLifecycleCallbacks(): void
+    {
+        $before = time();
+        $user = new User('email', 'password', 'username');
+        self::assertGreaterThanOrEqual($before, $user->getCreatedAt()->getTimestamp());
+        self::assertSame($user->getCreatedAt()->getTimestamp(), $user->getUpdatedAt()->getTimestamp());
+
+        $user->onPrePersist();
+        $created = $user->getCreatedAt();
+        self::assertGreaterThanOrEqual($before, $created->getTimestamp());
+        self::assertGreaterThanOrEqual($before, $user->getUpdatedAt()->getTimestamp());
+
+        $user->onPreUpdate();
+        self::assertSame($created, $user->getCreatedAt());
+        self::assertGreaterThanOrEqual($created->getTimestamp(), $user->getUpdatedAt()->getTimestamp());
+    }
+
     public function testUserGetUserIdentifier(): void
     {
         $user = new User('email', 'password', 'username');

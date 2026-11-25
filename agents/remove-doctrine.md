@@ -15,6 +15,8 @@ In the `composer.json` file:
 
 * remove `doctrine/dbal`
 * remove `doctrine/orm`
+* remove `doctrine/migrations`
+* remove `doctrine/persistence`
 * remove `doctrine/doctrine-bundle`
 * remove `doctrine/doctrine-migrations-bundle`
 * remove `zenstruck/foundry` and the ending comma from the line above
@@ -49,16 +51,16 @@ In the `composer.json` file:
 * Remove the `migrations/Version20260117053612.php` file
 * Remove the `var/data.db` file
 * In the `.env` file remove the section related to Doctrine
-* In the `phpunit.xml.dist` file remove the `Zenstruck` extension
-* In the `Makefile` file, remove all targets related to Doctrine 
-* In the `castor.php` file, remove all functions related to Doctrine 
+* In the `castor.php` file, remove the Doctrine steps: `loadFixtures()`, `resetDatabase()`, `lint_doctrine()` and their calls
+* In the `compose.yaml` file, remove the `database` service and the `DATABASE_URL` variable
+* In the `phil-dev.php` file, remove the Doctrine and Foundry patterns of `deptrac.allow`
 
 ## Composer update
 
-* Run `make fix-php` to fix the modified PHP code
+* Run `castor fix` to fix the modified code
 * Run `composer update` and verify that it completes without errors and that no
   dependency conflicts are reported.
 
 ## Checks
 
-* Ensure that `make ci` run without any error
+* Ensure that `castor ci` runs without any error

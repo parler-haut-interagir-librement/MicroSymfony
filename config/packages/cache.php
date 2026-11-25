@@ -27,4 +27,12 @@ return App::config([
             // ],
         ],
     ],
+    'when@test' => [
+        'framework' => [
+            'cache' => [
+                // Each test starts without the cached pages of the previous ones.
+                'app' => 'cache.adapter.array',
+            ],
+        ],
+    ],
 ]);

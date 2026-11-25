@@ -28,8 +28,7 @@ final readonly class MarkdownExtension
      * need a trailing `|raw`. This is safe ONLY because the input is a trusted source
      * (our own README.md); never apply this filter to user-provided content.
      *
-     * @see https://microsymfony.ovh
-     * @see https://github.com/strangebuzz/MicroSymfony/blob/main/README.md?plain=1
+     * @see https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/README.md?plain=1
      */
     #[AsTwigFilter('add_headers_anchors', isSafe: ['html'])]
     public function addHeadersAnchors(string $html): string

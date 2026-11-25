@@ -5,6 +5,9 @@
 
 declare(strict_types=1);
 
+// Every task runs from the directory of the project, whichever directory castor is called from.
+defined('CASTOR_USE_CHDIR') || define('CASTOR_USE_CHDIR', true);
+
 use Castor\Attribute\AsOption;
 use Castor\Attribute\AsTask;
 

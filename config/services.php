@@ -35,7 +35,7 @@ DESCRIPTION;
     $parameters->set('brand', 'MicroSymfony')
         ->set('brand_html', '<b>Micro</b>Symfony 🎶')
         ->set('brand_emoji', '🎶️')
-        ->set('website', 'https://github.com/strangebuzz/MicroSymfony')
+        ->set('website', 'https://github.com/parler-haut-interagir-librement/MicroSymfony')
         ->set('version', '1.0.0')
         ->set('description', $description);
 
