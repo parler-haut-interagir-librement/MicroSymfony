@@ -6,6 +6,7 @@ namespace App\Factory;
 
 use App\Entity\User;
 // use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Override;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
@@ -15,7 +16,7 @@ use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
  */
 final class UserFactory extends PersistentObjectFactory
 {
-    #[\Override]
+    #[Override]
     public static function class(): string
     {
         return User::class;
@@ -24,7 +25,7 @@ final class UserFactory extends PersistentObjectFactory
     /**
      * @return array<string, mixed>
      */
-    #[\Override]
+    #[Override]
     protected function defaults(): array
     {
         return [

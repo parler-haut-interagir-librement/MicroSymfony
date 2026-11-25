@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Api\Controller;
 
+use App\Controller\SlugifyAction;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+#[CoversClass(SlugifyAction::class)]
 final class SlugifyActionTest extends WebTestCase
 {
     /**

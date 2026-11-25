@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Helper\StringHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestHeader;
 use Symfony\Component\Routing\Attribute\Route;
@@ -29,9 +29,11 @@ final class SlugifyAction extends AbstractController
     #[Route(path: '/api/slugify', name: self::class, methods: ['GET'])]
     public function __invoke(
         StringHelper $stringHelper,
-        #[MapQueryParameter] string $title,
-        #[MapRequestHeader('Accept-Language')] ?string $locale = null,
-    ): Response {
+        #[MapQueryParameter]
+        string $title,
+        #[MapRequestHeader('Accept-Language')]
+        ?string $locale = null,
+    ): JsonResponse {
         return $this->json([
             'slug' => $stringHelper->slugify($title),
             'locale' => $locale,

@@ -1,0 +1,6 @@
+# Development additions to compose.yaml: PostgreSQL reachable from the workstation, on a port Docker picks
+# (`docker compose port database 5432` prints it).
+services:
+  database:
+    ports:
+      - "127.0.0.1::5432"

@@ -30,7 +30,7 @@ final class ComposerAction extends AbstractController
     #[Route(path: '/composer', name: self::class, methods: ['GET'])]
     public function __invoke(): Response
     {
-        $composer = $this->cache->get('composer', function (ItemInterface $item) {
+        $composer = $this->cache->get('composer', function (ItemInterface $item): string {
             $item->expiresAfter(3600);
 
             return $this->fs->readFile(__DIR__.'/../../composer.json');

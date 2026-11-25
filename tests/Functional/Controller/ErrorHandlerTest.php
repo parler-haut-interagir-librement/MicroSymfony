@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+#[CoversNothing]
 final class ErrorHandlerTest extends WebTestCase
 {
     public function test404(): void

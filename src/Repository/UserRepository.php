@@ -21,6 +21,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @template-extends ServiceEntityRepository<User>
  *
  * @see https://github.com/symfony/demo/blob/main/src/Repository/UserRepository.php
+ *
+ * @extends ServiceEntityRepository<User>
  */
 final class UserRepository extends ServiceEntityRepository
 {

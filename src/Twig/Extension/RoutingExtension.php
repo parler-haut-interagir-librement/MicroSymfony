@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig\Extension;
 
+use InvalidArgumentException;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Attribute\AsTwigFunction;
 
@@ -40,12 +41,10 @@ final class RoutingExtension
     #[AsTwigFunction('ctrl_fqcn')]
     public function getControllerFqcn(string $ctrlShortname): string
     {
-        if ($this->controllers === null) {
-            $this->controllers = array_unique(array_map(
-                static fn ($value) => u($value)->trimSuffix('::__invoke')->toString(),
-                array_keys($this->router->getRouteCollection()->getAliases())
-            ));
-        }
+        $this->controllers ??= array_unique(array_map(
+            static fn (string $value) => u($value)->trimSuffix('::__invoke')->toString(),
+            array_keys($this->router->getRouteCollection()->getAliases())
+        ));
 
         foreach ($this->controllers as $controller) {
             /** @var class-string $controller */
@@ -61,7 +60,7 @@ final class RoutingExtension
         //
         // If the route is not found, then Twig raises a "RouteNotFoundException".
 
-        throw new \InvalidArgumentException('No controller found for the "'.$ctrlShortname.'" shortname.');
+        throw new InvalidArgumentException('No controller found for the "'.$ctrlShortname.'" shortname.');
     }
 
     /**

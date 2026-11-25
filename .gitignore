@@ -1,5 +1,6 @@
 ###> bamarni/composer-bin-plugin ###
 /vendor-bin/**/vendor/
+/vendor-bin/**/composer.lock
 ###< bamarni/composer-bin-plugin ###
 
 ###> symfony/framework-bundle ###
@@ -11,6 +12,7 @@
 /var/
 /vendor/
 /config/reference.php
+/config/schema.json
 ###< symfony/framework-bundle ###
 
 ###> friendsofphp/php-cs-fixer ###
@@ -32,9 +34,9 @@
 .phpunit.cache
 ###< phpunit/phpunit ###
 
-###> kocal/biome-js-bundle
-bin/biome
-###< kocal/biome-js-bundle
+###> phil/dev-tools ###
+/.deptrac.cache
+###< phil/dev-tools ###
 
 ###> misc ###
 .opencode/

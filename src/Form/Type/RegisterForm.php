@@ -6,6 +6,7 @@ namespace App\Form\Type;
 
 use App\Dto\Form\Type\RegisterFormDto;
 use App\Enum\Fruit;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -23,7 +24,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class RegisterForm extends AbstractType
 {
-    #[\Override]
+    #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -48,7 +49,7 @@ final class RegisterForm extends AbstractType
      * @see https://www.strangebuzz.com/en/blog/disable-the-html5-validation-of-all-your-symfony-forms-with-a-feature-flag
      * @see templates/App/Controller/FormAction.html.twig
      */
-    #[\Override]
+    #[Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

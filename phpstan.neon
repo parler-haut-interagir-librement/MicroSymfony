@@ -1,25 +1,10 @@
-# https://phpstan.org/blog/phpstan-2-0-released-level-10-elephpants
-# https://phpstan.org/config-reference#bleeding-edge
-# https://phpstan.org/blog/what-is-bleeding-edge
-# comment the two following lines if you don't want to use the bleedingEdge mode.
+# The shared PHPStan configuration of phil/dev-tools: the maximum level, the strict rules, bleeding edge. The paths and
+# exceptions come from phil-dev.php; what only this application needs goes below.
 includes:
-    - phar://phpstan.phar/conf/bleedingEdge.neon
+    - vendor/phil/dev-tools/config/phpstan.neon
 
-# https://phpstan.org/config-reference
 parameters:
-    # https://phpstan.org/config-reference#rule-level
-    level: max
-    # https://phpstan.org/config-reference#multiple-files
-    paths:
-        - importmap.php
-        - bin
-        #- config # disabled for now until the array shapes are OK
-        - public
-        - src
-        - tests
-    # https://github.com/phpstan/phpstan-symfony#configuration
+    tmpDir: var/phpstan
+    # The container of the dev environment, written by bin/console cache:warmup: castor lint:analyse generates it.
     symfony:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
-    # https://phpstan.org/user-guide/ignoring-errors
-    ignoreErrors:
-        #- '#my_ignore_error_regexp_pattern#'

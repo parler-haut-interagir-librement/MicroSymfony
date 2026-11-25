@@ -1,10 +1,11 @@
 <?php
 
-// This script was tested with Castor 1.1.0
-// https://castor.jolicode.com/changelog/#110-2025-11-26
+// The tasks of the application: run `castor` to list them. Tested with Castor 1.9.
+// https://castor.jolicode.com
 
 declare(strict_types=1);
 
+use Castor\Attribute\AsOption;
 use Castor\Attribute\AsTask;
 
 use function Castor\context;
@@ -13,14 +14,18 @@ use function Castor\io;
 use function Castor\run;
 use function Castor\task;
 
-// use function Castor\parallel;
-
-// Change your prod domain here
-const DOMAIN = 'microsymfony.ovh';
-
-// Modify the code coverage threshold here
+// The code coverage threshold, in percent, that test:coverage enforces.
 const COVERAGE_THRESHOLD = 100;
 const COVERAGE_TEXT_REPORT = 'var/coverage/coverage-text.txt';
+
+// The quality tools, each installed in its own vendor-bin/<tool>/ by bamarni/composer-bin-plugin.
+const PHPUNIT = 'vendor/bin/phpunit';
+const PHIL_DEV = 'vendor/bin/phil-dev';
+const PHP_CS_FIXER = 'vendor-bin/php-cs-fixer/vendor/bin/php-cs-fixer';
+const PHPSTAN = 'vendor-bin/phpstan/vendor/bin/phpstan';
+const RECTOR = 'vendor-bin/rector/vendor/bin/rector';
+const ARKITECT = 'vendor-bin/arkitect/vendor/bin/phparkitect';
+const CAPTAINHOOK = 'vendor-bin/captainhook/vendor/bin/captainhook';
 
 function title(string $name): void
 {
@@ -46,416 +51,432 @@ function aborted(string $message = 'Aborted'): void
     io()->warning($message);
 }
 
-#[AsTask(namespace: 'symfony', description: 'Serve the application with the Symfony binary', aliases: ['start'])]
-function start(): void
+/**
+ * Reduces several exit codes to one: 0 only when every step succeeded.
+ *
+ * Exit codes are never summed: a shell keeps them modulo 256, so 128 + 128 would read as a success.
+ */
+function aggregate(int ...$exitCodes): int
 {
-    title('symfony:start');
-    loadFixtures();
-    run('symfony serve --daemon');
+    return array_any($exitCodes, static fn (int $exitCode): bool => $exitCode !== 0) ? 1 : 0;
 }
 
-#[AsTask(namespace: 'symfony', description: 'Stop the web server', aliases: ['stop'])]
-function stop(): void
+// Servers ————————————————————————————————————————————————————————————————————
+
+#[AsTask(namespace: 'symfony', description: 'Serve the application with the Symfony binary and SQLite', aliases: ['start'])]
+function start(): int
+{
+    title('symfony:start');
+    $exitCode = loadFixtures();
+    if ($exitCode !== 0) {
+        aborted('The database could not be prepared: the web server has NOT been started.');
+
+        return $exitCode;
+    }
+
+    return exit_code('symfony serve --daemon');
+}
+
+#[AsTask(namespace: 'symfony', description: 'Stop the web server of the Symfony binary', aliases: ['stop'])]
+function stop(): int
 {
     title('symfony:stop');
-    run('symfony server:stop');
+    $exitCode = exit_code('symfony server:stop');
     resetDatabase();
+
+    return $exitCode;
+}
+
+#[AsTask(namespace: 'docker', description: 'Start FrankenPHP in worker mode and PostgreSQL with Docker Compose', aliases: ['up'])]
+function up(): int
+{
+    title('docker:up');
+    $exitCode = exit_code('docker compose up --detach --wait --build');
+    if ($exitCode !== 0) {
+        return success($exitCode);
+    }
+
+    return success(aggregate(
+        exit_code('docker compose exec php bin/console doctrine:migrations:migrate --no-interaction'),
+        exit_code('docker compose exec php bin/console foundry:load-fixtures --no-interaction'),
+    ));
+}
+
+#[AsTask(namespace: 'docker', description: 'Stop the Docker Compose services', aliases: ['down'])]
+function down(): int
+{
+    title('docker:down');
+
+    return success(exit_code('docker compose down --remove-orphans'));
 }
 
 #[AsTask(namespace: 'symfony', description: 'Switch to the production environment', aliases: ['go-prod'])]
-function go_prod(): void
+function go_prod(): int
 {
     title('symfony:go_prod');
     if (io()->confirm('Are you sure you want to switch to the production environment? This will overwrite your .env.local file.', false)) {
-        run('cp .env.local.dist .env.local');
-        run('bin/console asset-map:compile');
-        success(0);
-
-        return;
+        return success(aggregate(exit_code('cp .env.local.dist .env.local'), exit_code('bin/console asset-map:compile')));
     }
 
     aborted();
+
+    return 0;
 }
 
 #[AsTask(namespace: 'symfony', description: 'Switch to the development environment', aliases: ['go-dev'])]
-function go_dev(): void
+function go_dev(): int
 {
     title('symfony:go_dev');
     if (io()->confirm('Are you sure you want to switch to the development environment? This will delete your .env.local file.', false)) {
-        run('rm -f .env.local');
-        run('rm -rf ./public/assets/*');
-        success(0);
-
-        return;
+        return success(aggregate(exit_code('rm -f .env.local'), exit_code('rm -rf ./public/assets/*')));
     }
 
     aborted();
+
+    return 0;
 }
 
 #[AsTask(namespace: 'symfony', description: 'Purge all Symfony cache and logs', aliases: ['purge'])]
-function purge(): void
+function purge(): int
 {
     title('symfony:purge');
-    success(exit_code('rm -rf ./var/cache/* ./var/log/* ./var/coverage/*'));
+
+    return success(exit_code('rm -rf ./var/cache/* ./var/log/* ./var/coverage/*'));
 }
 
-#[AsTask(namespace: 'app', description: 'Load the database fixtures', aliases: ['load-fixtures'])]
-function loadFixtures(): void
+// Database ———————————————————————————————————————————————————————————————————
+
+#[AsTask(namespace: 'app', description: 'Reset the SQLite database, run the migrations and load the fixtures', aliases: ['load-fixtures'])]
+function loadFixtures(): int
 {
     title('app:load-fixtures');
     resetDatabase();
-    io()->note('Running db migrations...');
-    success(exit_code('bin/console doctrine:migrations:migrate --no-interaction'));
-    io()->note('Load fixtures...');
-    success(exit_code('bin/console foundry:load-fixtures --env=dev --no-interaction'));
+    io()->note('Running the migrations...');
+    $exitCode = exit_code('bin/console doctrine:migrations:migrate --no-interaction');
+    if ($exitCode !== 0) {
+        return success($exitCode);
+    }
+
+    io()->note('Loading the fixtures...');
+
+    return success(exit_code('bin/console foundry:load-fixtures --env=dev --no-interaction'));
 }
 
 function resetDatabase(): void
 {
-    io()->note('Resetting db...');
-    success(exit_code('rm -f ./var/data.db'));
+    io()->note('Resetting the SQLite database...');
+    exit_code('rm -f ./var/data.db');
 }
 
-const PHP_UNIT_CMD = '/vendor/bin/phpunit --testsuite=%s --filter=%s %s';
-const PHP_UNIT_SUITES = ['api', 'e2e', 'functional', 'integration', 'unit'];
+// Tests ——————————————————————————————————————————————————————————————————————
 
-function getParameters(): array
+const PHPUNIT_SUITES = ['Unit', 'Integration', 'Api', 'Functional', 'E2E'];
+
+function phpunit(string $suites, string $filter, string $options): int
 {
-    $filter = !empty(getenv('filter')) ? getenv('filter') : '.';
-    $options = !empty(getenv('options')) ? getenv('options') : '--stop-on-failure';
+    $command = sprintf('%s --testsuite=%s', PHPUNIT, $suites);
+    if ($filter !== '') {
+        $command .= sprintf(' --filter=%s', escapeshellarg($filter));
+    }
 
-    return [$filter, $options];
+    $exitCode = exit_code(trim($command.' '.$options));
+    io()->newLine();
+
+    return $exitCode;
 }
 
-#[AsTask(name: 'all', namespace: 'test', description: 'Run tests with optional filter and options, eg: "filter=slug options=--testdox castor test"', aliases: ['test'])]
-function test_all(): int
-{
+#[AsTask(name: 'all', namespace: 'test', description: 'Run every test suite, eg: "castor test --filter=slug --options=--testdox"', aliases: ['test'])]
+function test_all(
+    #[AsOption(description: 'A PHPUnit filter')] string $filter = '',
+    #[AsOption(description: 'More PHPUnit options')] string $options = '--stop-on-failure',
+): int {
     title('test:all');
-    loadFixtures();
-    [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, implode(',', PHP_UNIT_SUITES), $filter, $options));
-    io()->writeln('');
 
-    return $ec;
+    return phpunit(implode(',', PHPUNIT_SUITES), $filter, $options);
 }
 
-#[AsTask('api', namespace: 'test', description: 'Run API tests only', aliases: ['test-api'])]
-function test_api(): int
+#[AsTask(name: 'unit', namespace: 'test', description: 'Run the unit tests only', aliases: ['test-unit'])]
+function test_unit(#[AsOption] string $filter = '', #[AsOption] string $options = ''): int
 {
-    title('test:api');
-    [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'api', $filter, $options));
-    io()->writeln('');
+    title('test:unit');
 
-    return $ec;
+    return phpunit('Unit', $filter, $options);
 }
 
-#[AsTask('e2e', namespace: 'test', description: 'Run E2E tests only', aliases: ['test-e2e'])]
-function test_e2e(): int
-{
-    title('test:api');
-    [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'e2e', $filter, $options));
-    io()->writeln('');
-
-    return $ec;
-}
-
-#[AsTask('functional', namespace: 'test', description: 'Run functional tests only', aliases: ['test-functional'])]
-function test_functional(): int
-{
-    title('test:functional');
-    [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'functional', $filter, $options));
-    io()->writeln('');
-
-    return $ec;
-}
-
-#[AsTask('integration', namespace: 'test', description: 'Run integration tests only', aliases: ['test-integration'])]
-function test_integration(): int
+#[AsTask(name: 'integration', namespace: 'test', description: 'Run the integration tests only', aliases: ['test-integration'])]
+function test_integration(#[AsOption] string $filter = '', #[AsOption] string $options = ''): int
 {
     title('test:integration');
-    [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'integration', $filter, $options));
-    io()->writeln('');
 
-    return $ec;
+    return phpunit('Integration', $filter, $options);
 }
 
-#[AsTask('unit', namespace: 'test', description: 'Run unit tests only', aliases: ['test-unit'])]
-function test_unit(
-): int {
-    title('test:unit');
-    [$filter, $options] = getParameters();
-    $ec = exit_code(__DIR__.sprintf(PHP_UNIT_CMD, 'unit', $filter, $options));
-    io()->writeln('');
+#[AsTask(name: 'api', namespace: 'test', description: 'Run the API tests only', aliases: ['test-api'])]
+function test_api(#[AsOption] string $filter = '', #[AsOption] string $options = ''): int
+{
+    title('test:api');
 
-    return $ec;
+    return phpunit('Api', $filter, $options);
 }
 
-#[AsTask(namespace: 'test', description: 'Generate the HTML PHPUnit code coverage report (stored in var/coverage)', aliases: ['coverage'])]
+#[AsTask(name: 'functional', namespace: 'test', description: 'Run the functional tests only', aliases: ['test-functional'])]
+function test_functional(#[AsOption] string $filter = '', #[AsOption] string $options = ''): int
+{
+    title('test:functional');
+
+    return phpunit('Functional', $filter, $options);
+}
+
+#[AsTask(name: 'e2e', namespace: 'test', description: 'Run the end-to-end tests only', aliases: ['test-e2e'])]
+function test_e2e(#[AsOption] string $filter = '', #[AsOption] string $options = ''): int
+{
+    title('test:e2e');
+
+    return phpunit('E2E', $filter, $options);
+}
+
+#[AsTask(name: 'next', namespace: 'test', description: 'Run the tests on the next PHP version, in its Docker image')]
+function test_next(): int
+{
+    title('test:next');
+
+    return success(exit_code(sprintf('%s php next -- %s', PHIL_DEV, PHPUNIT)));
+}
+
+#[AsTask(namespace: 'test', description: 'Generate the HTML code coverage report (var/coverage) and check its threshold', aliases: ['coverage'])]
 function coverage(): int
 {
     title('test:coverage');
-    purge();
-    loadFixtures();
-    $ec = exit_code(sprintf('php -d xdebug.enable=1 -d memory_limit=-1 vendor/bin/phpunit --coverage-html=var/coverage --coverage-text=%s', COVERAGE_TEXT_REPORT),
+    exit_code('rm -rf ./var/coverage/*');
+    $exitCode = exit_code(sprintf('php -d memory_limit=-1 %s --coverage-html=var/coverage --coverage-text=%s', PHPUNIT, COVERAGE_TEXT_REPORT),
         context: context()->withEnvironment(['XDEBUG_MODE' => 'coverage'])
     );
-    if ($ec !== 0) {
-        return $ec;
+    if ($exitCode !== 0) {
+        return $exitCode;
     }
 
     return success(exit_code(sprintf('php bin/coverage-checker.php %s %d', COVERAGE_TEXT_REPORT, COVERAGE_THRESHOLD)));
 }
 
-#[AsTask(namespace: 'test', description: 'Open the PHPUnit code coverage report (var/coverage/index.html)', aliases: ['cov-report'])]
-function cov_report(): int
+#[AsTask(namespace: 'test', description: 'Mutation testing with Infection', aliases: ['infection'])]
+function infection(): int
 {
-    title('test:cov-report');
-    $coverageFile = 'var/coverage/index.html';
-    if (!file_exists($coverageFile)) {
-        coverage();
-    }
+    title('test:infection');
 
-    return success(exit_code(sprintf('open %s', $coverageFile)));
+    return success(exit_code(sprintf('%s infection', PHIL_DEV)));
 }
 
-#[AsTask(namespace: 'lint', description: 'Run PHPStan', aliases: ['stan'])]
-function stan(): int
-{
-    title('lint:stan');
+// Lints and static analysis ——————————————————————————————————————————————————
 
-    if (!file_exists('var/cache/dev/App_KernelDevDebugContainer.xml')) {
-        io()->note('PHPStan needs the dev/debug cache. Generating it...');
-        run('bin/console cache:warmup',
-            context: context()->withEnvironment(['APP_ENV' => 'dev', 'APP_DEBUG' => 1])
-        );
-    }
-
-    return exit_code('vendor/bin/phpstan analyse -c phpstan.neon --memory-limit 1G -vv');
-}
-
-#[AsTask(name: 'php', namespace: 'fix', description: 'Fix PHP files with php-cs-fixer (ignore PHP 8.4 warnings)', aliases: ['fix-php'])]
-function fix_php(): int
-{
-    title('fix:fix-php');
-    $ec = exit_code('vendor/bin/php-cs-fixer fix',
-        context: context()->withEnvironment(['PHP_CS_FIXER_IGNORE_ENV' => 1])
-    );
-
-    return success($ec);
-}
-
-function checkBiome(): void
-{
-    if (!file_exists('bin/biome')) {
-        io()->note('Biome executable not found, donwloading it...');
-        run('bin/console biomejs:download');
-    }
-}
-
-#[AsTask(name: 'js-css', namespace: 'fix', description: 'Format JS/CSS files with Biome', aliases: ['fix-js-css'])]
-function fix_js_css(): int
-{
-    checkBiome();
-    title('fix:js-css');
-    $ec = exit_code('bin/biome check . --write');
-    io()->newLine();
-
-    return success($ec);
-}
-
-#[AsTask(name: 'php', namespace: 'lint', description: 'Lint PHP files with php-cs-fixer (report only)', aliases: ['lint-php'])]
+#[AsTask(name: 'php', namespace: 'lint', description: 'Check the code style of the PHP files with PHP-CS-Fixer', aliases: ['lint-php'])]
 function lint_php(): int
 {
     title('lint:php');
-    $ec = exit_code('vendor/bin/php-cs-fixer fix --dry-run',
-        context: context()->withEnvironment(['PHP_CS_FIXER_IGNORE_ENV' => 1])
-    );
-    io()->newLine();
 
-    return success($ec);
+    return success(exit_code(sprintf('%s check --diff', PHP_CS_FIXER)));
 }
 
-#[AsTask(name: 'js-css', namespace: 'lint', description: 'Lint JS/CSS files with Biome', aliases: ['lint-js-css'])]
-function lint_js_css(): int
-{
-    checkBiome();
-    title('lint:js-css');
-    $ec = exit_code('bin/biome check .');
-    io()->newLine();
-
-    return success($ec);
-}
-
-#[AsTask(name: 'lint-js-css', namespace: 'ci', description: 'Lint JS/CSS files with Biome (CI)')]
-function ci_lint_js_css(): int
-{
-    title('ci:lint-js-css');
-    checkBiome();
-    $ec = exit_code('bin/biome ci . &> /dev/null');
-    io()->newLine();
-
-    return success($ec);
-}
-
-#[AsTask(name: 'lint-php', namespace: 'ci', description: 'Lint PHP files with php-cs-fixer (for CI)')]
-function ci_lint_php(): int
-{
-    title('ci:lint-php');
-
-    $ec = exit_code('command -v cs2pr &> /dev/null');
-    if ($ec !== 0) {
-        aborted('cs2pr not found. Locally, Please use the "lint:php" task.');
-
-        return 1;
-    }
-
-    return exit_code('vendor/bin/php-cs-fixer fix --allow-risky=yes --dry-run --format=checkstyle | cs2pr',
-        context: context()->withEnvironment(['PHP_CS_FIXER_IGNORE_ENV' => 1])
-    );
-}
-
-#[AsTask(name: 'all', namespace: 'fix', description: 'Run all fixers', aliases: ['fix'])]
-function fix_all(): int
-{
-    title('fix:all');
-    $ec1 = fix_php();
-    $ec2 = fix_js_css();
-    io()->newLine();
-
-    return success($ec1 + $ec2);
-}
-#[AsTask(name: 'container', namespace: 'lint', description: 'Lint the Symfony DI container', aliases: ['lint-container'])]
-function lint_container(): int
-{
-    title('lint:container');
-
-    return exit_code('bin/console lint:container');
-}
-
-#[AsTask(name: 'twig', namespace: 'lint', description: 'Lint Twig files', aliases: ['lint-twig'])]
+#[AsTask(name: 'twig', namespace: 'lint', description: 'Lint the Twig templates and check their code style', aliases: ['lint-twig'])]
 function lint_twig(): int
 {
     title('lint:twig');
 
-    return exit_code('bin/console lint:twig templates/');
+    return success(aggregate(exit_code('bin/console lint:twig templates/'), exit_code(sprintf('%s twig', PHIL_DEV))));
 }
 
-#[AsTask(name: 'doctrine', namespace: 'lint', description: 'Validate Doctrine schema', aliases: ['lint-doctrine'])]
+#[AsTask(name: 'js', namespace: 'lint', description: 'Check the Stimulus controllers and the styles with Biome', aliases: ['lint-js'])]
+function lint_js(): int
+{
+    title('lint:js');
+
+    return success(exit_code(sprintf('%s js', PHIL_DEV)));
+}
+
+#[AsTask(name: 'container', namespace: 'lint', description: 'Lint the Symfony container', aliases: ['lint-container'])]
+function lint_container(): int
+{
+    title('lint:container');
+
+    return success(exit_code('bin/console lint:container'));
+}
+
+#[AsTask(name: 'yaml', namespace: 'lint', description: 'Lint the YAML files', aliases: ['lint-yaml'])]
+function lint_yaml(): int
+{
+    title('lint:yaml');
+
+    return success(exit_code('bin/console lint:yaml .github compose.yaml compose.override.yaml --parse-tags'));
+}
+
+#[AsTask(name: 'doctrine', namespace: 'lint', description: 'Validate the Doctrine mapping and schema', aliases: ['lint-doctrine'])]
 function lint_doctrine(): int
 {
     title('lint:doctrine');
 
-    return exit_code('bin/console doctrine:schema:validate');
+    return success(exit_code('bin/console doctrine:schema:validate'));
 }
 
-#[AsTask(name: 'all', namespace: 'lint', description: 'Run all lints', aliases: ['lint'])]
+#[AsTask(name: 'composer', namespace: 'lint', description: 'Check the dependencies: analysis, advisories, unused packages, normalized composer.json', aliases: ['lint-composer'])]
+function lint_composer(): int
+{
+    title('lint:composer');
+
+    return success(aggregate(
+        exit_code('vendor/bin/composer-dependency-analyser'),
+        exit_code(sprintf('%s audit', PHIL_DEV)),
+        exit_code(sprintf('%s unused', PHIL_DEV)),
+        exit_code(sprintf('%s normalize', PHIL_DEV)),
+    ));
+}
+
+#[AsTask(namespace: 'lint', description: 'Run PHPStan at the maximum level, then check its witnesses', aliases: ['analyse', 'stan'])]
+function analyse(): int
+{
+    title('lint:analyse');
+
+    if (!file_exists('var/cache/dev/App_KernelDevDebugContainer.xml')) {
+        io()->note('PHPStan reads the container of the dev environment. Generating it...');
+        run('bin/console cache:warmup', context: context()->withEnvironment(['APP_ENV' => 'dev', 'APP_DEBUG' => '1']));
+    }
+
+    return success(aggregate(
+        exit_code(sprintf('%s analyse --no-progress --memory-limit=1G', PHPSTAN)),
+        exit_code(sprintf('%s witnesses', PHIL_DEV)),
+    ));
+}
+
+#[AsTask(name: 'rector', namespace: 'lint', description: 'Check that Rector has nothing left to change', aliases: ['lint-rector'])]
+function lint_rector(): int
+{
+    title('lint:rector');
+
+    return success(exit_code(sprintf('%s process --dry-run', RECTOR)));
+}
+
+#[AsTask(name: 'architecture', namespace: 'lint', description: 'Check the shape of the classes with Arkitect and the layers with Deptrac', aliases: ['lint-architecture'])]
+function lint_architecture(): int
+{
+    title('lint:architecture');
+
+    return success(aggregate(
+        exit_code(sprintf('%s check --config=arkitect.php', ARKITECT)),
+        exit_code(sprintf('%s deptrac', PHIL_DEV)),
+    ));
+}
+
+#[AsTask(name: 'all', namespace: 'lint', description: 'Run every lint and the static analysis', aliases: ['lint'])]
 function lint_all(): int
 {
     title('lint:all');
-    $ec1 = stan();
-    $ec2 = lint_php();
-    $ec3 = lint_doctrine();
-    $ec4 = lint_js_css();
-    $ec5 = lint_container();
-    $ec6 = lint_twig();
 
-    return success($ec1 + $ec2 + $ec3 + $ec4 + $ec5 + $ec6);
-
-    // if you want to speed up the process, you can run these commands in parallel
-    //    parallel(
-    //        fn() => lint_php(),
-    //        fn() => lint_doctrine(),
-    //        fn() => lint_container(),
-    //        fn() => lint_twig(),
-    //    );
+    return success(aggregate(
+        lint_composer(),
+        lint_php(),
+        lint_twig(),
+        lint_js(),
+        lint_yaml(),
+        lint_container(),
+        lint_doctrine(),
+        analyse(),
+        lint_rector(),
+        lint_architecture(),
+    ));
 }
 
-#[AsTask(name: 'all', namespace: 'ci', description: 'Run CI locally', aliases: ['ci'])]
-function ci(): void
+// Fixers —————————————————————————————————————————————————————————————————————
+
+#[AsTask(name: 'php', namespace: 'fix', description: 'Fix the code style of the PHP files with PHP-CS-Fixer', aliases: ['fix-php'])]
+function fix_php(): int
+{
+    title('fix:php');
+
+    return success(exit_code(sprintf('%s fix', PHP_CS_FIXER)));
+}
+
+#[AsTask(name: 'rector', namespace: 'fix', description: 'Apply the changes of Rector', aliases: ['fix-rector'])]
+function fix_rector(): int
+{
+    title('fix:rector');
+
+    return success(exit_code(sprintf('%s process', RECTOR)));
+}
+
+#[AsTask(name: 'twig', namespace: 'fix', description: 'Fix the code style of the Twig templates', aliases: ['fix-twig'])]
+function fix_twig(): int
+{
+    title('fix:twig');
+
+    return success(exit_code(sprintf('%s twig --fix', PHIL_DEV)));
+}
+
+#[AsTask(name: 'js', namespace: 'fix', description: 'Fix the Stimulus controllers and the styles with Biome', aliases: ['fix-js'])]
+function fix_js(): int
+{
+    title('fix:js');
+
+    return success(exit_code(sprintf('%s js --fix', PHIL_DEV)));
+}
+
+#[AsTask(name: 'composer', namespace: 'fix', description: 'Normalize composer.json', aliases: ['fix-composer'])]
+function fix_composer(): int
+{
+    title('fix:composer');
+
+    return success(exit_code(sprintf('%s normalize --fix', PHIL_DEV)));
+}
+
+#[AsTask(name: 'all', namespace: 'fix', description: 'Run every fixer', aliases: ['fix'])]
+function fix_all(): int
+{
+    title('fix:all');
+
+    return success(aggregate(fix_rector(), fix_php(), fix_twig(), fix_js(), fix_composer()));
+}
+
+// Continuous integration —————————————————————————————————————————————————————
+
+#[AsTask(name: 'all', namespace: 'ci', description: 'Run the continuous integration locally: coverage, then every lint', aliases: ['ci'])]
+function ci(): int
 {
     title('ci:all');
     purge();
-    loadFixtures();
     io()->section('Coverage');
-    coverage();
+    $coverage = coverage();
     io()->section('Lints');
-    lint_all();
+
+    return success(aggregate($coverage, lint_all()));
 }
 
-#[AsTask(name: 'versions', namespace: 'helpers', description: 'Output current stack versions', aliases: ['versions'])]
-function versions(): void
+// Helpers ————————————————————————————————————————————————————————————————————
+
+#[AsTask(name: 'hooks', namespace: 'helpers', description: 'Install the git hooks: the fast checks on the staged files before each commit', aliases: ['hooks'])]
+function hooks(): int
+{
+    title('helpers:hooks');
+
+    return success(exit_code(sprintf('%s install --force --configuration=captainhook.json', CAPTAINHOOK)));
+}
+
+#[AsTask(name: 'versions', namespace: 'helpers', description: 'Output the versions of the stack', aliases: ['versions'])]
+function versions(): int
 {
     title('helpers:versions');
-    io()->note('Castor');
-    run('castor --version');
-    io()->newLine();
 
-    io()->note('PHP');
-    run('php -v');
-    io()->newLine();
-
-    io()->note('Composer');
-    run('composer --version');
-    io()->newLine();
-
-    io()->note('Symfony');
-    run('bin/console --version');
-    io()->newLine();
-
-    io()->note('PHPUnit');
-    run('vendor/bin/phpunit --version');
-
-    io()->note('PHPStan');
-    run('vendor/bin/phpstan --version');
-    io()->newLine();
-
-    io()->note('php-cs-fixer');
-    exit_code('vendor/bin/php-cs-fixer --version',
-        context: context()->withEnvironment(['PHP_CS_FIXER_IGNORE_ENV' => 1])
-    );
-
-    io()->newLine();
-
-    success(0);
+    return success(aggregate(
+        exit_code('castor --version'),
+        exit_code('php -v'),
+        exit_code('composer --version'),
+        exit_code('bin/console --version'),
+        exit_code(sprintf('%s --version', PHPUNIT)),
+        exit_code(sprintf('%s --version', PHPSTAN)),
+        exit_code(sprintf('%s --version', PHP_CS_FIXER)),
+    ));
 }
 
-#[AsTask(name: 'check-requirements', namespace: 'helpers', description: 'Checks requirements for running Symfony', aliases: ['check-requirements'])]
+#[AsTask(name: 'check-requirements', namespace: 'helpers', description: 'Check the requirements of Symfony', aliases: ['check-requirements'])]
 function check_requirements(): int
 {
-    $ec = exit_code('vendor/bin/requirements-checker');
-    io()->newLine();
+    title('helpers:check-requirements');
 
-    return success($ec);
-}
-
-#[AsTask(name: 'deploy', namespace: 'prod', description: 'Simple manual deploy on a VPS (this is to update the demo site https://microsymfony.ovh/)', aliases: ['deploy'])]
-function deploy(): int
-{
-    $ec1 = exit_code('git pull');
-    io()->newLine();
-    $ec2 = exit_code('composer install -n');
-    io()->newLine();
-    $ec3 = exit_code('chown -R www-data: ./var/*');
-    io()->newLine();
-    $ec4 = exit_code('cp .env.local.dist .env.local');
-    io()->newLine();
-    $ec5 = exit_code('composer dump-env prod -n');
-    io()->newLine();
-    $ec6 = exit_code('bin/console asset-map:compile');
-    io()->newLine();
-
-    return success($ec1 + $ec2 + $ec3 + $ec4 + $ec5 + $ec6);
-}
-
-#[AsTask(name: 'le-renew', namespace: 'prod', description: "Renew Let's Encrypt HTTPS certificates", aliases: ['le-renew'])]
-function le_renew(): int
-{
-    $ec = exit_code(sprintf('certbot --apache -d %s -d www.%s', DOMAIN, DOMAIN));
-    io()->newLine();
-
-    return success($ec);
+    return success(exit_code('vendor/bin/requirements-checker'));
 }

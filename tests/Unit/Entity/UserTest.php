@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Entity;
 
 use App\Entity\User;
+use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -33,7 +34,7 @@ final class UserTest extends TestCase
     {
         $user = new User('email', 'password', 'username');
         $user->setUsername('');
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $user->getUserIdentifier();
     }
 
@@ -42,6 +43,15 @@ final class UserTest extends TestCase
         $user = new User('email', 'password', 'serialized');
         $serializedUser = 'O:15:"App\Entity\User":4:{i:0;N;i:1;s:10:"serialized";i:2;s:8:"password";i:3;s:5:"email";}';
         self::assertSame($serializedUser, serialize($user));
-        unserialize($serializedUser);
+    }
+
+    public function testUserUnserialize(): void
+    {
+        $user = new User('other-email', 'other-password', 'other');
+        $user->__unserialize([null, 'serialized', 'password', 'email']);
+        self::assertNull($user->getId());
+        self::assertSame('serialized', $user->getUsername());
+        self::assertSame('password', $user->getPassword());
+        self::assertSame('email', $user->getEmail());
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -11,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  *
  * @see config/routes.yaml
  */
+#[CoversNothing]
 final class StaticControllerTest extends WebTestCase
 {
     public function testStimulus(): void

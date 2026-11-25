@@ -32,7 +32,7 @@ final class HomeAction extends AbstractController
     #[Route(path: '/', name: self::class, methods: ['GET'])]
     public function __invoke(): Response
     {
-        $readme = $this->cache->get('readme', function (ItemInterface $item) {
+        $readme = $this->cache->get('readme', function (ItemInterface $item): string {
             $item->expiresAfter(3600);
 
             return $this->fs->readFile(__DIR__.'/../../README.md');

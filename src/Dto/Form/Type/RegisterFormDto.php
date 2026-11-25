@@ -6,6 +6,7 @@ namespace App\Dto\Form\Type;
 
 use App\Enum\Fruit;
 use App\Form\Type\RegisterForm;
+use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -31,7 +32,7 @@ final class RegisterFormDto
 
     #[Assert\NotNull]
     #[Assert\LessThanOrEqual('today')]
-    public ?\DateTimeImmutable $birthday = null;
+    public ?DateTimeImmutable $birthday = null;
 
     #[Assert\NotNull]
     public ?Fruit $fruit = null;

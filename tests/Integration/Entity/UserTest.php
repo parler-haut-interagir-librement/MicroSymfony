@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace App\Tests\Integration\Entity;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
+#[CoversClass(User::class)]
+#[CoversClass(UserRepository::class)]
 final class UserTest extends KernelTestCase
 {
     use ResetDatabase;
 
     public function testPersistNewUserSuccess(): void
     {
-        /** @var EntityManagerInterface $em */
         $em = self::getContainer()->get(EntityManagerInterface::class);
         $user = new User(
             email: 'test@example.com',

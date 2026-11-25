@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-$argv = $argv ?? [];
-if (count($argv) !== 3) {
+$argv ??= [];
+if (3 !== count($argv)) {
     throw new InvalidArgumentException('Two arguments are required by this script: 1) the coverage file path. 2) the code coverage threshold.');
 }
 
@@ -19,12 +19,12 @@ if (!file_exists($inputFile)) {
 }
 
 $content = file_get_contents($inputFile);
-if ($content === false) {
+if (false === $content) {
     throw new RuntimeException('Cannot read coverage file.');
 }
 
 // Extract coverage percentage from line like: [30;42m  Lines:   96.43% (108/112)[0m
-if (!preg_match('/Lines:\s+(\d+\.\d+)%/', $content, $matches)) {
+if (1 !== preg_match('/Lines:\s+(\d+\.\d+)%/', $content, $matches)) {
     throw new RuntimeException('Cannot find coverage metrics in coverage file.');
 }
 

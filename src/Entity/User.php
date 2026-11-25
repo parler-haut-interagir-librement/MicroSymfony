@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
+// use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-// use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use LogicException;
+use Override;
+use Stringable;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use function Symfony\Component\String\u;
@@ -21,9 +25,9 @@ use function Symfony\Component\String\u;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\HasLifecycleCallbacks]
-final class User implements \Stringable, UserInterface /* , PasswordAuthenticatedUserInterface */
+final class User implements Stringable, UserInterface /* , PasswordAuthenticatedUserInterface */
 {
-    final public const string ROLE_USER = 'ROLE_USER';
+    public const string ROLE_USER = 'ROLE_USER';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,10 +35,10 @@ final class User implements \Stringable, UserInterface /* , PasswordAuthenticate
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: false)]
-    private \DateTimeInterface $createdAt;
+    private DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: false)]
-    private \DateTimeInterface $updatedAt;
+    private DateTimeImmutable $updatedAt;
 
     public function __construct(
         #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
@@ -44,6 +48,8 @@ final class User implements \Stringable, UserInterface /* , PasswordAuthenticate
         #[ORM\Column(type: Types::STRING, length: 255, unique: true, nullable: false)]
         private string $username,
     ) {
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -53,13 +59,13 @@ final class User implements \Stringable, UserInterface /* , PasswordAuthenticate
 
     public function isNew(): bool
     {
-        return $this->id === null;
+        return null === $this->id;
     }
 
-    #[\Override]
+    #[Override]
     public function __toString(): string
     {
-        return \sprintf('%s (%s)', $this->getUserIdentifier(), (string) ($this->getId() ?? 'not persisted'));
+        return \sprintf('%s (%s)', $this->getUserIdentifier(), (string) ($this->id ?? 'not persisted'));
     }
 
     /**
@@ -78,11 +84,11 @@ final class User implements \Stringable, UserInterface /* , PasswordAuthenticate
         [$this->id, $this->username, $this->password, $this->email] = $data;
     }
 
-    #[\Override]
+    #[Override]
     public function getUserIdentifier(): string
     {
-        if ($this->username === '') {
-            throw new \LogicException('User username cannot be empty.');
+        if ('' === $this->username) {
+            throw new LogicException('User username cannot be empty.');
         }
 
         return $this->username;
@@ -91,7 +97,7 @@ final class User implements \Stringable, UserInterface /* , PasswordAuthenticate
     /**
      * Returns the roles or permissions granted to the user for security.
      */
-    #[\Override]
+    #[Override]
     public function getRoles(): array
     {
         return [self::ROLE_USER];
@@ -136,12 +142,12 @@ final class User implements \Stringable, UserInterface /* , PasswordAuthenticate
         return $this;
     }
 
-    public function getCreatedAt(): \DateTimeInterface
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): \DateTimeInterface
+    public function getUpdatedAt(): DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -152,8 +158,8 @@ final class User implements \Stringable, UserInterface /* , PasswordAuthenticate
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     /**
@@ -162,6 +168,6 @@ final class User implements \Stringable, UserInterface /* , PasswordAuthenticate
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 }

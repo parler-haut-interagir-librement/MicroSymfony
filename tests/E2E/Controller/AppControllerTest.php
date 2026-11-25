@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\E2E\Controller;
 
+use App\Controller\HomeAction;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as E2ETestCase;
 
 // use Symfony\Component\Panther\PantherTestCase as E2ETestCase;
@@ -15,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as E2ETestCase;
  *
  * @see https://github.com/symfony/panther
  */
+#[CoversClass(HomeAction::class)]
 final class AppControllerTest extends E2ETestCase
 {
     public function testHomeAction(): void
