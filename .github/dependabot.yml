@@ -1,0 +1,35 @@
+# The dependencies of this application, watched by Dependabot. Adapted from phil/dev-tools (resources/security): the
+# root and each tool of vendor-bin/, then the GitHub Actions; the importmap packages are not an npm project.
+#
+# A release waits seven days before Dependabot proposes it (cooldown), so that a compromised or broken release is
+# usually withdrawn before it reaches the application; the security updates do not wait. The updates of an ecosystem
+# come grouped, Symfony together, then the other development and production dependencies.
+version: 2
+updates:
+  - package-ecosystem: composer
+    directories:
+      - '/'
+      - '/vendor-bin/*'
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      symfony:
+        patterns:
+          - 'symfony/*'
+      development:
+        dependency-type: development
+      production:
+        dependency-type: production
+
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns:
+          - '*'

@@ -1,3 +1,5 @@
+# The continuous integration: the advisories, the tests on PHP 8.5 and the next PHP, every lint. Every action is pinned
+# to the commit of the version its comment names, and the checkout keeps no credential.
 name: Symfony
 
 on:
@@ -14,10 +16,12 @@ jobs:
   security:
     runs-on: ubuntu-latest
     steps:
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: '8.5'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Install the dependencies
         run: composer install --no-interaction --no-progress --no-scripts --prefer-dist
       - name: Audit the dependencies
@@ -31,21 +35,16 @@ jobs:
         php-versions: ['8.5', '8.6']
     runs-on: ubuntu-latest
     steps:
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: ${{ matrix.php-versions }}
           coverage: xdebug
           tools: castor
-      - uses: actions/checkout@v4
-      - name: Cache the Composer packages
-        uses: actions/cache@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          path: ~/.cache/composer
-          key: ${{ runner.os }}-php${{ matrix.php-versions }}-composer-${{ hashFiles('composer.lock') }}
+          persist-credentials: false
       - name: Install the dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
-      - name: Prepare the database
-        run: castor load-fixtures
       - name: Run the tests with their coverage threshold
         run: castor coverage
 
@@ -53,16 +52,13 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: '8.5'
           tools: castor
-      - uses: actions/checkout@v4
-      - name: Cache the Composer packages
-        uses: actions/cache@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          path: ~/.cache/composer
-          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          persist-credentials: false
       - name: Install the dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
       - name: Run every lint and the static analysis

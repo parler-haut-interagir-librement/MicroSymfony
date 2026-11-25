@@ -2,7 +2,7 @@
 
 {% set h2 = 'Form example' %}
 
-{% block title %}{{ h2 }} | {{ brand }}{% endblock %}
+{% block title %}{{ h2 }} | {{ 'brand.name'|trans }}{% endblock %}
 
 {% block body %}
     <h2>{{ h2 }} 📋</h2>

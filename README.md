@@ -1,7 +1,7 @@
 # MicroSymfony 🎶
 
-[![Latest Version](https://img.shields.io/packagist/v/phil/micro-symfony.svg?style=flat-square)](https://packagist.org/packages/phil/micro-symfony)
-[![PHP Version Require](https://poser.pugx.org/phil/micro-symfony/require/php?style=flat-square)](https://packagist.org/packages/phil/micro-symfony)
+[![Latest Version](https://img.shields.io/packagist/v/phil/microsymfony.svg?style=flat-square)](https://packagist.org/packages/phil/microsymfony)
+[![PHP Version Require](https://poser.pugx.org/phil/microsymfony/require/php?style=flat-square)](https://packagist.org/packages/phil/microsymfony)
 [![Symfony Version](https://img.shields.io/badge/Symfony-8.2-black?logo=symfony)](https://symfony.com/8)
 [![Symfony Style](https://img.shields.io/badge/code%20style-symfony-black?logo=symfony)](https://symfony.com/doc/current/contributing/code/standards.html)
 [![PHPStan level](https://img.shields.io/badge/PHPStan-level%20max-success?style=flat-square)](phpstan.neon)
@@ -12,7 +12,9 @@
 
 MicroSymfony is a [Symfony 8.2](https://symfony.com/8) application template on steroids, ready to use: a sandbox with
 sensible defaults, tests of every kind and strict quality gates, to start a proof of concept, try an idea or build a
-small application.
+small application. It stays micro: no database, English and French pages, and nothing a small application does not
+need. Doctrine comes with [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony), the next
+template up.
 
 This template is the PHIL version of [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony), created
 and maintained by [COil](https://github.com/COil) of [Strangebuzz](https://www.strangebuzz.com). It keeps its name,
@@ -25,10 +27,10 @@ template is explained by its author:
 
 ## Table of Contents 📖
 
+* [Demo](#demo-)
 * [Quick-start](#quick-start-)
   * [With the Symfony binary](#with-the-symfony-binary-)
-  * [With FrankenPHP and PostgreSQL](#with-frankenphp-and-postgresql-)
-  * [With MySQL](#with-mysql-)
+  * [With FrankenPHP](#with-frankenphp-)
 * [Requirements](#requirements-)
 * [Stack](#stack-)
 * [Features](#features-)
@@ -36,6 +38,8 @@ template is explained by its author:
 * [Quality gates](#quality-gates-)
 * [Differences from strangebuzz/MicroSymfony](#differences-from-strangebuzzmicrosymfony-)
 * [Notes](#notes-)
+* [PHIL bundles](#phil-bundles-)
+* [Other PHIL templates](#other-phil-templates-)
 * [ADR](#adr-)
 * [References](#references-)
 * [Contributing](#contributing-)
@@ -43,11 +47,19 @@ template is explained by its author:
 * [Credits](#credits-)
 * [License](#license-)
 
+## Demo 🌈
+
+A live demo is always better than an explanation:
+
+* the live demo will be at [https://ph-il.ca/demos/microsymfony](https://ph-il.ca/demos/microsymfony);
+* the one served by [FrankenPHP](https://frankenphp.dev/) in worker mode will be at
+  [https://ph-il.ca/demos/frankenphp/microsymfony](https://ph-il.ca/demos/frankenphp/microsymfony).
+
 ## Quick-start ⚡
 
 Create a new project from the latest release:
 
-    composer create-project phil/micro-symfony my-project && cd my-project
+    composer create-project phil/microsymfony my-project && cd my-project
 
 The repository is also a GitHub template repository: the "Use this template" button creates a new repository from the
 main branch, whose commits all pass the continuous integration.
@@ -55,33 +67,22 @@ main branch, whose commits all pass the continuous integration.
 ### With the Symfony binary 🎶
 
 You need the [Symfony binary](https://symfony.com/download#step-1-install-symfony-cli) and
-[Castor](https://castor.jolicode.com/getting-started/installation/). The database is a SQLite file in `var/`:
+[Castor](https://castor.jolicode.com/getting-started/installation/):
 
     castor start
 
-Open [https://127.0.0.1:8000](https://127.0.0.1:8000) (if port 8000 is free). `castor stop` stops the server and
-deletes the database.
+Open [https://127.0.0.1:8000](https://127.0.0.1:8000) (if port 8000 is free). `castor stop` stops the server.
 
-### With FrankenPHP and PostgreSQL 🧟
+### With FrankenPHP 🧟
 
 You need [Docker](https://www.docker.com/). `compose.yaml` serves the application with
 [FrankenPHP](https://frankenphp.dev/) in worker mode, which boots the kernel once and serves request after request,
-and restarts its workers when a file changes; the database is PostgreSQL 17:
+and restarts its workers when a file changes:
 
     castor up
 
-Open [https://localhost](https://localhost). `castor down` stops the services. The image of `docker/Dockerfile` is
+Open [https://localhost](https://localhost). `castor down` stops the service. The image of `docker/Dockerfile` is
 for development: an application deployed from this template brings its own deployment.
-
-### With MySQL 🐬
-
-MySQL is the other database the template supports. In `compose.yaml`, replace the `database` service with a
-`mysql:8.4` image and set `DATABASE_URL` to:
-
-    mysql://app:app@database:3306/app?serverVersion=8.4&charset=utf8mb4
-
-With the Symfony binary, set the same variable in `.env.local`, with the host of your server. The migration is written
-in the SQL of the database it runs on, so it needs no change.
 
 ## Requirements ⚙
 
@@ -94,8 +95,8 @@ in the SQL of the database it runs on, so it needs no change.
 
 * [PHP 8.5](https://www.php.net/releases/8.5/en.php)
 * [Symfony 8.2](https://symfony.com/8), from its release candidate
-* [Doctrine ORM 3 (DBAL 4)](https://www.doctrine-project.org), on SQLite, PostgreSQL or MySQL
-* [Twig 3](https://twig.symfony.com)
+* [Twig 3](https://twig.symfony.com), with the pages in English and in French
+* [Sentry](https://docs.sentry.io/platforms/php/guides/symfony/) for the errors of the production environment
 * [AssetMapper](https://symfony.com/doc/current/frontend/asset_mapper.html), [Stimulus 3.2](https://stimulus.hotwired.dev/) and [Turbo 8](https://turbo.hotwired.dev/), without Node.js
 * [PHPUnit 13](https://phpunit.de)
 * [Pico CSS 2.1](https://picocss.com)
@@ -104,20 +105,21 @@ in the SQL of the database it runs on, so it needs no change.
 ## Features 🚀
 
 * Tasks run by [Castor](https://castor.jolicode.com) ([source](castor.php), [output](docs/castor-output.txt))
-* Static analysis with [PHPStan 2](https://phpstan.org) at the maximum level, with the strict, deprecation, Symfony,
-  Doctrine and PHPUnit rules ([configuration](phpstan.neon))
+* Static analysis with [PHPStan 2](https://phpstan.org) at the maximum level, with the strict, deprecation, Symfony and
+  PHPUnit rules ([configuration](phpstan.neon))
 * Coding standards with [PHP-CS-Fixer](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer), Twig-CS-Fixer and
   [Biome](https://biomejs.dev) for the Stimulus controllers
 * Tests of every kind, with one example each:
   * unit: [StringHelperTest](tests/Unit/Helper/StringHelperTest.php)
-  * integration: [RoutingExtensionTest](tests/Integration/Twig/Extension/RoutingExtensionTest.php)
+  * integration: [RoutingExtensionTest](tests/Integration/Twig/Extension/RoutingExtensionTest.php), and
+    [ContainerTest](tests/Integration/ContainerTest.php), which builds every service of `src/`
   * functional: [ComposerActionTest](tests/Functional/Controller/ComposerActionTest.php)
   * API: [SlugifyActionTest](tests/Api/Controller/SlugifyActionTest.php)
   * end-to-end: [AppControllerTest](tests/E2E/Controller/AppControllerTest.php)
 * Code coverage at 100 % (the threshold is a constant of `castor.php`)
 * A GitHub Actions workflow: security, tests on PHP 8.5 and 8.6, lints
-* Doctrine with a `User` entity, its [factory](src/Factory/UserFactory.php) and [story](src/Story/AppStory.php) for
-  [Foundry](https://github.com/zenstruck/foundry), and a [list of users](src/Controller/ListUsersAction.php)
+* Pages in English and in French: the layout, the menu and the footer read their texts from
+  [translations/](translations), and the home page shows the README of the language the browser prefers
 * AssetMapper and Stimulus: a vanilla controller ([source](assets/controllers/hello_controller.js)) and one that fetches
   JSON from an endpoint of the application ([source](assets/controllers/api_controller.js))
 * A custom error template ([source](templates/bundles/TwigBundle/Exception/error.html.twig))
@@ -128,14 +130,14 @@ in the SQL of the database it runs on, so it needs no change.
 
 | Task | What it does |
 |---|---|
-| `castor start`, `castor stop` | The Symfony binary's web server with SQLite, its migrations and its fixtures. |
-| `castor up`, `castor down` | FrankenPHP in worker mode and PostgreSQL, with Docker Compose. |
-| `castor load-fixtures` | The SQLite database reset, migrated and filled. |
+| `castor start`, `castor stop` | The Symfony binary's web server. |
+| `castor up`, `castor down` | FrankenPHP in worker mode, with Docker Compose. |
 | `castor test` | Every PHPUnit suite; `--filter` and `--options` pass on to PHPUnit. |
 | `castor test:unit`, `test:integration`, `test:api`, `test:functional`, `test:e2e` | One suite. |
 | `castor test:next` | The tests on the next PHP version, in its Docker image. |
 | `castor coverage` | The HTML coverage report in `var/coverage/`, and its threshold. |
 | `castor infection` | Mutation testing. |
+| `castor taint` | The taint analysis of Psalm. |
 | `castor lint` | Every lint and the static analysis. |
 | `castor fix` | Rector, PHP-CS-Fixer, Twig-CS-Fixer, Biome and composer-normalize. |
 | `castor ci` | The continuous integration, locally: coverage, then every lint. |
@@ -156,10 +158,15 @@ its reason.
 | `castor lint:php` | PHP-CS-Fixer: `@Symfony`, `@Symfony:risky`, strict types and strict comparisons. |
 | `castor lint:twig` | `lint:twig`, then the code style of the templates. |
 | `castor lint:js` | Biome on the Stimulus controllers. |
-| `castor lint:yaml`, `lint:container`, `lint:doctrine` | The YAML files, the container and the Doctrine mapping. |
+| `castor lint:yaml`, `lint:container` | The YAML files, the messages included, and the container. |
 | `castor stan` | PHPStan at the maximum level, with type coverage at 100 %, a cognitive complexity limit and forbidden calls. |
 | `castor lint:rector` | Rector has nothing left to change. |
 | `castor lint:architecture` | Arkitect on the shape of the classes; Deptrac on the libraries `src/` may use, listed in `phil-dev.php`. |
+
+The taint analysis of Psalm, `castor taint`, runs on its own, before a release and once a week: it follows what comes
+from a request, a file or the environment to an HTML page, a shell, a file path or `unserialize()`. The `.github/`
+directory also holds the security files of `phil/dev-tools`: Dependabot, with a cooldown of seven days, the OpenSSF
+Scorecard and zizmor, which audits the workflows.
 
 ## Differences from strangebuzz/MicroSymfony 🔀
 
@@ -173,14 +180,16 @@ differs where the principles of PHIL ask for it:
 | Make and Castor | Castor only, no task script in `composer.json` | One task runner, written in PHP; Composer stays a dependency manager. |
 | PHPStan and PHP-CS-Fixer, Biome through a bundle | The gates of `phil/dev-tools`: PHPStan with its extensions, Rector, Arkitect, Deptrac, Twig-CS-Fixer, Biome, the dependency analysis, composer-unused, composer-normalize, CaptainHook, Infection | The checks every PHIL repository passes, so that an application starts at the same bar. |
 | PHPUnit tests, coverage metadata optional | `#[CoversClass]` or `#[CoversNothing]` required, deprecations, notices and warnings fail | Coverage counts only what a test sets out to test, and a deprecation is fixed before the next version removes it. |
-| A SQLite-specific initial migration | The same migration described through the DBAL schema API, written in the SQL of the platform | The template runs on SQLite, PostgreSQL and MySQL. |
-| A FrankenPHP demo with `docker run` | `compose.yaml` with FrankenPHP in worker mode and PostgreSQL | One command for the production-like setup; the Symfony binary with SQLite stays the light choice. |
+| Doctrine ORM on SQLite, a `User` entity and Foundry | No database | A micro application needs none; [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony) brings Doctrine. |
+| Pages in English | Pages in English and in French, chosen from the browser's languages | PHIL publishes in both languages. |
+| No error tracking | Sentry in the production environment, off while `SENTRY_DSN` is empty | An application in production reports its errors from its first deployment. |
+| A FrankenPHP demo with `docker run` | `compose.yaml` with FrankenPHP in worker mode | One command for the production-like setup; the Symfony binary stays the light choice. |
 | Deployment tasks, Apache configuration, Scrutinizer | None | A template holds no deployment: each application brings its own. |
 | A procedure to downgrade to Symfony 7.4 LTS | None | PHIL supports the latest Symfony only. |
-| Dates typed `DateTimeInterface` | `DateTimeImmutable`, set by the constructor | Matches the `datetime_immutable` mapping and leaves no uninitialised property. |
 | Exit codes of the aggregate tasks summed | Exit codes reduced to 0 or 1 | A shell keeps exit codes modulo 256: a sum of 256 reads as a success. |
 
-The template requires no PHIL package at run time: `phil/dev-tools` is a development dependency only, and the
+Besides those, the template keeps the PHIL identity: its name, its logo as the favicon and its copyright. The template
+requires no PHIL package at run time: `phil/dev-tools` is a development dependency only, and the
 application stays micro.
 
 ## Notes 📒
@@ -196,14 +205,27 @@ attribute to it, or set `Turbo.setFormMode` to `on` to enable them everywhere. I
 A Flex recipe can add YAML files to the project. They are loaded as they are; to convert them to PHP, follow the
 other files of `config/packages`.
 
-### Without Doctrine
+### Languages
 
-[`agents/remove-doctrine.md`](agents/remove-doctrine.md) lists the steps that remove Doctrine, for an application
-that needs no database.
+The pages are in English, the default locale, and in French: `config/packages/framework.php` enables both, and a
+browser whose `Accept-Language` header prefers French gets the French pages, on the same addresses. The messages are
+in [translations/](translations); a new visible text gets its key in both files.
+
+### Sentry
+
+In the production environment, the errors go to [Sentry](https://sentry.io) once `SENTRY_DSN` holds the DSN of your
+project, set as a real environment variable or a secret, never in a committed file. While it is empty, as in `.env`,
+nothing is sent. The configuration is in `config/packages/sentry.php`.
+
+### A database
+
+MicroSymfony has none. For Doctrine, start from [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony),
+or add it with `composer require symfony/orm-pack`.
 
 ## ADR 📝
 
-[Architecture Decision Records](https://adr.github.io/) of strangebuzz/MicroSymfony, which this template keeps:
+[Architecture Decision Records](https://adr.github.io/) of strangebuzz/MicroSymfony; this template keeps every one but
+the first:
 
 * [2026-01-17] Use Doctrine ORM as the default database layer ([PR](https://github.com/strangebuzz/MicroSymfony/pull/219))
 * [2025-12-29] Use the new PHP configuration ([PR](https://github.com/strangebuzz/MicroSymfony/pull/197))
@@ -216,7 +238,34 @@ that needs no database.
 Those of this template:
 
 * [2026-11-25] Symfony 8.2 from its release candidate, PHP 8.5, the gates of `phil/dev-tools`, Castor only,
-  FrankenPHP in worker mode with PostgreSQL in `compose.yaml`
+  FrankenPHP in worker mode in `compose.yaml`
+* [2026-11-25] No database: Doctrine moves to WebSymfony; pages in English and in French; Sentry in production
+
+## PHIL bundles 🧩
+
+The bundles of [PHIL](https://ph-il.ca) add what an application needs, one at a time, with `composer require`. A few
+that suit a small application:
+
+* [`phil/ux-kit`](https://packagist.org/packages/phil/ux-kit) and [`phil/ux-css`](https://packagist.org/packages/phil/ux-css):
+  phil-ux, the components of the Symfony UX Toolkit and their styles
+* [`phil/structured-data-bundle`](https://packagist.org/packages/phil/structured-data-bundle) and
+  [`phil/sitemap-bundle`](https://packagist.org/packages/phil/sitemap-bundle): the JSON-LD and the sitemap of the pages
+* [`phil/browser-security-bundle`](https://packagist.org/packages/phil/browser-security-bundle): the security headers
+  of the responses
+* [`phil/privacy-bundle`](https://packagist.org/packages/phil/privacy-bundle) and
+  [`phil/legal-notices-bundle`](https://packagist.org/packages/phil/legal-notices-bundle): the consent and the legal pages
+* [`phil/well-known-bundle`](https://packagist.org/packages/phil/well-known-bundle): `security.txt` and the other
+  files of `/.well-known/`
+* [`phil/typography-bundle`](https://packagist.org/packages/phil/typography-bundle): the typography of French and
+  English texts
+
+The [PHIL organization on GitHub](https://github.com/parler-haut-interagir-librement) lists every package.
+
+## Other PHIL templates 🩻
+
+* [WebSymfony](https://github.com/parler-haut-interagir-librement/WebSymfony): MicroSymfony with Doctrine, a
+  database and more
+* ApiSymfony, an API with API Platform, and WebSkeleton, WebSymfony with phil-ux and the PHIL bundles, are planned
 
 ## References 📚
 

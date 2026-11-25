@@ -1,6 +1,6 @@
 # Contributing to MicroSymfony
 
-Thank you for contributing. This guide covers this template, `phil/micro-symfony`. A change that would also suit
+Thank you for contributing. This guide covers this template, `phil/microsymfony`. A change that would also suit
 [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony), the template it follows, is welcome there
 too: see its own contributing guide.
 

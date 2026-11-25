@@ -18,7 +18,6 @@
 declare(strict_types=1);
 
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\HttpKernel\Kernel;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     // Parameters ——————————————————————————————————————————————————————————————
@@ -28,16 +27,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('.container.dumper.inline_factories', true);
 
     // Application parameters ——————————————————————————————————————————————————
-    $sfVersion = substr(Kernel::VERSION, 0, 3); // minor Symfony version
-    $description = <<<DESCRIPTION
-A Symfony <b>$sfVersion</b> application template on steroids, ready to use.
-DESCRIPTION;
-    $parameters->set('brand', 'MicroSymfony')
-        ->set('brand_html', '<b>Micro</b>Symfony 🎶')
-        ->set('brand_emoji', '🎶️')
-        ->set('website', 'https://github.com/parler-haut-interagir-librement/MicroSymfony')
-        ->set('version', '1.0.0')
-        ->set('description', $description);
+    // The name, the description and the other texts of the pages are messages: see translations/.
+    $parameters->set('website', 'https://github.com/parler-haut-interagir-librement/MicroSymfony')
+        ->set('version', '1.0.0');
 
     // Services ————————————————————————————————————————————————————————————————
     $services = $containerConfigurator->services();
@@ -54,7 +46,6 @@ DESCRIPTION;
         ->exclude([
             __DIR__.'/../src/Dto/',
             __DIR__.'/../src/DependencyInjection/',
-            __DIR__.'/../src/Entity/',
             __DIR__.'/../src/Enum/',
             __DIR__.'/../src/Kernel.php',
         ]);

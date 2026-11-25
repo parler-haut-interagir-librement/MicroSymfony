@@ -1,5 +1,5 @@
 {
-    "name": "phil/micro-symfony",
+    "name": "phil/microsymfony",
     "description": "A Symfony application template with sensible defaults, tests and quality gates, to start a proof of concept or a small application.",
     "license": "MIT",
     "type": "project",
@@ -35,13 +35,8 @@
         "ext-mbstring": "*",
         "ext-simplexml": "*",
         "ext-xml": "*",
-        "doctrine/dbal": "^4.0",
-        "doctrine/doctrine-bundle": "^3.0",
-        "doctrine/doctrine-migrations-bundle": "^4.0",
-        "doctrine/migrations": "^3.9",
-        "doctrine/orm": "^3.3",
-        "doctrine/persistence": "^4.1",
         "league/commonmark": "^2.4",
+        "sentry/sentry-symfony": "^5.17",
         "symfony/asset": "~8.2.0",
         "symfony/asset-mapper": "~8.2.0",
         "symfony/cache-contracts": "^3.6",
@@ -58,10 +53,10 @@
         "symfony/options-resolver": "~8.2.0",
         "symfony/routing": "~8.2.0",
         "symfony/runtime": "~8.2.0",
-        "symfony/security-core": "~8.2.0",
         "symfony/security-csrf": "~8.2.0",
         "symfony/stimulus-bundle": "^3.0",
         "symfony/string": "~8.2.0",
+        "symfony/translation": "~8.2.0",
         "symfony/twig-bundle": "~8.2.0",
         "symfony/ux-turbo": "^3.0",
         "symfony/validator": "~8.2.0",
@@ -84,8 +79,7 @@
         "symfony/maker-bundle": "^1.61",
         "symfony/requirements-checker": "^2.0",
         "symfony/stopwatch": "~8.2.0",
-        "symfony/web-profiler-bundle": "~8.2.0",
-        "zenstruck/foundry": "^2.4"
+        "symfony/web-profiler-bundle": "~8.2.0"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",

@@ -1,20 +1,20 @@
 # AGENTS.md - MicroSymfony development guidelines
 
 Guidelines for coding assistants working on this repository, the MicroSymfony application template of PHIL
-(`phil/micro-symfony`), which follows [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony).
+(`phil/microsymfony`), which follows [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony).
 
 ## Project overview
 
-A Symfony 8.2 application template on PHP 8.5 or later, with Doctrine ORM on SQLite, Twig, AssetMapper, Stimulus,
-Turbo and Pico CSS. It keeps the usual layout of a Symfony application: no layers, no domain directories.
+A Symfony 8.2 application template on PHP 8.5 or later, without a database, with Twig in English and French,
+AssetMapper, Stimulus, Turbo and Pico CSS. It keeps the usual layout of a Symfony application: no layers, no domain directories.
 
 ## Tasks
 
 Every task runs through [Castor](https://castor.jolicode.com) (`castor.php`); `composer.json` holds no task script.
 
 ```bash
-castor start                     # SQLite, migrations, fixtures, then the Symfony binary's web server
-castor up                        # FrankenPHP in worker mode and PostgreSQL with Docker Compose
+castor start                     # the Symfony binary's web server
+castor up                        # FrankenPHP in worker mode with Docker Compose
 castor test                      # every PHPUnit suite
 castor test:unit                 # one suite: unit, integration, api, functional, e2e
 castor test --filter=testSlugify # one test

@@ -2,8 +2,8 @@
 
 {% block body %}
     <p>
-        This page displays the <a target="_blank" rel="noopener noreferrer" href="https://github.com/parler-haut-interagir-librement/MicroSymfony/blob/main/README.md">README.md</a>
-        file of the GitHub repository (This text comes from <code>config/services.php</code>).
+        {{ 'brand.tech'|trans }}
+        {{ 'home.readme'|trans({'%url%': website ~ '/blob/main/' ~ file, '%file%': file})|raw }}
     </p>
 
     <hr/>
