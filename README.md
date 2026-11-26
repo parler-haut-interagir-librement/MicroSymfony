@@ -107,7 +107,7 @@ for development: an application deployed from this template brings its own deplo
 
 ## Features 🚀
 
-* Tasks run by [Castor](https://castor.jolicode.com) ([source](castor.php), [output](docs/castor-output.txt)): the
+* Tasks run by [Castor](https://castor.jolicode.com) ([source](castor.php), [output](doc/castor-output.txt)): the
   common tasks of `phil/dev-tools`, imported from `vendor/`, and the template's own servers and environments
 * Static analysis with [PHPStan 2](https://phpstan.org) at the maximum level, with the strict, deprecation, Symfony and
   PHPUnit rules ([configuration](phpstan.neon))

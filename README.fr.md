@@ -1,4 +1,4 @@
-<!-- phil-dev source-sha256=0aabc8e80882097f8dc138550767b9bae31c33c7b79287098aca4925eed046a9 -->
+<!-- phil-dev source-sha256=78f5f092d8bab9c378ef86b2f44ed7d2fda11b21276dd6b2a986b0937391b489 -->
 # MicroSymfony 🎶
 
 [![Latest Version](https://img.shields.io/packagist/v/phil/microsymfony.svg?style=flat-square)](https://packagist.org/packages/phil/microsymfony)
@@ -109,7 +109,7 @@ destinée au développement : une application déployée à partir de ce gabarit
 
 ## Fonctionnalités 🚀
 
-* Des tâches exécutées par [Castor](https://castor.jolicode.com) ([source](castor.php), [sortie](docs/castor-output.txt)) :
+* Des tâches exécutées par [Castor](https://castor.jolicode.com) ([source](castor.php), [sortie](doc/castor-output.txt)) :
   les tâches communes de `phil/dev-tools`, importées depuis `vendor/`, et les serveurs et environnements propres au gabarit
 * L'analyse statique avec [PHPStan 2](https://phpstan.org) au niveau maximal, avec les règles strictes, d'obsolescence,
   Symfony et PHPUnit ([configuration](phpstan.neon))
