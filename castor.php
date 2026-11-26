@@ -279,7 +279,7 @@ function lint_yaml(): int
 {
     title('lint:yaml');
 
-    return success(exit_code('bin/console lint:yaml .github compose.yaml translations --parse-tags'));
+    return success(exit_code('bin/console lint:yaml config .github compose.yaml translations --parse-tags'));
 }
 
 #[AsTask(name: 'composer', namespace: 'lint', description: 'Check the dependencies: analysis, advisories, unused packages, normalized composer.json', aliases: ['lint-composer'])]

@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * We use the two binds we have defined in config/services.php::49.
+ * We use the two binds we have defined in config/services.yaml (services._defaults.bind).
  */
 #[Cache(maxage: 3600, public: true)]
 final class HelloWorldAction extends AbstractController
