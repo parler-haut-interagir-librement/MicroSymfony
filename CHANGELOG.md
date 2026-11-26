@@ -7,8 +7,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## Unreleased
 
+The next version is 8.2.0-RC2.
+
+### Added
+
+- `RouteSmokeTest` in the functional suite, from `Phil\DevTools\Testing\RouteSmokeTesting`: every GET route answers
+  under 500, a new route included as soon as it exists.
+- `castor test:suite <name>`, one suite of `phpunit.dist.xml` by its name.
+
 ### Changed
 
+- `castor.php` imports the common tasks of `phil/dev-tools` (`vendor/phil/dev-tools/resources/castor/tasks.php`) and
+  sets the suites and the coverage threshold in its `PHIL_CASTOR` constant; it keeps only the template's own tasks:
+  the servers of the Symfony binary and Docker Compose, `go-prod`, `go-dev`, `purge` and `check-requirements`. The
+  task names, and the ones the README and the GitHub Actions workflow call, stay the same. `test:coverage` reads the
+  percentage of covered lines itself: `bin/coverage-checker.php` is gone, and PHPUnit writes its output without colors.
+- `phil/dev-tools` ^0.2.1@alpha, resolved from a sibling checkout of its repository (`../dev-tools`) by a path
+  repository until that version is published; the path repository is removed at release.
+- Every requirement of `composer.json` and of `vendor-bin/*/composer.json` at its latest minor release: the Symfony
+  components at `8.2.*`, `symfony/ux-turbo` and `symfony/stimulus-bundle` ^3.8, `twig/twig`, `twig/extra-bundle` and
+  `twig/markdown-extra` ^3.31, `league/commonmark` ^2.10, `symfony/flex` ^2.12, `symfony/monolog-bundle` ^4.1,
+  `symfony/cache-contracts` ^3.8, PHPUnit ^13.4, ParaTest ^7.30, `symfony/maker-bundle` ^1.68, Infection ^0.35,
+  Rector ^2.9, Psalm ^7.21, composer-normalize ^2.59, Twig-CS-Fixer ^4.2, TwigStan ^0.2.8 and composer-unused ^0.9.9.
 - The configuration back in YAML: `config/packages/*.yaml` with `when@dev`, `when@test` and `when@prod` blocks,
   `config/routes.yaml`, `config/routes/*.yaml` and `config/services.yaml`; only `config/bundles.php` and
   `config/preload.php` stay PHP. `castor lint:yaml` checks `config/` too.
