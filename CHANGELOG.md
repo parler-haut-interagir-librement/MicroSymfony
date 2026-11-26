@@ -5,9 +5,7 @@ All notable changes to this template are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The template follows the releases of
 [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony); its own changes are listed here.
 
-## Unreleased
-
-The next version is 8.2.0-RC2.
+## [8.2.0-RC2] - 2026-11-26
 
 ### Added
 
@@ -22,8 +20,7 @@ The next version is 8.2.0-RC2.
   the servers of the Symfony binary and Docker Compose, `go-prod`, `go-dev`, `purge` and `check-requirements`. The
   task names, and the ones the README and the GitHub Actions workflow call, stay the same. `test:coverage` reads the
   percentage of covered lines itself: `bin/coverage-checker.php` is gone, and PHPUnit writes its output without colors.
-- `phil/dev-tools` ^0.2.1@alpha, resolved from a sibling checkout of its repository (`../dev-tools`) by a path
-  repository until that version is published; the path repository is removed at release.
+- `phil/dev-tools` ^0.2.1@alpha.
 - Every requirement of `composer.json` and of `vendor-bin/*/composer.json` at its latest minor release: the Symfony
   components at `8.2.*`, `symfony/ux-turbo` and `symfony/stimulus-bundle` ^3.8, `twig/twig`, `twig/extra-bundle` and
   `twig/markdown-extra` ^3.31, `league/commonmark` ^2.10, `symfony/flex` ^2.12, `symfony/monolog-bundle` ^4.1,

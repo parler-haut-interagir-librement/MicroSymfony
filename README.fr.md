@@ -1,4 +1,4 @@
-<!-- phil-dev source-sha256=78f5f092d8bab9c378ef86b2f44ed7d2fda11b21276dd6b2a986b0937391b489 -->
+<!-- phil-dev source-sha256=c4f28f25d4cbec821c5a11b70cf5cfd593e2de112135b048a3b7c0d95dc31ba5 -->
 # MicroSymfony 🎶
 
 [![Latest Version](https://img.shields.io/packagist/v/phil/microsymfony.svg?style=flat-square)](https://packagist.org/packages/phil/microsymfony)
@@ -156,10 +156,6 @@ Toutes les tâches, sauf les serveurs, `go-prod`, `go-dev`, `purge` et `check-re
 dans sa constante `PHIL_CASTOR`. Une tâche propre à l'application s'ajoute à `castor.php` sous un nom à elle, et se nomme
 dans le réglage `test_also`, `lint_also`, `fix_also` ou `ci_also` pour s'exécuter avec les tâches d'ensemble ; les
 tâches et les réglages sont décrits dans `vendor/phil/dev-tools/doc/castor.md`.
-
-Tant que `phil/dev-tools` 0.2.1-alpha n'est pas publié, `composer.json` le résout depuis une copie voisine du dépôt
-`dev-tools` (`../dev-tools`), par un dépôt de type chemin copié dans `vendor/`. Ce dépôt est retiré à la sortie du
-gabarit, et `phil/dev-tools` vient alors de Packagist.
 
 ## Portes de qualité 🚦
 

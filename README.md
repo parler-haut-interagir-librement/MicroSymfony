@@ -155,10 +155,6 @@ in its `PHIL_CASTOR` constant. A task of the application's own is added to `cast
 named in the `test_also`, `lint_also`, `fix_also` or `ci_also` setting to run with the aggregate tasks; the tasks and
 settings are described in `vendor/phil/dev-tools/doc/castor.md`.
 
-Until `phil/dev-tools` 0.2.1-alpha is published, `composer.json` resolves it from a sibling checkout of the
-`dev-tools` repository (`../dev-tools`), through a path repository copied into `vendor/`. That repository is removed
-when the template is released, and `phil/dev-tools` then comes from Packagist.
-
 ## Quality gates 🚦
 
 The checks come from [`phil/dev-tools`](https://packagist.org/packages/phil/dev-tools), the shared tooling of PHIL,

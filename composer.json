@@ -97,18 +97,6 @@
     "conflict": {
         "symfony/symfony": "*"
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../dev-tools",
-            "options": {
-                "symlink": false,
-                "versions": {
-                    "phil/dev-tools": "0.2.1-alpha"
-                }
-            }
-        }
-    ],
     "minimum-stability": "beta",
     "prefer-stable": true,
     "autoload": {

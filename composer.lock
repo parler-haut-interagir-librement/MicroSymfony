@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "14ec059e41f7b97d52f69ab328cb34fa",
+    "content-hash": "01b6af38792debd7749dc4f65cc33dff",
     "packages": [
         {
             "name": "composer/semver",
@@ -6993,10 +6993,16 @@
         {
             "name": "phil/dev-tools",
             "version": "0.2.1-alpha",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/parler-haut-interagir-librement/dev-tools.git",
+                "reference": "fb9228422c233309b4d0f5a5a66186ec66cfa695"
+            },
             "dist": {
-                "type": "path",
-                "url": "../dev-tools",
-                "reference": "9a5f418977adf224b2784b7d5df6eab4ae7ad727"
+                "type": "zip",
+                "url": "https://api.github.com/repos/parler-haut-interagir-librement/dev-tools/zipball/fb9228422c233309b4d0f5a5a66186ec66cfa695",
+                "reference": "fb9228422c233309b4d0f5a5a66186ec66cfa695",
+                "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
@@ -7043,7 +7049,7 @@
                     "target-directory": "vendor-bin"
                 },
                 "branch-alias": {
-                    "dev-main": "0.1.x-dev"
+                    "dev-main": "0.2.x-dev"
                 }
             },
             "autoload": {
@@ -7051,150 +7057,7 @@
                     "Phil\\DevTools\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Phil\\DevTools\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "arkitect": [
-                    "vendor-bin/arkitect/vendor/bin/phparkitect check --config=arkitect.php"
-                ],
-                "bc": [
-                    "@php bin/phil-dev bc"
-                ],
-                "bench": [
-                    "@php bin/phil-dev bench"
-                ],
-                "bench:baseline": [
-                    "@php bin/phil-dev bench --baseline"
-                ],
-                "bench:compare": [
-                    "@php bin/phil-dev bench --compare"
-                ],
-                "bench:worker": [
-                    "@php bin/phil-dev bench:worker"
-                ],
-                "conventions": [
-                    "@php bin/phil-dev check-config"
-                ],
-                "cs": [
-                    "vendor-bin/php-cs-fixer/vendor/bin/php-cs-fixer check --diff"
-                ],
-                "cs:fix": [
-                    "vendor-bin/php-cs-fixer/vendor/bin/php-cs-fixer fix"
-                ],
-                "deps": [
-                    "vendor/bin/composer-dependency-analyser"
-                ],
-                "deps:audit": [
-                    "@php bin/phil-dev audit"
-                ],
-                "deps:normalize": [
-                    "@php bin/phil-dev normalize"
-                ],
-                "deps:normalize:fix": [
-                    "@php bin/phil-dev normalize --fix"
-                ],
-                "deps:unused": [
-                    "@php bin/phil-dev unused"
-                ],
-                "deptrac": [
-                    "@php bin/phil-dev deptrac"
-                ],
-                "docs": [
-                    "@php bin/phil-dev check-docs"
-                ],
-                "docs:lint": [
-                    "@php bin/phil-dev lint-docs"
-                ],
-                "docs:translations": [
-                    "@php bin/phil-dev check-translations"
-                ],
-                "fuzz": [
-                    "@php bin/phil-dev fuzz"
-                ],
-                "gates": [
-                    "@deps",
-                    "@deps:audit",
-                    "@deps:unused",
-                    "@deps:normalize",
-                    "@cs",
-                    "@twig",
-                    "@js",
-                    "@phpstan",
-                    "@rector",
-                    "@deptrac",
-                    "@arkitect",
-                    "@lint:apps",
-                    "@test",
-                    "@infection"
-                ],
-                "hooks": [
-                    "@php bin/phil-dev hooks"
-                ],
-                "hotspots": [
-                    "@php bin/phil-dev hotspots"
-                ],
-                "infection": [
-                    "@php bin/phil-dev infection"
-                ],
-                "infection:changed": [
-                    "@php bin/phil-dev infection --changed"
-                ],
-                "infection:next": [
-                    "@php bin/phil-dev php next -- php bin/phil-dev infection"
-                ],
-                "js": [
-                    "@php bin/phil-dev js"
-                ],
-                "js:fix": [
-                    "@php bin/phil-dev js --fix"
-                ],
-                "lint:apps": [
-                    "@php bin/phil-dev lint-apps"
-                ],
-                "phpstan": [
-                    "vendor-bin/phpstan/vendor/bin/phpstan analyse --no-progress",
-                    "@php bin/phil-dev witnesses"
-                ],
-                "rector": [
-                    "vendor-bin/rector/vendor/bin/rector process --dry-run"
-                ],
-                "rector:fix": [
-                    "vendor-bin/rector/vendor/bin/rector process"
-                ],
-                "sbom": [
-                    "@php bin/phil-dev sbom"
-                ],
-                "taint": [
-                    "@php bin/phil-dev taint"
-                ],
-                "test": [
-                    "@php bin/phil-dev test"
-                ],
-                "test:integration": [
-                    "@php bin/phil-dev test --suite=Integration"
-                ],
-                "test:next": [
-                    "@php bin/phil-dev php next"
-                ],
-                "test:services": [
-                    "@php bin/phil-dev services test"
-                ],
-                "test:unit": [
-                    "@php bin/phil-dev test --suite=Unit"
-                ],
-                "twig": [
-                    "@php bin/phil-dev twig"
-                ],
-                "twig:fix": [
-                    "@php bin/phil-dev twig --fix"
-                ],
-                "twigstan": [
-                    "@php bin/phil-dev twigstan"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -7209,16 +7072,18 @@
             "description": "Shared development tooling for PHIL and Tilttek packages: quality-tool configurations, Composer scripts, documentation checks and the package skeleton.",
             "homepage": "https://ph-il.ca",
             "keywords": [
+                "Skeleton",
                 "dev-tools",
                 "monorepo",
                 "quality",
-                "skeleton",
                 "static-analysis"
             ],
-            "transport-options": {
-                "symlink": false,
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/parler-haut-interagir-librement/dev-tools/issues",
+                "source": "https://github.com/parler-haut-interagir-librement/dev-tools/tree/0.2.1-alpha"
+            },
+            "time": "2026-11-26T22:00:00+00:00",
+            "published-time": "2026-11-26T19:35:12+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
