@@ -5,7 +5,7 @@ All notable changes to this template are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The template follows the releases of
 [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony); its own changes are listed here.
 
-## [Unreleased]
+## [8.2.0-RC1] - 2026-11-25
 
 ### Added
 
