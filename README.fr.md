@@ -1,4 +1,4 @@
-<!-- phil-dev source-sha256=a113b00c3977e941ebd3813a21a7160d5da69624a1a2ebc9e31d3b5fa700c756 -->
+<!-- phil-dev source-sha256=0aabc8e80882097f8dc138550767b9bae31c33c7b79287098aca4925eed046a9 -->
 # MicroSymfony 🎶
 
 [![Latest Version](https://img.shields.io/packagist/v/phil/microsymfony.svg?style=flat-square)](https://packagist.org/packages/phil/microsymfony)
@@ -109,7 +109,8 @@ destinée au développement : une application déployée à partir de ce gabarit
 
 ## Fonctionnalités 🚀
 
-* Des tâches exécutées par [Castor](https://castor.jolicode.com) ([source](castor.php), [sortie](docs/castor-output.txt))
+* Des tâches exécutées par [Castor](https://castor.jolicode.com) ([source](castor.php), [sortie](docs/castor-output.txt)) :
+  les tâches communes de `phil/dev-tools`, importées depuis `vendor/`, et les serveurs et environnements propres au gabarit
 * L'analyse statique avec [PHPStan 2](https://phpstan.org) au niveau maximal, avec les règles strictes, d'obsolescence,
   Symfony et PHPUnit ([configuration](phpstan.neon))
 * Les standards de code avec [PHP-CS-Fixer](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer), Twig-CS-Fixer et
@@ -118,10 +119,11 @@ destinée au développement : une application déployée à partir de ce gabarit
   * unitaire : [StringHelperTest](tests/Unit/Helper/StringHelperTest.php)
   * intégration : [RoutingExtensionTest](tests/Integration/Twig/Extension/RoutingExtensionTest.php), et
     [ContainerTest](tests/Integration/ContainerTest.php), qui construit chaque service de `src/`
-  * fonctionnel : [ComposerActionTest](tests/Functional/Controller/ComposerActionTest.php)
+  * fonctionnel : [ComposerActionTest](tests/Functional/Controller/ComposerActionTest.php), et
+    [RouteSmokeTest](tests/Functional/Controller/RouteSmokeTest.php), qui requête chaque route GET
   * API : [SlugifyActionTest](tests/Api/Controller/SlugifyActionTest.php)
   * de bout en bout : [AppControllerTest](tests/E2E/Controller/AppControllerTest.php)
-* Une couverture de code de 100 % (le seuil est une constante de `castor.php`)
+* Une couverture de code de 100 % (le seuil est le réglage `coverage_threshold` de `PHIL_CASTOR` dans `castor.php`)
 * Un workflow GitHub Actions : sécurité, tests sur PHP 8.5 et 8.6, *linters*
 * Des pages en anglais et en français : la mise en page, le menu et le pied de page lisent leurs textes dans
   [translations/](translations), et la page d'accueil affiche le README de la langue que préfère le navigateur
@@ -139,6 +141,7 @@ destinée au développement : une application déployée à partir de ce gabarit
 | `castor up`, `castor down` | FrankenPHP en mode *worker*, avec Docker Compose. |
 | `castor test` | Toutes les suites PHPUnit ; `--filter` et `--options` sont transmis à PHPUnit. |
 | `castor test:unit`, `test:integration`, `test:api`, `test:functional`, `test:e2e` | Une seule suite. |
+| `castor test:suite <nom>` | Une suite de `phpunit.dist.xml`, par son nom. |
 | `castor test:next` | Les tests sur la prochaine version de PHP, dans son image Docker. |
 | `castor coverage` | Le rapport de couverture HTML dans `var/coverage/`, et son seuil. |
 | `castor infection` | Les tests de mutation. |
@@ -147,6 +150,16 @@ destinée au développement : une application déployée à partir de ce gabarit
 | `castor fix` | Rector, PHP-CS-Fixer, Twig-CS-Fixer, Biome et composer-normalize. |
 | `castor ci` | L'intégration continue, en local : la couverture, puis tous les *linters*. |
 | `castor hooks` | Les crochets git : les vérifications rapides sur les fichiers indexés avant chaque commit. |
+
+Toutes les tâches, sauf les serveurs, `go-prod`, `go-dev`, `purge` et `check-requirements`, viennent de `phil/dev-tools` :
+`castor.php` importe `vendor/phil/dev-tools/resources/castor/tasks.php` et règle les suites et le seuil de couverture
+dans sa constante `PHIL_CASTOR`. Une tâche propre à l'application s'ajoute à `castor.php` sous un nom à elle, et se nomme
+dans le réglage `test_also`, `lint_also`, `fix_also` ou `ci_also` pour s'exécuter avec les tâches d'ensemble ; les
+tâches et les réglages sont décrits dans `vendor/phil/dev-tools/doc/castor.md`.
+
+Tant que `phil/dev-tools` 0.2.1-alpha n'est pas publié, `composer.json` le résout depuis une copie voisine du dépôt
+`dev-tools` (`../dev-tools`), par un dépôt de type chemin copié dans `vendor/`. Ce dépôt est retiré à la sortie du
+gabarit, et `phil/dev-tools` vient alors de Packagist.
 
 ## Portes de qualité 🚦
 
@@ -272,6 +285,8 @@ Ceux de ce gabarit :
 * [2026-11-25] Aucune base de données : Doctrine passe à WebSymfony ; des pages en anglais et en français ; Sentry en
   production
 * [2026-11-26] La configuration en YAML : `config/packages`, routes et services
+* [2026-11-26] Les tâches Castor communes de `phil/dev-tools` importées par `castor.php` ; le test de fumée des routes de
+  `phil/dev-tools` ; chaque dépendance à sa dernière version mineure
 
 ## Ce qu'il ne contient pas ❌
 
