@@ -11,6 +11,8 @@ AssetMapper, Stimulus, Turbo and Pico CSS. It keeps the usual layout of a Symfon
 ## Tasks
 
 Every task runs through [Castor](https://castor.jolicode.com) (`castor.php`); `composer.json` holds no task script.
+`castor.php` imports the common tasks of `phil/dev-tools` (`vendor/phil/dev-tools/resources/castor/tasks.php`) and
+keeps only the template's own: the servers, `go-prod`, `go-dev`, `purge` and `check-requirements`.
 
 ```bash
 castor start                     # the Symfony binary's web server

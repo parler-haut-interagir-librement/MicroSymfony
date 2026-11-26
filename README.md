@@ -107,7 +107,8 @@ for development: an application deployed from this template brings its own deplo
 
 ## Features 🚀
 
-* Tasks run by [Castor](https://castor.jolicode.com) ([source](castor.php), [output](docs/castor-output.txt))
+* Tasks run by [Castor](https://castor.jolicode.com) ([source](castor.php), [output](docs/castor-output.txt)): the
+  common tasks of `phil/dev-tools`, imported from `vendor/`, and the template's own servers and environments
 * Static analysis with [PHPStan 2](https://phpstan.org) at the maximum level, with the strict, deprecation, Symfony and
   PHPUnit rules ([configuration](phpstan.neon))
 * Coding standards with [PHP-CS-Fixer](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer), Twig-CS-Fixer and
@@ -116,10 +117,11 @@ for development: an application deployed from this template brings its own deplo
   * unit: [StringHelperTest](tests/Unit/Helper/StringHelperTest.php)
   * integration: [RoutingExtensionTest](tests/Integration/Twig/Extension/RoutingExtensionTest.php), and
     [ContainerTest](tests/Integration/ContainerTest.php), which builds every service of `src/`
-  * functional: [ComposerActionTest](tests/Functional/Controller/ComposerActionTest.php)
+  * functional: [ComposerActionTest](tests/Functional/Controller/ComposerActionTest.php), and
+    [RouteSmokeTest](tests/Functional/Controller/RouteSmokeTest.php), which requests every GET route
   * API: [SlugifyActionTest](tests/Api/Controller/SlugifyActionTest.php)
   * end-to-end: [AppControllerTest](tests/E2E/Controller/AppControllerTest.php)
-* Code coverage at 100 % (the threshold is a constant of `castor.php`)
+* Code coverage at 100 % (the threshold is the `coverage_threshold` setting of `PHIL_CASTOR` in `castor.php`)
 * A GitHub Actions workflow: security, tests on PHP 8.5 and 8.6, lints
 * Pages in English and in French: the layout, the menu and the footer read their texts from
   [translations/](translations), and the home page shows the README of the language the browser prefers
@@ -137,6 +139,7 @@ for development: an application deployed from this template brings its own deplo
 | `castor up`, `castor down` | FrankenPHP in worker mode, with Docker Compose. |
 | `castor test` | Every PHPUnit suite; `--filter` and `--options` pass on to PHPUnit. |
 | `castor test:unit`, `test:integration`, `test:api`, `test:functional`, `test:e2e` | One suite. |
+| `castor test:suite <name>` | One suite of `phpunit.dist.xml`, by its name. |
 | `castor test:next` | The tests on the next PHP version, in its Docker image. |
 | `castor coverage` | The HTML coverage report in `var/coverage/`, and its threshold. |
 | `castor infection` | Mutation testing. |
@@ -145,6 +148,16 @@ for development: an application deployed from this template brings its own deplo
 | `castor fix` | Rector, PHP-CS-Fixer, Twig-CS-Fixer, Biome and composer-normalize. |
 | `castor ci` | The continuous integration, locally: coverage, then every lint. |
 | `castor hooks` | The git hooks: the fast checks on the staged files before each commit. |
+
+Every task but the servers, `go-prod`, `go-dev`, `purge` and `check-requirements` comes from `phil/dev-tools`:
+`castor.php` imports `vendor/phil/dev-tools/resources/castor/tasks.php` and sets the suites and the coverage threshold
+in its `PHIL_CASTOR` constant. A task of the application's own is added to `castor.php` under a name of its own, and
+named in the `test_also`, `lint_also`, `fix_also` or `ci_also` setting to run with the aggregate tasks; the tasks and
+settings are described in `vendor/phil/dev-tools/doc/castor.md`.
+
+Until `phil/dev-tools` 0.2.1-alpha is published, `composer.json` resolves it from a sibling checkout of the
+`dev-tools` repository (`../dev-tools`), through a path repository copied into `vendor/`. That repository is removed
+when the template is released, and `phil/dev-tools` then comes from Packagist.
 
 ## Quality gates 🚦
 
@@ -267,6 +280,8 @@ Those of this template:
   FrankenPHP in worker mode in `compose.yaml`
 * [2026-11-25] No database: Doctrine moves to WebSymfony; pages in English and in French; Sentry in production
 * [2026-11-26] The configuration in YAML: `config/packages`, routes and services
+* [2026-11-26] The common Castor tasks of `phil/dev-tools` imported by `castor.php`; the route smoke test of
+  `phil/dev-tools`; every requirement at its latest minor release
 
 ## What it doesn't ship? ❌
 
