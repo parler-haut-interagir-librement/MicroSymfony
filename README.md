@@ -180,6 +180,7 @@ differs where the principles of PHIL ask for it:
 |---|---|---|
 | The latest stable Symfony (8.1) | Symfony 8.2 from its first release candidate, `minimum-stability` at `beta` | PHIL tests on the next Symfony as soon as its release candidate is out. Symfony tags only the components that changed since the last beta, so `beta` is the lowest stability that installs 8.2.0-RC1; `prefer-stable` takes the stable releases first. |
 | PHP 8.4 or later | PHP 8.5 or later | The floor of every PHIL package and template; the continuous integration also runs the next PHP. |
+| Configuration in PHP, with the array shapes of `App::config()` | Configuration in YAML: `config/packages`, routes and services | The format of the Symfony documentation and of the Flex recipes, with `when@env` blocks; `config/bundles.php` and `config/preload.php` stay PHP. |
 | Make and Castor | Castor only, no task script in `composer.json` | One task runner, written in PHP; Composer stays a dependency manager. |
 | PHPStan and PHP-CS-Fixer, Biome through a bundle | The gates of `phil/dev-tools`: PHPStan with its extensions, Rector, Arkitect, Deptrac, Twig-CS-Fixer, Biome, the dependency analysis, composer-unused, composer-normalize, CaptainHook, Infection | The checks every PHIL repository passes, so that an application starts at the same bar. |
 | PHPUnit tests, coverage metadata optional | `#[CoversClass]` or `#[CoversNothing]` required, deprecations, notices and warnings fail | Coverage counts only what a test sets out to test, and a deprecation is fixed before the next version removes it. |
@@ -203,14 +204,25 @@ Turbo forms are disabled in [assets/app.js](assets/app.js). To enable them for a
 attribute to it, or set `Turbo.setFormMode` to `on` to enable them everywhere. In both cases, the controller has to be
 [adapted](https://symfony.com/bundles/ux-turbo/current/index.html#3-form-response-code-changes).
 
-### PHP configuration files
+### YAML configuration files
 
-A Flex recipe can add YAML files to the project. They are loaded as they are; to convert them to PHP, follow the
-other files of `config/packages`.
+The configuration of Symfony and of the bundles is in YAML, under `config/`: `config/packages/*.yaml`, with
+`when@dev`, `when@test` and `when@prod` blocks for what changes by environment, `config/routes.yaml`,
+`config/routes/*.yaml` and `config/services.yaml`. A Flex recipe adds its files in the same format. Only
+`config/bundles.php` and `config/preload.php` stay PHP. `castor lint:yaml` checks every file of `config/`, and
+`castor lint:container` checks the container they build.
+
+```yaml
+# config/packages/framework.yaml
+framework:
+    default_locale: en
+    enabled_locales: [en, fr]
+    set_locale_from_accept_language: true
+```
 
 ### Languages
 
-The pages are in English, the default locale, and in French: `config/packages/framework.php` enables both, and a
+The pages are in English, the default locale, and in French: `config/packages/framework.yaml` enables both, and a
 browser whose `Accept-Language` header prefers French gets the French pages, on the same addresses. The messages are
 in [translations/](translations); a new visible text gets its key in both files.
 
@@ -218,7 +230,7 @@ in [translations/](translations); a new visible text gets its key in both files.
 
 In the production environment, the errors go to [Sentry](https://sentry.io) once `SENTRY_DSN` holds the DSN of your
 project, set as a real environment variable or a secret, never in a committed file. While it is empty, as in `.env`,
-nothing is sent. The configuration is in `config/packages/sentry.php`.
+nothing is sent. The configuration is in `config/packages/sentry.yaml`.
 
 ### A database
 
@@ -230,7 +242,7 @@ or add it with `composer require symfony/orm-pack`.
 * Strict types in every PHP file ([source](src/Controller/SlugifyAction.php))
 * The ADR pattern: one invokable action controller per route ([source](src/Controller/HomeAction.php),
   [documentation](https://symfony.com/doc/current/controller/service.html#invokable-controllers))
-* The configuration in PHP, under `config/` ([source](config/packages/framework.php))
+* The configuration in YAML, under `config/` ([source](config/packages/framework.yaml))
 * A [composer.json](composer.json) normalized with [ergebnis/composer-normalize](https://github.com/ergebnis/composer-normalize)
 * Each quality tool in its own `vendor-bin/<tool>/` directory, installed by the
   [composer bin plugin](https://github.com/bamarni/composer-bin-plugin)
@@ -239,7 +251,7 @@ or add it with `composer require symfony/orm-pack`.
 ## ADR 📝
 
 [Architecture Decision Records](https://adr.github.io/) of strangebuzz/MicroSymfony; this template keeps every one but
-the first:
+the one on Doctrine and the two on PHP configuration:
 
 * [2026-01-17] Use Doctrine ORM as the default database layer ([PR](https://github.com/strangebuzz/MicroSymfony/pull/219))
 * [2025-12-29] Use the new PHP configuration ([PR](https://github.com/strangebuzz/MicroSymfony/pull/197))
@@ -254,6 +266,7 @@ Those of this template:
 * [2026-11-25] Symfony 8.2 from its release candidate, PHP 8.5, the gates of `phil/dev-tools`, Castor only,
   FrankenPHP in worker mode in `compose.yaml`
 * [2026-11-25] No database: Doctrine moves to WebSymfony; pages in English and in French; Sentry in production
+* [2026-11-26] The configuration in YAML: `config/packages`, routes and services
 
 ## What it doesn't ship? ❌
 

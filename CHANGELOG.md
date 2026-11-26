@@ -5,6 +5,14 @@ All notable changes to this template are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The template follows the releases of
 [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony); its own changes are listed here.
 
+## Unreleased
+
+### Changed
+
+- The configuration back in YAML: `config/packages/*.yaml` with `when@dev`, `when@test` and `when@prod` blocks,
+  `config/routes.yaml`, `config/routes/*.yaml` and `config/services.yaml`; only `config/bundles.php` and
+  `config/preload.php` stay PHP. `castor lint:yaml` checks `config/` too.
+
 ## [8.2.0-RC1] - 2026-11-25
 
 ### Added

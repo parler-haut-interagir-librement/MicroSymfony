@@ -33,7 +33,7 @@ castor ci                        # coverage, then every lint
 4. Controllers follow the action pattern: one `*Action` class per route, with `__invoke()`.
 5. Dates are never compared with `==` nor `===`: compare their timestamps or use `<` and `>`.
 6. JavaScript goes in Stimulus controllers, loaded by AssetMapper: no Node.js build, no Webpack Encore.
-7. Configuration files are PHP, under `config/`.
+7. Configuration files are YAML, under `config/`; only `config/bundles.php` and `config/preload.php` are PHP.
 
 ## Tests
 
