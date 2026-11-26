@@ -1,4 +1,4 @@
-<!-- phil-dev source-sha256=f9fe395d33ecd018517e134f3c44c3f7ea8d6717602e3be438904be8404108f4 -->
+<!-- phil-dev source-sha256=a113b00c3977e941ebd3813a21a7160d5da69624a1a2ebc9e31d3b5fa700c756 -->
 # MicroSymfony 🎶
 
 [![Latest Version](https://img.shields.io/packagist/v/phil/microsymfony.svg?style=flat-square)](https://packagist.org/packages/phil/microsymfony)
@@ -182,6 +182,7 @@ où les principes de PHIL l'exigent :
 |---|---|---|
 | La dernière version stable de Symfony (8.1) | Symfony 8.2 dès sa première version candidate, `minimum-stability` à `beta` | PHIL teste la prochaine version de Symfony dès que sa version candidate est publiée. Symfony n'étiquette que les composants qui ont changé depuis la dernière bêta : `beta` est donc la plus basse stabilité qui installe 8.2.0-RC1 ; `prefer-stable` prend d'abord les versions stables. |
 | PHP 8.4 ou plus récent | PHP 8.5 ou plus récent | Le plancher de tous les paquets et gabarits PHIL ; l'intégration continue exécute aussi la prochaine version de PHP. |
+| La configuration en PHP, avec les formes de tableaux de `App::config()` | La configuration en YAML : `config/packages`, routes et services | Le format de la documentation de Symfony et des recettes Flex, avec des blocs `when@env` ; `config/bundles.php` et `config/preload.php` restent en PHP. |
 | Make et Castor | Castor seulement, aucun script de tâche dans `composer.json` | Un seul exécuteur de tâches, écrit en PHP ; Composer reste un gestionnaire de dépendances. |
 | PHPStan et PHP-CS-Fixer, Biome par un bundle | Les portes de `phil/dev-tools` : PHPStan avec ses extensions, Rector, Arkitect, Deptrac, Twig-CS-Fixer, Biome, l'analyse des dépendances, composer-unused, composer-normalize, CaptainHook, Infection | Les vérifications que passe chaque dépôt PHIL, pour qu'une application démarre au même niveau d'exigence. |
 | Tests PHPUnit, métadonnées de couverture facultatives | `#[CoversClass]` ou `#[CoversNothing]` obligatoire, les dépréciations, avis et avertissements font échouer les tests | La couverture ne compte que ce qu'un test vise à tester, et une dépréciation est corrigée avant que la prochaine version la retire. |
@@ -206,14 +207,25 @@ ajoutez-lui l'attribut `data-turbo="true"`, ou donnez à `Turbo.setFormMode` la 
 Dans les deux cas, le contrôleur doit être
 [adapté](https://symfony.com/bundles/ux-turbo/current/index.html#3-form-response-code-changes).
 
-### Fichiers de configuration PHP
+### Fichiers de configuration YAML
 
-Une recette Flex peut ajouter des fichiers YAML au projet. Ils sont chargés tels quels ; pour les convertir en PHP,
-suivez les autres fichiers de `config/packages`.
+La configuration de Symfony et des bundles est en YAML, sous `config/` : `config/packages/*.yaml`, avec des blocs
+`when@dev`, `when@test` et `when@prod` pour ce qui change selon l'environnement, `config/routes.yaml`,
+`config/routes/*.yaml` et `config/services.yaml`. Une recette Flex ajoute ses fichiers dans le même format. Seuls
+`config/bundles.php` et `config/preload.php` restent en PHP. `castor lint:yaml` vérifie chaque fichier de `config/`, et
+`castor lint:container` vérifie le conteneur qu'ils construisent.
+
+```yaml
+# config/packages/framework.yaml
+framework:
+    default_locale: en
+    enabled_locales: [en, fr]
+    set_locale_from_accept_language: true
+```
 
 ### Langues
 
-Les pages sont en anglais, la locale par défaut, et en français : `config/packages/framework.php` active les deux, et un
+Les pages sont en anglais, la locale par défaut, et en français : `config/packages/framework.yaml` active les deux, et un
 navigateur dont l'en-tête `Accept-Language` préfère le français reçoit les pages en français, aux mêmes adresses. Les
 messages sont dans [translations/](translations) ; un nouveau texte visible reçoit sa clé dans les deux fichiers.
 
@@ -221,7 +233,7 @@ messages sont dans [translations/](translations) ; un nouveau texte visible reç
 
 Dans l'environnement de production, les erreurs vont à [Sentry](https://sentry.io) dès que `SENTRY_DSN` contient le
 DSN de votre projet, défini comme une vraie variable d'environnement ou un secret, jamais dans un fichier commité. Tant
-qu'elle est vide, comme dans `.env`, rien n'est envoyé. La configuration est dans `config/packages/sentry.php`.
+qu'elle est vide, comme dans `.env`, rien n'est envoyé. La configuration est dans `config/packages/sentry.yaml`.
 
 ### Une base de données
 
@@ -234,7 +246,7 @@ MicroSymfony n'en a pas. Pour Doctrine, partez de
 * Des types stricts dans chaque fichier PHP ([source](src/Controller/SlugifyAction.php))
 * Le patron ADR : un contrôleur d'action invocable par route ([source](src/Controller/HomeAction.php),
   [documentation](https://symfony.com/doc/current/controller/service.html#invokable-controllers))
-* La configuration en PHP, sous `config/` ([source](config/packages/framework.php))
+* La configuration en YAML, sous `config/` ([source](config/packages/framework.yaml))
 * Un [composer.json](composer.json) normalisé par [ergebnis/composer-normalize](https://github.com/ergebnis/composer-normalize)
 * Chaque outil de qualité dans son propre répertoire `vendor-bin/<tool>/`, installé par le
   [plugin Composer bin](https://github.com/bamarni/composer-bin-plugin)
@@ -243,7 +255,7 @@ MicroSymfony n'en a pas. Pour Doctrine, partez de
 ## ADR 📝
 
 [Architecture Decision Records](https://adr.github.io/) de strangebuzz/MicroSymfony ; ce gabarit les conserve tous
-sauf le premier :
+sauf celui sur Doctrine et les deux sur la configuration en PHP :
 
 * [2026-01-17] Use Doctrine ORM as the default database layer ([PR](https://github.com/strangebuzz/MicroSymfony/pull/219))
 * [2025-12-29] Use the new PHP configuration ([PR](https://github.com/strangebuzz/MicroSymfony/pull/197))
@@ -259,6 +271,7 @@ Ceux de ce gabarit :
   FrankenPHP en mode *worker* dans `compose.yaml`
 * [2026-11-25] Aucune base de données : Doctrine passe à WebSymfony ; des pages en anglais et en français ; Sentry en
   production
+* [2026-11-26] La configuration en YAML : `config/packages`, routes et services
 
 ## Ce qu'il ne contient pas ❌
 
