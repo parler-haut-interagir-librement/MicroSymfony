@@ -77,6 +77,7 @@
         "symfony/css-selector": "~8.2.0",
         "symfony/debug-bundle": "~8.2.0",
         "symfony/maker-bundle": "^1.68",
+        "symfony/panther": "^2.4",
         "symfony/requirements-checker": "^2.0",
         "symfony/stopwatch": "~8.2.0",
         "symfony/web-profiler-bundle": "~8.2.0"

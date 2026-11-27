@@ -3,7 +3,8 @@
 <!--
     One suite per kind of test, each in its own directory of tests/, from the fastest to the slowest.
     Unit runs without a kernel and touches nothing. Integration boots the kernel. Api and Functional send requests
-    through the kernel. E2E drives a real browser through Panther, once it is installed.
+    through the kernel. E2E drives a real browser, Chrome through Panther: castor test:e2e runs it alone, outside
+    castor test, castor coverage, castor ci and the continuous integration.
     Every test names what it covers, with #[CoversClass] or #[CoversNothing]: coverage counts only what a test
     sets out to test.
     No colors: castor test:coverage reads the line percentage from the text report, which PHPUnit would write with
@@ -61,7 +62,7 @@
 
     <extensions>
         <bootstrap class="Ergebnis\PHPUnit\SlowTestDetector\Extension" />
-        <!-- Install symfony/panther as a development dependency before enabling this extension. -->
-        <!-- <bootstrap class="Symfony\Component\Panther\ServerExtension" /> -->
+        <!-- The web server of Panther, started by the first E2E test and stopped at the end of the run. -->
+        <bootstrap class="Symfony\Component\Panther\ServerExtension" />
     </extensions>
 </phpunit>
