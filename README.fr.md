@@ -1,4 +1,4 @@
-<!-- phil-dev source-sha256=c4f28f25d4cbec821c5a11b70cf5cfd593e2de112135b048a3b7c0d95dc31ba5 -->
+<!-- phil-dev source-sha256=b53141fee1e63b502893990278b3528dec90e63afc746e0f83ddc8fd21d466fa -->
 # MicroSymfony 🎶
 
 [![Latest Version](https://img.shields.io/packagist/v/phil/microsymfony.svg?style=flat-square)](https://packagist.org/packages/phil/microsymfony)
@@ -122,7 +122,8 @@ destinée au développement : une application déployée à partir de ce gabarit
   * fonctionnel : [ComposerActionTest](tests/Functional/Controller/ComposerActionTest.php), et
     [RouteSmokeTest](tests/Functional/Controller/RouteSmokeTest.php), qui requête chaque route GET
   * API : [SlugifyActionTest](tests/Api/Controller/SlugifyActionTest.php)
-  * de bout en bout : [AppControllerTest](tests/E2E/Controller/AppControllerTest.php)
+  * de bout en bout : [StimulusPageTest](tests/E2E/Controller/StimulusPageTest.php), dans Chrome piloté par
+    [Panther](https://github.com/symfony/panther)
 * Une couverture de code de 100 % (le seuil est le réglage `coverage_threshold` de `PHIL_CASTOR` dans `castor.php`)
 * Un workflow GitHub Actions : sécurité, tests sur PHP 8.5 et 8.6, *linters*
 * Des pages en anglais et en français : la mise en page, le menu et le pied de page lisent leurs textes dans
@@ -139,8 +140,9 @@ destinée au développement : une application déployée à partir de ce gabarit
 |---|---|
 | `castor start`, `castor stop` | Le serveur Web du binaire Symfony. |
 | `castor up`, `castor down` | FrankenPHP en mode *worker*, avec Docker Compose. |
-| `castor test` | Toutes les suites PHPUnit ; `--filter` et `--options` sont transmis à PHPUnit. |
-| `castor test:unit`, `test:integration`, `test:api`, `test:functional`, `test:e2e` | Une seule suite. |
+| `castor test` | Toutes les suites PHPUnit sauf E2E ; `--filter` et `--options` sont transmis à PHPUnit. |
+| `castor test:unit`, `test:integration`, `test:api`, `test:functional` | Une seule suite. |
+| `castor test:e2e` | La suite E2E dans un vrai navigateur, Chrome piloté par Panther : elle saisit un titre sur la page Stimulus et attend le slug que le contrôleur `api` va chercher. Chrome et chromedriver doivent être dans le `PATH`, ou laissez `vendor/bin/bdi detect drivers` télécharger le pilote dans `drivers/` après `composer require --dev dbrekelmans/bdi`. Ni `castor test`, ni `castor coverage`, ni `castor ci`, ni l'intégration continue ne l'exécutent. |
 | `castor test:suite <nom>` | Une suite de `phpunit.dist.xml`, par son nom. |
 | `castor test:next` | Les tests sur la prochaine version de PHP, dans son image Docker. |
 | `castor coverage` | Le rapport de couverture HTML dans `var/coverage/`, et son seuil. |
@@ -153,7 +155,7 @@ destinée au développement : une application déployée à partir de ce gabarit
 
 Toutes les tâches, sauf les serveurs, `go-prod`, `go-dev`, `purge` et `check-requirements`, viennent de `phil/dev-tools` :
 `castor.php` importe `vendor/phil/dev-tools/resources/castor/tasks.php` et règle les suites et le seuil de couverture
-dans sa constante `PHIL_CASTOR`. Une tâche propre à l'application s'ajoute à `castor.php` sous un nom à elle, et se nomme
+dans sa constante `PHIL_CASTOR` ; E2E n'en fait pas partie. Une tâche propre à l'application s'ajoute à `castor.php` sous un nom à elle, et se nomme
 dans le réglage `test_also`, `lint_also`, `fix_also` ou `ci_also` pour s'exécuter avec les tâches d'ensemble ; les
 tâches et les réglages sont décrits dans `vendor/phil/dev-tools/doc/castor.md`.
 
