@@ -17,8 +17,9 @@ keeps only the template's own: the servers, `go-prod`, `go-dev`, `purge` and `ch
 ```bash
 castor start                     # the Symfony binary's web server
 castor up                        # FrankenPHP in worker mode with Docker Compose
-castor test                      # every PHPUnit suite
-castor test:unit                 # one suite: unit, integration, api, functional, e2e
+castor test                      # every PHPUnit suite but E2E
+castor test:unit                 # one suite: unit, integration, api, functional
+castor test:e2e                  # the E2E suite, in Chrome through Panther (chromedriver on the PATH)
 castor test --filter=testSlugify # one test
 castor coverage                  # the coverage report and its threshold
 castor lint                      # every lint and the static analysis
@@ -39,10 +40,10 @@ castor ci                        # coverage, then every lint
 
 ## Tests
 
-One directory per kind of test under `tests/`, mirroring `src/`: `Unit` (no kernel), `Integration` (the kernel),
-`Api` and `Functional` (requests through the kernel), `E2E` (a browser, once Panther is installed). Every test class
-names what it covers with `#[CoversClass]` or `#[CoversNothing]`; PHPUnit fails on a deprecation, a notice or a
-warning.
+One directory per kind of test under `tests/`, mirroring `src/`: `Unit` (no kernel), `Integration` (the kernel), `Api`
+and `Functional` (requests through the kernel), `E2E` (Chrome through Panther, run by `castor test:e2e` alone, outside
+`castor test`, `castor coverage` and `castor ci`). Every test class names what it covers with `#[CoversClass]` or
+`#[CoversNothing]`; PHPUnit fails on a deprecation, a notice or a warning.
 
 ## Quality gates
 

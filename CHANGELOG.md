@@ -5,6 +5,25 @@ All notable changes to this template are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The template follows the releases of
 [strangebuzz/MicroSymfony](https://github.com/strangebuzz/MicroSymfony); its own changes are listed here.
 
+## Unreleased
+
+### Added
+
+- `symfony/panther` 2.4 as a development requirement, its `ServerExtension` in `phpunit.dist.xml` and its variables in
+  `.env.test`: the E2E suite opens the Stimulus page in Chrome on `localhost`, types a title and waits for the slug
+  that the `api` controller fetches from the slug endpoint, which proves that the JavaScript of the page runs.
+  `castor test:e2e` runs it alone, with Chrome and chromedriver on the `PATH`; `/drivers/` is ignored by git.
+
+### Changed
+
+- The E2E suite is left out of the `suites` of `PHIL_CASTOR`, so `castor test`, `castor coverage`, `castor ci` and the
+  continuous integration need no browser.
+
+### Removed
+
+- `AppControllerTest`, the kernel test that stood in the E2E suite until Panther was installed; the home page stays
+  tested by `HomeActionTest`.
+
 ## [8.2.0-RC2] - 2026-11-26
 
 ### Added
